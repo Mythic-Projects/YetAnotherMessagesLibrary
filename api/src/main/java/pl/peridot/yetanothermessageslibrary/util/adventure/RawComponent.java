@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class RawComponent {
 
+    public static final RawComponent EMPTY = new RawComponent("", Component.empty());
+
     private final String raw;
     private final Component component;
 

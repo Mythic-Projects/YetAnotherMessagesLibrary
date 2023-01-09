@@ -34,6 +34,10 @@ public class SendableMessage implements Sendable {
         this(Arrays.asList(holders));
     }
 
+    public @NotNull List<SendableHolder> getHolders() {
+        return new ArrayList<>(this.holders);
+    }
+
     public void send(@NotNull Audience audience, @NotNull Replaceable... replacements) {
         this.holders.forEach(holder -> holder.send(audience, replacements));
     }

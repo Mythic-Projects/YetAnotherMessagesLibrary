@@ -10,9 +10,11 @@ import pl.peridot.yetanothermessageslibrary.message.Sendable;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
 import pl.peridot.yetanothermessageslibrary.replace.StringReplacer;
 
-public interface MessageService<R, C> {
+public interface MessageService<R, C extends MessageRepository> {
 
-    @Nullable <T> T supplyValue(@Nullable R receiver, @NotNull Function<@NotNull C, @Nullable T> valueSupplier);
+    default @Nullable <T> T supplyValue(@Nullable R receiver, @NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
+        return valueSupplier.apply(this.getMessageRepository(receiver));
+    }
 
     @Contract(pure = true)
     default @Nullable String supplyString(@Nullable R receiver, @NotNull Function<@NotNull C, @Nullable String> stringSupplier, @NotNull Replaceable... replacements) {
@@ -40,5 +42,7 @@ public interface MessageService<R, C> {
     }
 
     @NotNull AudienceSupplier<R> getAudienceSupplier();
+
+    @NotNull C getMessageRepository(R receiver);
 
 }
