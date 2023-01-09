@@ -1,0 +1,17 @@
+rootProject.name = 'YetAnotherMessagesLibrary'
+
+include 'api'
+
+include 'api:common'
+findProject(':api:common')?.name = 'api-common'
+
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        adventure {
+            String version = "4.12.0"
+            library("api", "net.kyori:adventure-api:${version}")
+            library("serializer-legacy", "net.kyori:adventure-text-serializer-legacy:${version}")
+        }
+    }
+}

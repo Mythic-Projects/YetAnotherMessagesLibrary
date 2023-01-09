@@ -1,0 +1,88 @@
+plugins {
+    id 'idea'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+allprojects {
+    group 'pl.peridot'
+    version '1.0.0-SNAPSHOT'
+
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    compileJava.options.encoding = 'UTF-8'
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+
+        maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://repo.papermc.io/repository/maven-public/" }
+    }
+
+    java {
+        withSourcesJar()
+        withJavadocJar()
+    }
+
+    javadoc {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+        options.addStringOption('charSet', 'UTF-8')
+    }
+
+    publishing {
+        publications {
+            libraries(MavenPublication) {
+                artifactId = project.name.toLowerCase()
+
+                from components.java
+
+                // Add external repositories to published artifacts
+                // ~ btw: pls don't touch this
+                // Original code: https://github.com/FunnyGuilds/FunnyGuilds/blob/master/build.gradle
+                pom.withXml {
+                    def repositories = asNode().appendNode('repositories')
+
+                    project.getRepositories().findAll { repo ->
+                        if (repo.getUrl().toString().startsWith('http')) {
+                            def repository = repositories.appendNode('repository')
+                            repository.appendNode('id', repo.getUrl().toString().replace("https://", "").replace("/", "-").replace(".", "-").trim())
+                            repository.appendNode('url', repo.getUrl().toString())
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name "releases"
+                url "https://repo.titanvale.net/releases"
+
+                credentials(PasswordCredentials)
+                authentication {
+                    basic(BasicAuthentication)
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name "snapshots"
+                url "https://repo.titanvale.net/snapshots"
+
+                credentials(PasswordCredentials)
+                authentication {
+                    basic(BasicAuthentication)
+                }
+            }
+        }
+    }
+}
