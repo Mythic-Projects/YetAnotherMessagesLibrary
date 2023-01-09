@@ -12,6 +12,7 @@ dependencyResolutionManagement {
             String version = "4.12.0"
             library("api", "net.kyori:adventure-api:${version}")
             library("serializer-legacy", "net.kyori:adventure-text-serializer-legacy:${version}")
+            library("minimessage", "net.kyori:adventure-text-minimessage:4.2.0")
         }
     }
 }

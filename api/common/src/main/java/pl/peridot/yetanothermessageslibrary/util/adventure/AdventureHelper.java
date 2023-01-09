@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.jetbrains.annotations.NotNull;
 import pl.peridot.yetanothermessageslibrary.replace.replacement.Replacement;
 import pl.peridot.yetanothermessageslibrary.replace.StringReplacer;
-import pl.peridot.yetanothermessageslibrary.util.ColorUtil;
 
 public class AdventureHelper {
 
@@ -41,6 +42,7 @@ public class AdventureHelper {
         this.put("/&o", "</i>");
         this.put("/&r", "</r>");
     }};
+    private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("&(#[a-fA-F0-9]{6})");
 
     /**
      * Replace legacy color codes in text with mini message codes.
@@ -48,8 +50,8 @@ public class AdventureHelper {
      * @param legacyText legacy text
      * @return mini message text
      */
-    public static String legacyToMiniMessage(String legacyText) {
-        Matcher hexMatcher = ColorUtil.HEX_COLOR_PATTERN.matcher(legacyText);
+    public static @NotNull String legacyToMiniMessage(@NotNull String legacyText) {
+        Matcher hexMatcher = HEX_COLOR_PATTERN.matcher(legacyText);
         while (hexMatcher.find()) {
             String hex = hexMatcher.group(1);
             String adventureColor = "<color:" + hex + ">";

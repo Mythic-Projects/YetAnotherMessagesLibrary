@@ -1,6 +1,9 @@
 package pl.peridot.yetanothermessageslibrary.replace;
 
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.util.adventure.RawComponent;
 
 public final class ComponentReplacer {
@@ -8,14 +11,20 @@ public final class ComponentReplacer {
     private ComponentReplacer() {
     }
 
-    public static Component replace(Component text, Replaceable... replacements) {
+    @Contract(pure = true, value = "null, _ -> null")
+    public static Component replace(@Nullable Component text, @NotNull Replaceable... replacements) {
+        if (text == null) {
+            return null;
+        }
+
         for (Replaceable replacement : replacements) {
             text = replacement.replace(text);
         }
         return text;
     }
 
-    public static Component replace(RawComponent text, Replaceable... replacements) {
+    @Contract(pure = true)
+    public static @NotNull Component replace(@NotNull RawComponent text, @NotNull Replaceable... replacements) {
         return replace(text.getComponent(), replacements);
     }
 

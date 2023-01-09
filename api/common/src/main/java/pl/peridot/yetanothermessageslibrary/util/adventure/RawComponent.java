@@ -1,6 +1,7 @@
 package pl.peridot.yetanothermessageslibrary.util.adventure;
 
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Utility class to store raw String and Component at the same time.
@@ -11,16 +12,16 @@ public class RawComponent {
     private final String raw;
     private final Component component;
 
-    public RawComponent(String raw, Component component) {
+    public RawComponent(@NotNull String raw, @NotNull Component component) {
         this.raw = raw;
         this.component = component;
     }
 
-    public String getRaw() {
+    public @NotNull String getRaw() {
         return this.raw;
     }
 
-    public Component getComponent() {
+    public @NotNull Component getComponent() {
         return this.component;
     }
 
