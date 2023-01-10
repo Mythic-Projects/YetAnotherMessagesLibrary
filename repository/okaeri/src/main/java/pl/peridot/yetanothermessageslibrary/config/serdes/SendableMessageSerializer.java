@@ -3,6 +3,7 @@ package pl.peridot.yetanothermessageslibrary.config.serdes;
 import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
+import eu.okaeri.configs.serdes.SerdesContext;
 import eu.okaeri.configs.serdes.SerializationData;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,15 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
 
     @Override
     public void serialize(SendableMessage message, SerializationData data, GenericsDeclaration generics) {
+        List<SendableHolder> holders = message.getHolders();
+        if (holders.size() == 1) {
+            SendableHolder holder = holders.get(0);
+            if (holder instanceof ChatHolder) {
+                data.setValue(holder);
+                return;
+            }
+        }
+
         List<ChatHolder> chatHolders = new ArrayList<>();
         List<BossBarHolder> bossBarHolders = new ArrayList<>();
         List<SoundHolder> soundHolders = new ArrayList<>();
@@ -31,19 +41,20 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
         for (SendableHolder holder : message.getHolders()) {
             if (holder instanceof ChatHolder) {
                 chatHolders.add((ChatHolder) holder);
-                this.serializeHolders("chat", chatHolders, data, ChatHolder.class);
             } else if (holder instanceof ActionBarHolder) {
                 data.add("actionbar", ((ActionBarHolder) holder).getMessage());
             } else if (holder instanceof TitleHolder) {
                 data.add("title", holder);
             } else if (holder instanceof BossBarHolder) {
                 bossBarHolders.add((BossBarHolder) holder);
-                this.serializeHolders("bossbar", bossBarHolders, data, BossBarHolder.class);
             } else if (holder instanceof SoundHolder) {
                 soundHolders.add((SoundHolder) holder);
-                this.serializeHolders("sound", soundHolders, data, SoundHolder.class);
             }
         }
+
+        this.serializeHolders("chat", chatHolders, data, ChatHolder.class);
+        this.serializeHolders("bossbar", bossBarHolders, data, BossBarHolder.class);
+        this.serializeHolders("sound", soundHolders, data, SoundHolder.class);
     }
 
     private <T extends SendableHolder> void serializeHolders(String key, List<T> holders, SerializationData data, Class<? extends T> type) {
@@ -56,11 +67,18 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
 
     @Override
     public SendableMessage deserialize(DeserializationData data, GenericsDeclaration generics) {
+        if (data.isValue()) {
+            Object raw = data.getValueRaw();
+            if (raw instanceof String) {
+                return new SendableMessage(data.getValue(ChatHolder.class));
+            }
+        }
+
         List<SendableHolder> messageHolders = new ArrayList<>();
 
         messageHolders.addAll(this.deserializeHolders("chat", data, ChatHolder.class));
         if (data.containsKey("actionbar")) {
-            messageHolders.add(new ActionBarHolder(data.get("actionbar", RawComponent.class)));
+            messageHolders.add(data.get("actionbar", ActionBarHolder.class));
         }
         if (data.containsKey("title")) {
             messageHolders.add(data.get("title", TitleHolder.class));
