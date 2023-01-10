@@ -87,7 +87,7 @@ public class SendableMessage implements Sendable {
 
         /**
          * Parse raw chat message using MiniMessage and add it's to the message
-         * Requires <a href="https://docs.adventure.kyori.net/minimessage/>MiniMessage</a> to be in runtime.
+         * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
          * @param onlyConsole if true, message will be sent only to console
          * @param messages    messages to send
@@ -100,7 +100,7 @@ public class SendableMessage implements Sendable {
 
         /**
          * Parse raw chat message using MiniMessage and add it's to the message
-         * Requires <a href="https://docs.adventure.kyori.net/minimessage/>MiniMessage</a> to be in runtime.
+         * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
          * @param messages messages to send
          * @return this builder
@@ -124,7 +124,7 @@ public class SendableMessage implements Sendable {
 
         /**
          * Parse raw actionbar message using MiniMessage and add it's to the message
-         * Requires <a href="https://docs.adventure.kyori.net/minimessage/>MiniMessage</a> to be in runtime.
+         * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
          * @param message message to send
          * @return this builder
@@ -134,12 +134,33 @@ public class SendableMessage implements Sendable {
             return this.actionBar(MiniComponent.ofLegacy(message));
         }
 
+        /**
+         * Adds title message to the message
+         *
+         * @param title    title to send
+         * @param subtitle subtitle to send
+         * @param fadeIn   fade in time
+         * @param stay     stay time
+         * @param fadeOut  fade out time
+         * @return this builder
+         */
         @Contract("_, _, _, _, _ -> this")
         public Builder title(RawComponent title, RawComponent subtitle, int fadeIn, int stay, int fadeOut) {
             this.titleHolder = new TitleHolder(title, subtitle, fadeIn, stay, fadeOut);
             return this;
         }
 
+        /**
+         * Parse raw title message using MiniMessage and add it's to the message
+         * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
+         *
+         * @param title    title to send
+         * @param subtitle subtitle to send
+         * @param fadeIn   fade in time
+         * @param stay     stay time
+         * @param fadeOut  fade out time
+         * @return this builder
+         */
         @Contract("_, _, _, _, _ -> this")
         public Builder title(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
             return this.title(MiniComponent.ofLegacy(title), MiniComponent.ofLegacy(subtitle), fadeIn, stay, fadeOut);
@@ -164,7 +185,7 @@ public class SendableMessage implements Sendable {
 
         /**
          * Parse raw bossbar message using MiniMessage and add it's to the message
-         * Requires <a href="https://docs.adventure.kyori.net/minimessage/>MiniMessage</a> to be in runtime.
+         * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
          * @param name      bossbar name
          * @param percent   bossbar percent
