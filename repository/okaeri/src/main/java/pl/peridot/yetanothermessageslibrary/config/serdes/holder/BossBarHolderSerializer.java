@@ -17,10 +17,6 @@ public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> 
         this.schedulerWrapper = schedulerWrapper;
     }
 
-    public BossBarHolderSerializer() {
-        this(null);
-    }
-
     @Override
     public boolean supports(Class<? super BossBarHolder> type) {
         return BossBarHolder.class.isAssignableFrom(type);
