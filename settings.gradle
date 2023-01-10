@@ -9,6 +9,12 @@ include 'platform'
 include 'platform:bukkit'
 findProject(':platform:bukkit')?.name = 'platform-bukkit'
 
+include 'platform:bungee'
+findProject(':platform:bungee')?.name = 'platform-bungee'
+
+include 'platform:velocity'
+findProject(':platform:velocity')?.name = 'platform-velocity'
+
 // Repositories (Data Supplier)
 include 'repository'
 
@@ -28,12 +34,17 @@ dependencyResolutionManagement {
     versionCatalogs {
         libs {
             library("spigot", "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT")
+            library("bungee", "net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT")
+            library("velocity", "com.velocitypowered:velocity-api:3.1.1")
         }
         adventure {
-            String version = "4.12.0"
-            library("api", "net.kyori:adventure-api:${version}")
-            library("minimessage", "net.kyori:adventure-text-minimessage:4.2.0")
-            library("platform-bukkit", "net.kyori:adventure-platform-bukkit:4.2.0")
+            String apiVersion = "4.12.0"
+            library("api", "net.kyori:adventure-api:${apiVersion}")
+            library("minimessage", "net.kyori:adventure-text-minimessage:${apiVersion}")
+
+            String platformVersion = "4.2.0"
+            library("platform-bukkit", "net.kyori:adventure-platform-bukkit:${platformVersion}")
+            library("platform-bungee", "net.kyori:adventure-platform-bungeecord:${platformVersion}")
         }
         okaeri {
             library("config", "eu.okaeri:okaeri-configs-core:4.0.10-beta.2")

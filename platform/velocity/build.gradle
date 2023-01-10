@@ -1,0 +1,6 @@
+dependencies {
+    api project(':core')
+
+    shadow libs.velocity
+    annotationProcessor libs.velocity
+}

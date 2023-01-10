@@ -22,4 +22,8 @@ public interface SchedulerWrapper {
         this.runTaskTimer(runnable, delay, period, false);
     }
 
+    static long toMillis(long ticks) {
+        return ticks * 50;
+    }
+
 }

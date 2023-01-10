@@ -1,4 +1,4 @@
-package pl.peridot.yetanothermessageslibrary.adventure.util;
+package pl.peridot.yetanothermessageslibrary.util;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
