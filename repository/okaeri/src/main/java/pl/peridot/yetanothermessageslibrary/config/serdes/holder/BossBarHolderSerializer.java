@@ -44,23 +44,11 @@ public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> 
     @Override
     public BossBarHolder deserialize(DeserializationData data, GenericsDeclaration generics) {
         RawComponent name = data.get("name", RawComponent.class);
-
-        float progress = 1.0F;
-        if (data.containsKey("progress")) {
-            progress = data.get("progress", float.class);
-        }
-
+        float progress = data.containsKey("progress") ? data.get("progress", float.class) : 1;
         BossBar.Color color = data.get("color", BossBar.Color.class);
         BossBar.Overlay overlay = data.get("overlay", BossBar.Overlay.class);
+        int stay = data.containsKey("stay") ? data.get("stay", int.class) : -1;
 
-        int stay = -1;
-        if (data.containsKey("stay")) {
-            stay = data.get("stay", int.class);
-        }
-
-        if (this.schedulerWrapper == null) {
-            return new BossBarHolder(name, progress, color, overlay, -1, null);
-        }
         return new BossBarHolder(name, progress, color, overlay, stay, this.schedulerWrapper);
     }
 
