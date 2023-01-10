@@ -37,6 +37,7 @@ dependencyResolutionManagement {
         }
         okaeri {
             library("config", "eu.okaeri:okaeri-configs-core:4.0.10-beta.2")
+            library("placeholders", "eu.okaeri:okaeri-placeholders-core:4.0.3")
         }
     }
 }
