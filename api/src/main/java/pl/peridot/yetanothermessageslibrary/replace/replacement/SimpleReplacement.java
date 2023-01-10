@@ -8,7 +8,7 @@ public class SimpleReplacement extends Replacement {
 
     private final String to;
 
-    SimpleReplacement(@NotNull String from, @Nullable Object to) {
+    protected SimpleReplacement(@NotNull String from, @Nullable Object to) {
         super(from);
         this.to = Objects.toString(to);
     }

@@ -11,13 +11,13 @@ public class SupplierReplacement extends Replacement {
     private final Supplier<Object> to;
     private final Replacement[] replacements;
 
-    SupplierReplacement(@NotNull String from, @NotNull Supplier<@Nullable Object> to, @NotNull Replacement[] replacements) {
+    protected SupplierReplacement(@NotNull String from, @NotNull Supplier<@Nullable Object> to, @NotNull Replacement[] replacements) {
         super(from);
         this.to = to;
         this.replacements = replacements;
     }
 
-    SupplierReplacement(@NotNull String from, @NotNull Supplier<@Nullable Object> to) {
+    protected SupplierReplacement(@NotNull String from, @NotNull Supplier<@Nullable Object> to) {
         this(from, to, new Replacement[0]);
     }
 
