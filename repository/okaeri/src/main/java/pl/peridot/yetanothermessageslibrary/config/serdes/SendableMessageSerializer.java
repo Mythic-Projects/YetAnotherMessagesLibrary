@@ -41,20 +41,19 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
         for (SendableHolder holder : message.getHolders()) {
             if (holder instanceof ChatHolder) {
                 chatHolders.add((ChatHolder) holder);
+                this.serializeHolders("chat", chatHolders, data, ChatHolder.class);
             } else if (holder instanceof ActionBarHolder) {
                 data.add("actionbar", ((ActionBarHolder) holder).getMessage());
             } else if (holder instanceof TitleHolder) {
                 data.add("title", holder);
             } else if (holder instanceof BossBarHolder) {
                 bossBarHolders.add((BossBarHolder) holder);
+                this.serializeHolders("bossbar", bossBarHolders, data, BossBarHolder.class);
             } else if (holder instanceof SoundHolder) {
                 soundHolders.add((SoundHolder) holder);
+                this.serializeHolders("sound", soundHolders, data, SoundHolder.class);
             }
         }
-
-        this.serializeHolders("chat", chatHolders, data, ChatHolder.class);
-        this.serializeHolders("bossbar", bossBarHolders, data, BossBarHolder.class);
-        this.serializeHolders("sound", soundHolders, data, SoundHolder.class);
     }
 
     private <T extends SendableHolder> void serializeHolders(String key, List<T> holders, SerializationData data, Class<? extends T> type) {
