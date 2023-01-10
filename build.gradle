@@ -18,6 +18,10 @@ allprojects {
 }
 
 subprojects {
+    Project parentProject = project.parent
+    String parentGroup = "${parentProject.group}.${parentProject.name.toLowerCase()}"
+    group "${parentGroup}"
+
     repositories {
         mavenCentral()
 
