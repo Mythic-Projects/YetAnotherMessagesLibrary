@@ -18,9 +18,7 @@ allprojects {
 }
 
 subprojects {
-    Project parentProject = project.parent
-    String parentGroup = "${parentProject.group}.${parentProject.name.toLowerCase()}"
-    group "${parentGroup}"
+    group "${project.parent.group}.${project.parent.name.toLowerCase()}"
 
     repositories {
         mavenCentral()
