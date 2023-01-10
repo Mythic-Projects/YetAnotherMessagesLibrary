@@ -4,7 +4,7 @@ import eu.okaeri.configs.schema.GenericsPair;
 import eu.okaeri.configs.serdes.BidirectionalTransformer;
 import eu.okaeri.configs.serdes.SerdesContext;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.ActionBarHolder;
-import pl.peridot.yetanothermessageslibrary.util.adventure.RawComponent;
+import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 
 public class ActionBarHolderTransformer extends BidirectionalTransformer<RawComponent, ActionBarHolder> {
 

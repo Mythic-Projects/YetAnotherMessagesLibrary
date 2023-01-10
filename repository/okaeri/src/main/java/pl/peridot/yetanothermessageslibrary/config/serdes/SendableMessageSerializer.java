@@ -3,7 +3,6 @@ package pl.peridot.yetanothermessageslibrary.config.serdes;
 import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
-import eu.okaeri.configs.serdes.SerdesContext;
 import eu.okaeri.configs.serdes.SerializationData;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,6 @@ import pl.peridot.yetanothermessageslibrary.message.holder.impl.BossBarHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.ChatHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.SoundHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.TitleHolder;
-import pl.peridot.yetanothermessageslibrary.util.adventure.RawComponent;
 
 public class SendableMessageSerializer implements ObjectSerializer<SendableMessage> {
 

@@ -8,7 +8,7 @@ import java.time.Duration;
 import net.kyori.adventure.title.Title.Times;
 import net.kyori.adventure.util.Ticks;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.TitleHolder;
-import pl.peridot.yetanothermessageslibrary.util.adventure.RawComponent;
+import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 
 public class TitleHolderSerializer implements ObjectSerializer<TitleHolder> {
 

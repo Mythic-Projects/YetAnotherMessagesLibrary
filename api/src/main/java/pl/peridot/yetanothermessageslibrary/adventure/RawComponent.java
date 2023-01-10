@@ -1,4 +1,4 @@
-package pl.peridot.yetanothermessageslibrary.util.adventure;
+package pl.peridot.yetanothermessageslibrary.adventure;
 
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;

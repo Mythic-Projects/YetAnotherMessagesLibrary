@@ -24,9 +24,8 @@ public abstract class Replacement implements Replaceable {
     public abstract @NotNull String getTo();
 
     @Contract(pure = true)
-    @Override
-    public @NotNull String replace(@NotNull String text, boolean ignoreCase) {
-        return text.replace(this.getFrom(), this.getTo()); // TODO: ignoreCase
+    public @NotNull String replace(@NotNull String text) {
+        return text.replace(this.getFrom(), this.getTo());
     }
 
     @Contract(pure = true)

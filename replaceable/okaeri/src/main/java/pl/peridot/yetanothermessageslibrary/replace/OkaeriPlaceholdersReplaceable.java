@@ -22,7 +22,7 @@ public class OkaeriPlaceholdersReplaceable implements Replaceable {
     }
 
     @Override
-    public @NotNull String replace(@NotNull String text, boolean ignoreCase) {
+    public @NotNull String replace(@NotNull String text) {
         return this.replacePlaceholders(text);
     }
 

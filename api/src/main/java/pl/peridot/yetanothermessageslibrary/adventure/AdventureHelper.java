@@ -1,4 +1,4 @@
-package pl.peridot.yetanothermessageslibrary.util.adventure;
+package pl.peridot.yetanothermessageslibrary.adventure;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,14 +55,14 @@ public class AdventureHelper {
         while (hexMatcher.find()) {
             String hex = hexMatcher.group(1);
             String adventureColor = "<color:" + hex + ">";
-            legacyText = StringReplacer.replaceIgnoreCase(legacyText, Replacement.of(hexMatcher.group(), adventureColor));
+            legacyText = StringReplacer.replace(legacyText, Replacement.of(hexMatcher.group(), adventureColor));
         }
 
         List<? extends Replacement> replacementList = LEGACY_TO_MINI_MESSAGE.entrySet()
                 .stream()
                 .map(entry -> Replacement.of(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
-        legacyText = StringReplacer.replaceIgnoreCase(legacyText, replacementList);
+        legacyText = StringReplacer.replace(legacyText, replacementList);
 
         return legacyText;
     }

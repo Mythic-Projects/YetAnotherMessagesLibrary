@@ -21,7 +21,7 @@ public class PlaceholderAPIReplaceable implements Replaceable {
     }
 
     @Override
-    public @NotNull String replace(@NotNull String text, boolean ignoreCase) {
+    public @NotNull String replace(@NotNull String text) {
         return this.replacePlaceholder(text);
     }
 

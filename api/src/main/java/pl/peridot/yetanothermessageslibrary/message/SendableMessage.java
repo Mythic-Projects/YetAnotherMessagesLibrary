@@ -18,8 +18,8 @@ import pl.peridot.yetanothermessageslibrary.message.holder.impl.ChatHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.SoundHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.TitleHolder;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
-import pl.peridot.yetanothermessageslibrary.util.adventure.MiniComponent;
-import pl.peridot.yetanothermessageslibrary.util.adventure.RawComponent;
+import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
+import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 import pl.peridot.yetanothermessageslibrary.util.SchedulerWrapper;
 
 public class SendableMessage implements Sendable {

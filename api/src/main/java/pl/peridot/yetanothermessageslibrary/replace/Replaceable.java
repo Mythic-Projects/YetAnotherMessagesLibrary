@@ -5,11 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Replaceable {
 
-    @NotNull String replace(@NotNull String text, boolean ignoreCase);
-
-    default @NotNull String replace(@NotNull String text) {
-        return this.replace(text, false);
-    }
+    @NotNull String replace(@NotNull String text);
 
     @NotNull Component replace(@NotNull Component text);
 

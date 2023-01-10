@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import pl.peridot.yetanothermessageslibrary.util.adventure.RawComponent;
+import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 
 public final class ComponentReplacer {
 

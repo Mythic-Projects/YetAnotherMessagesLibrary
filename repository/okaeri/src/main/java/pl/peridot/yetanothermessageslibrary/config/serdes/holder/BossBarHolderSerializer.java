@@ -7,7 +7,7 @@ import eu.okaeri.configs.serdes.SerializationData;
 import net.kyori.adventure.bossbar.BossBar;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.BossBarHolder;
 import pl.peridot.yetanothermessageslibrary.util.SchedulerWrapper;
-import pl.peridot.yetanothermessageslibrary.util.adventure.RawComponent;
+import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 
 public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> {
 

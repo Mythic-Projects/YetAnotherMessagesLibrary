@@ -3,8 +3,8 @@ package pl.peridot.yetanothermessageslibrary.config.serdes;
 import eu.okaeri.configs.schema.GenericsPair;
 import eu.okaeri.configs.serdes.BidirectionalTransformer;
 import eu.okaeri.configs.serdes.SerdesContext;
-import pl.peridot.yetanothermessageslibrary.util.adventure.MiniComponent;
-import pl.peridot.yetanothermessageslibrary.util.adventure.RawComponent;
+import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
+import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 
 public class RawComponentTransformer extends BidirectionalTransformer<String, RawComponent> {
 

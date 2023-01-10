@@ -7,7 +7,7 @@ import eu.okaeri.configs.serdes.SerializationData;
 import java.util.ArrayList;
 import java.util.List;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.ChatHolder;
-import pl.peridot.yetanothermessageslibrary.util.adventure.RawComponent;
+import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 
 public class ChatSerializer implements ObjectSerializer<ChatHolder> {
 
