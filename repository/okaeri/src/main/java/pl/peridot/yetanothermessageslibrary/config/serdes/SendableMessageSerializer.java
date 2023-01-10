@@ -43,7 +43,7 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
                 chatHolders.add((ChatHolder) holder);
                 this.serializeHolders("chat", chatHolders, data, ChatHolder.class);
             } else if (holder instanceof ActionBarHolder) {
-                data.add("actionbar", ((ActionBarHolder) holder).getMessage());
+                data.add("actionbar", holder);
             } else if (holder instanceof TitleHolder) {
                 data.add("title", holder);
             } else if (holder instanceof BossBarHolder) {

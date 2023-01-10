@@ -3,7 +3,7 @@ package pl.peridot.yetanothermessageslibrary.config.serdes;
 import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import eu.okaeri.configs.serdes.SerdesRegistry;
 import org.jetbrains.annotations.Nullable;
-import pl.peridot.yetanothermessageslibrary.config.serdes.holder.ActionBarSerializer;
+import pl.peridot.yetanothermessageslibrary.config.serdes.holder.ActionBarHolderTransformer;
 import pl.peridot.yetanothermessageslibrary.config.serdes.holder.BossBarHolderSerializer;
 import pl.peridot.yetanothermessageslibrary.config.serdes.holder.ChatSerializer;
 import pl.peridot.yetanothermessageslibrary.config.serdes.holder.SoundHolderSerializer;
@@ -22,7 +22,6 @@ public class SerdesMessages implements OkaeriSerdesPack {
     public void register(SerdesRegistry registry) {
         // Serializers/Deserializers
         registry.register(new ChatSerializer());
-        registry.register(new ActionBarSerializer());
         registry.register(new TitleHolderSerializer());
         registry.register(new BossBarHolderSerializer(this.schedulerWrapper));
         registry.register(new SoundHolderSerializer());
@@ -31,6 +30,7 @@ public class SerdesMessages implements OkaeriSerdesPack {
         // Transformers
         registry.register(new RawComponentTransformer());
         registry.register(new KeyTransformer());
+        registry.register(new ActionBarHolderTransformer());
     }
 
 }
