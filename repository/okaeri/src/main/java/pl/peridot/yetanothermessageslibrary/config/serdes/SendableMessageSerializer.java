@@ -34,33 +34,18 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
             }
         }
 
-        List<ChatHolder> chatHolders = new ArrayList<>();
-        List<BossBarHolder> bossBarHolders = new ArrayList<>();
-        List<SoundHolder> soundHolders = new ArrayList<>();
-
-        for (SendableHolder holder : holders) {
-            if (holder instanceof ChatHolder) {
-                chatHolders.add((ChatHolder) holder);
-                this.serializeHolders("chat", chatHolders, data, ChatHolder.class);
-            } else if (holder instanceof ActionBarHolder) {
-                data.add("actionbar", holder, ActionBarHolder.class);
-            } else if (holder instanceof TitleHolder) {
-                data.add("title", holder, TitleHolder.class);
-            } else if (holder instanceof BossBarHolder) {
-                bossBarHolders.add((BossBarHolder) holder);
-                this.serializeHolders("bossbar", bossBarHolders, data, BossBarHolder.class);
-            } else if (holder instanceof SoundHolder) {
-                soundHolders.add((SoundHolder) holder);
-                this.serializeHolders("sound", soundHolders, data, SoundHolder.class);
-            }
-        }
+        this.serializeHolders("chat", message.getHolders(ChatHolder.class), data, ChatHolder.class);
+        this.serializeHolders("actionbar", message.getHolders(ActionBarHolder.class), data, ActionBarHolder.class);
+        this.serializeHolders("title", message.getHolders(TitleHolder.class), data, TitleHolder.class);
+        this.serializeHolders("bossbar", message.getHolders(BossBarHolder.class), data, BossBarHolder.class);
+        this.serializeHolders("sound", message.getHolders(SoundHolder.class), data, SoundHolder.class);
     }
 
     private <T extends SendableHolder> void serializeHolders(String key, List<T> holders, SerializationData data, Class<? extends T> type) {
-        if (holders.size() > 1) {
-            data.addCollection(key, holders, type);
-        } else if (holders.size() == 1) {
+        if (holders.size() == 1) {
             data.add(key, holders.get(0), type);
+        } else {
+            data.addCollection(key, holders, type);
         }
     }
 
@@ -76,12 +61,8 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
         List<SendableHolder> messageHolders = new ArrayList<>();
 
         messageHolders.addAll(this.deserializeHolders("chat", data, ChatHolder.class));
-        if (data.containsKey("actionbar")) {
-            messageHolders.add(data.get("actionbar", ActionBarHolder.class));
-        }
-        if (data.containsKey("title")) {
-            messageHolders.add(data.get("title", TitleHolder.class));
-        }
+        messageHolders.addAll(this.deserializeHolders("actionbar", data, ActionBarHolder.class));
+        messageHolders.addAll(this.deserializeHolders("title", data, TitleHolder.class));
         messageHolders.addAll(this.deserializeHolders("bossbar", data, BossBarHolder.class));
         messageHolders.addAll(this.deserializeHolders("sound", data, SoundHolder.class));
 

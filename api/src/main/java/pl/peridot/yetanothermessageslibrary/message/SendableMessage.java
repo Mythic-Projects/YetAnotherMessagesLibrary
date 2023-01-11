@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -36,6 +37,14 @@ public class SendableMessage implements Sendable {
 
     public @NotNull List<SendableHolder> getHolders() {
         return new ArrayList<>(this.holders);
+    }
+
+    public @NotNull <T extends SendableHolder> List<T> getHolders(Class<T> type) {
+        return this.holders.stream()
+                .map(Object::getClass)
+                .filter(type::isAssignableFrom)
+                .map(type::cast)
+                .collect(Collectors.toList());
     }
 
     public void send(@NotNull Audience audience, @NotNull Replaceable... replacements) {
