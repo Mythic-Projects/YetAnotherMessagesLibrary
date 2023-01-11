@@ -7,8 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
-import pl.peridot.yetanothermessageslibrary.replace.replacement.Replacement;
 import pl.peridot.yetanothermessageslibrary.replace.StringReplacer;
+import pl.peridot.yetanothermessageslibrary.replace.replacement.Replacement;
 
 public class AdventureHelper {
 

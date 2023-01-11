@@ -41,6 +41,7 @@ dependencyResolutionManagement {
             String apiVersion = "4.12.0"
             library("api", "net.kyori:adventure-api:${apiVersion}")
             library("minimessage", "net.kyori:adventure-text-minimessage:${apiVersion}")
+            library("serializer-legacy", "net.kyori:adventure-text-serializer-legacy:${apiVersion}")
 
             String platformVersion = "4.2.0"
             library("platform-bukkit", "net.kyori:adventure-platform-bukkit:${platformVersion}")

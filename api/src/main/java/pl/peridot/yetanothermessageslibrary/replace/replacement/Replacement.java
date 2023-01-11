@@ -3,6 +3,7 @@ package pl.peridot.yetanothermessageslibrary.replace.replacement;
 import java.util.function.Supplier;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,6 +11,8 @@ import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
 import pl.peridot.yetanothermessageslibrary.replace.StringReplacer;
 
 public abstract class Replacement implements Replaceable {
+
+    private static final LegacyComponentSerializer LEGACY_SERIALIZER = LegacyComponentSerializer.legacySection();
 
     private final String from;
 
@@ -33,7 +36,7 @@ public abstract class Replacement implements Replaceable {
     public @NotNull Component replace(@NotNull Component text) {
         return text.replaceText(TextReplacementConfig.builder()
                 .matchLiteral(this.getFrom())
-                .replacement(this.getTo())
+                .replacement(LEGACY_SERIALIZER.deserialize(this.getTo())) //TODO: Find better solution that doesn't require LegacyComponentSerializer
                 .build());
     }
 
