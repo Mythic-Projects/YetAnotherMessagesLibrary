@@ -20,17 +20,17 @@ public class SerdesMessages implements OkaeriSerdesPack {
 
     @Override
     public void register(SerdesRegistry registry) {
-        // Serializers/Deserializers
+        // Messages
         registry.register(new ChatSerializer());
+        registry.register(new ActionBarHolderTransformer());
         registry.register(new TitleHolderSerializer());
         registry.register(new BossBarHolderSerializer(this.schedulerWrapper));
         registry.register(new SoundHolderSerializer());
         registry.register(new SendableMessageSerializer());
 
-        // Transformers
+        // Utilities
         registry.register(new RawComponentTransformer());
         registry.register(new KeyTransformer());
-        registry.register(new ActionBarHolderTransformer());
     }
 
 }

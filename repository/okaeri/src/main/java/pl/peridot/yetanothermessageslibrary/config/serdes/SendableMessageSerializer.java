@@ -3,9 +3,11 @@ package pl.peridot.yetanothermessageslibrary.config.serdes;
 import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
+import eu.okaeri.configs.serdes.SerdesContext;
 import eu.okaeri.configs.serdes.SerializationData;
 import java.util.ArrayList;
 import java.util.List;
+import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 import pl.peridot.yetanothermessageslibrary.message.SendableMessage;
 import pl.peridot.yetanothermessageslibrary.message.holder.SendableHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.ActionBarHolder;
@@ -36,14 +38,14 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
         List<BossBarHolder> bossBarHolders = new ArrayList<>();
         List<SoundHolder> soundHolders = new ArrayList<>();
 
-        for (SendableHolder holder : message.getHolders()) {
+        for (SendableHolder holder : holders) {
             if (holder instanceof ChatHolder) {
                 chatHolders.add((ChatHolder) holder);
                 this.serializeHolders("chat", chatHolders, data, ChatHolder.class);
             } else if (holder instanceof ActionBarHolder) {
-                data.add("actionbar", holder);
+                data.add("actionbar", holder, ActionBarHolder.class);
             } else if (holder instanceof TitleHolder) {
-                data.add("title", holder);
+                data.add("title", holder, TitleHolder.class);
             } else if (holder instanceof BossBarHolder) {
                 bossBarHolders.add((BossBarHolder) holder);
                 this.serializeHolders("bossbar", bossBarHolders, data, BossBarHolder.class);
@@ -58,7 +60,7 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
         if (holders.size() > 1) {
             data.addCollection(key, holders, type);
         } else if (holders.size() == 1) {
-            data.add(key, holders.get(0));
+            data.add(key, holders.get(0), type);
         }
     }
 

@@ -52,11 +52,7 @@ public class SendableMessage implements Sendable {
 
     public static class Builder {
 
-        private final List<ChatHolder> chatHolders = new ArrayList<>();
-        private final List<BossBarHolder> bossBarHolders = new ArrayList<>();
-        private final List<SoundHolder> soundHolders = new ArrayList<>();
-        private ActionBarHolder actionBarHolder;
-        private TitleHolder titleHolder;
+        private final List<SendableHolder> holders = new ArrayList<>();
 
         public Builder() {
         }
@@ -70,7 +66,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _ -> this")
         public Builder chat(boolean onlyConsole, @NotNull RawComponent... messages) {
-            this.chatHolders.add(new ChatHolder(onlyConsole, messages));
+            this.holders.add(new ChatHolder(onlyConsole, messages));
             return this;
         }
 
@@ -114,11 +110,11 @@ public class SendableMessage implements Sendable {
          * Adds actionbar message to the message
          *
          * @param message message to send
-         * @return
+         * @return this builder
          */
         @Contract("_, -> this")
         public Builder actionBar(@NotNull RawComponent message) {
-            this.actionBarHolder = new ActionBarHolder(message);
+            this.holders.add(new ActionBarHolder(message));
             return this;
         }
 
@@ -146,7 +142,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _, _, _, _ -> this")
         public Builder title(RawComponent title, RawComponent subtitle, int fadeIn, int stay, int fadeOut) {
-            this.titleHolder = new TitleHolder(title, subtitle, fadeIn, stay, fadeOut);
+            this.holders.add(new TitleHolder(title, subtitle, fadeIn, stay, fadeOut));
             return this;
         }
 
@@ -179,7 +175,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _, _, _, _, _ -> this")
         public Builder bossBar(@NotNull RawComponent name, int percent, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, int stay, @Nullable SchedulerWrapper scheduler) {
-            this.bossBarHolders.add(new BossBarHolder(name, percent, color, overlay, stay, scheduler));
+            this.holders.add(new BossBarHolder(name, percent, color, overlay, stay, scheduler));
             return this;
         }
 
@@ -211,7 +207,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _, _, _, _ -> this")
         public Builder sound(@NotNull Key key, @NotNull Sound.Source source, float volume, float pitch, boolean stopOtherSounds) {
-            this.soundHolders.add(new SoundHolder(key, source, volume, pitch, stopOtherSounds));
+            this.holders.add(new SoundHolder(key, source, volume, pitch, stopOtherSounds));
             return this;
         }
 
@@ -257,21 +253,7 @@ public class SendableMessage implements Sendable {
 
         @NotNull
         public SendableMessage build() {
-            List<SendableHolder> holders = new ArrayList<>();
-
-            holders.addAll(this.chatHolders);
-            holders.addAll(this.bossBarHolders);
-            holders.addAll(this.soundHolders);
-
-            if (this.actionBarHolder != null) {
-                holders.add(this.actionBarHolder);
-            }
-
-            if (this.titleHolder != null) {
-                holders.add(this.titleHolder);
-            }
-
-            return new SendableMessage(holders);
+            return new SendableMessage(this.holders);
         }
 
     }
