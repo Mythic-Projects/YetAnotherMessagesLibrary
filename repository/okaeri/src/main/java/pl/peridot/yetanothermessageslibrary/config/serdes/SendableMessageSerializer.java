@@ -68,7 +68,7 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
     public SendableMessage deserialize(DeserializationData data, GenericsDeclaration generics) {
         if (data.isValue()) {
             Object raw = data.getValueRaw();
-            if (raw instanceof String) {
+            if (raw instanceof String || raw instanceof List<?>) {
                 return new SendableMessage(data.getValue(ChatHolder.class));
             }
         }
