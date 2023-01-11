@@ -41,9 +41,8 @@ public class SendableMessage implements Sendable {
 
     public @NotNull <T extends SendableHolder> List<T> getHolders(Class<T> type) {
         return this.holders.stream()
-                .map(Object::getClass)
-                .filter(type::isAssignableFrom)
-                .map(type::cast)
+                .filter(holder -> holder.getClass().isAssignableFrom(type))
+                .map(holder -> (T) holder)
                 .collect(Collectors.toList());
     }
 

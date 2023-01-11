@@ -44,7 +44,7 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
     private <T extends SendableHolder> void serializeHolders(String key, List<T> holders, SerializationData data, Class<? extends T> type) {
         if (holders.size() == 1) {
             data.add(key, holders.get(0), type);
-        } else {
+        } else if (holders.size() > 1) {
             data.addCollection(key, holders, type);
         }
     }
