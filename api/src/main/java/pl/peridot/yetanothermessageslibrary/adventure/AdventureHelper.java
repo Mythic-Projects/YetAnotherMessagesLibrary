@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 import pl.peridot.yetanothermessageslibrary.replace.StringReplacer;
 import pl.peridot.yetanothermessageslibrary.replace.replacement.Replacement;
@@ -44,6 +46,8 @@ public class AdventureHelper {
     }};
     private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("&(#[a-fA-F0-9]{6})");
 
+    private static final LegacyComponentSerializer LEGACY_SERIALIZER = LegacyComponentSerializer.legacySection();
+
     /**
      * Replace legacy color codes in text with mini message codes.
      *
@@ -65,6 +69,10 @@ public class AdventureHelper {
         legacyText = StringReplacer.replace(legacyText, replacementList);
 
         return legacyText;
+    }
+
+    public static @NotNull Component legacyToComponent(@NotNull String legacyText) {
+        return LEGACY_SERIALIZER.deserialize(legacyText); //TODO: Find better way without using legacy serializer
     }
 
 }

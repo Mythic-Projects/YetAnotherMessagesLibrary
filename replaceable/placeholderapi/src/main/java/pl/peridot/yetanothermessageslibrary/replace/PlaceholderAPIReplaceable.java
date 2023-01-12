@@ -9,6 +9,7 @@ import net.kyori.adventure.text.TextReplacementConfig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.peridot.yetanothermessageslibrary.adventure.AdventureHelper;
 
 public class PlaceholderAPIReplaceable implements Replaceable {
 
@@ -29,7 +30,7 @@ public class PlaceholderAPIReplaceable implements Replaceable {
     public @NotNull Component replace(@NotNull Component text) {
         TextReplacementConfig replacement = TextReplacementConfig.builder()
                 .match(PLACEHOLDER_PATTERN)
-                .replacement((result, input) -> Component.text(this.replacePlaceholder(result.group())))
+                .replacement((result, input) -> AdventureHelper.legacyToComponent(this.replacePlaceholder(result.group())))
                 .build();
         return text.replaceText(replacement);
     }

@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import org.jetbrains.annotations.NotNull;
+import pl.peridot.yetanothermessageslibrary.adventure.AdventureHelper;
 
 public class OkaeriPlaceholdersReplaceable implements Replaceable {
 
@@ -30,7 +31,7 @@ public class OkaeriPlaceholdersReplaceable implements Replaceable {
     public @NotNull Component replace(@NotNull Component text) {
         TextReplacementConfig replacement = TextReplacementConfig.builder()
                 .match(FIELD_PATTERN)
-                .replacement((result, input) -> Component.text(this.replacePlaceholders("{" + result.group() + "}")))
+                .replacement((result, input) -> AdventureHelper.legacyToComponent(this.replacePlaceholders("{" + result.group() + "}")))
                 .build();
         return text.replaceText(replacement);
     }
