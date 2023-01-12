@@ -187,7 +187,7 @@ public class SendableMessage implements Sendable {
          * Adds bossbar message to the message.
          *
          * @param name      bossbar name
-         * @param progress  bossbar percent
+         * @param progress  bossbar progress (0-1)
          * @param color     bossbar color
          * @param overlay   bossbar overlay
          * @param stay      bossbar stay time in ticks (if -1 won't be removed)
@@ -195,7 +195,7 @@ public class SendableMessage implements Sendable {
          * @return this builder
          */
         @Contract("_, _, _, _, _, _, _ -> this")
-        public Builder bossBar(@NotNull RawComponent name, int progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
+        public Builder bossBar(@NotNull RawComponent name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
             return this.addHolders(new BossBarHolder(name, progress, color, overlay, flags, stay, scheduler));
         }
 
@@ -204,7 +204,7 @@ public class SendableMessage implements Sendable {
          * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
          * @param name      bossbar name
-         * @param progress  bossbar percent
+         * @param progress  bossbar progress (0-1)
          * @param color     bossbar color
          * @param overlay   bossbar overlay
          * @param stay      bossbar stay time in ticks (if -1 won't be removed)
@@ -212,7 +212,7 @@ public class SendableMessage implements Sendable {
          * @return this builder
          */
         @Contract("_, _, _, _, _, _, _ -> this")
-        public Builder bossBar(@NotNull String name, int progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
+        public Builder bossBar(@NotNull String name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
             return this.bossBar(MiniComponent.ofLegacy(name), progress, color, overlay, flags, stay, scheduler);
         }
 
