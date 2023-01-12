@@ -23,6 +23,8 @@ example:
   - name: Example BossBar2
     color: GREEN
     overlay: PROGRESS
+    flags:
+    - DARKEN_SCREEN
     progress: 0.5
     stay: 20
   sound:
@@ -80,6 +82,8 @@ example:
   - name: Example BossBar
     color: GREEN
     overlay: PROGRESS
+    flags:
+    - DARKEN_SCREEN
     progress: 0.5
     stay: 20
   - name: Example BossBar2
