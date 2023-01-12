@@ -13,7 +13,7 @@ public final class StringReplacer {
     private StringReplacer() {
     }
 
-    @Contract(pure = true, value = "null, _, _ -> null")
+    @Contract(pure = true, value = "null, _, -> null")
     public static String replace(@Nullable String text, @NotNull Collection<? extends Replaceable> replacements) {
         if (text == null || text.isEmpty()) {
             return text;
