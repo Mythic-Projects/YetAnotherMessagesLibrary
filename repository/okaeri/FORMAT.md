@@ -57,7 +57,7 @@ example:
   message: Example Console Only
 ```
 
-This mean old formats that uses Strings and List of Strings will be compatible and serialized properly.
+This also mean old formats that uses Strings and List of Strings will be compatible and deserialized properly.
 
 ---
 
