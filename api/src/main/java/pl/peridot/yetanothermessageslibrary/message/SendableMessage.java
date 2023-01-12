@@ -58,7 +58,7 @@ public class SendableMessage implements Sendable {
         return new SendableMessage(Arrays.asList(holders));
     }
 
-    public static Builder builder() {
+    public static @NotNull Builder builder() {
         return new Builder();
     }
 
@@ -70,6 +70,18 @@ public class SendableMessage implements Sendable {
         }
 
         /**
+         * Add holder to message.
+         *
+         * @param holders holders to add
+         * @return this builder
+         */
+        @Contract("_ -> this")
+        public Builder addHolders(@NotNull SendableHolder... holders) {
+            this.holders.addAll(Arrays.asList(holders));
+            return this;
+        }
+
+        /**
          * Add chat message to the message.
          *
          * @param onlyConsole if true, message will be sent only to console
@@ -78,8 +90,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _ -> this")
         public Builder chat(boolean onlyConsole, @NotNull RawComponent... messages) {
-            this.holders.add(new ChatHolder(onlyConsole, messages));
-            return this;
+            return this.addHolders(new ChatHolder(onlyConsole, messages));
         }
 
         /**
@@ -126,8 +137,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, -> this")
         public Builder actionBar(@NotNull RawComponent message) {
-            this.holders.add(new ActionBarHolder(message));
-            return this;
+            return this.addHolders(new ActionBarHolder(message));
         }
 
         /**
@@ -154,8 +164,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _, _, _, _ -> this")
         public Builder title(@NotNull RawComponent title, @NotNull RawComponent subtitle, int fadeIn, int stay, int fadeOut) {
-            this.holders.add(new TitleHolder(title, subtitle, fadeIn, stay, fadeOut));
-            return this;
+            return this.addHolders(new TitleHolder(title, subtitle, fadeIn, stay, fadeOut));
         }
 
         /**
@@ -178,7 +187,7 @@ public class SendableMessage implements Sendable {
          * Adds bossbar message to the message.
          *
          * @param name      bossbar name
-         * @param percent   bossbar percent
+         * @param progress  bossbar percent
          * @param color     bossbar color
          * @param overlay   bossbar overlay
          * @param stay      bossbar stay time in ticks (if -1 won't be removed)
@@ -186,9 +195,8 @@ public class SendableMessage implements Sendable {
          * @return this builder
          */
         @Contract("_, _, _, _, _, _, _ -> this")
-        public Builder bossBar(@NotNull RawComponent name, int percent, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
-            this.holders.add(new BossBarHolder(name, percent, color, overlay, flags, stay, scheduler));
-            return this;
+        public Builder bossBar(@NotNull RawComponent name, int progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
+            return this.addHolders(new BossBarHolder(name, progress, color, overlay, flags, stay, scheduler));
         }
 
         /**
@@ -196,7 +204,7 @@ public class SendableMessage implements Sendable {
          * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
          * @param name      bossbar name
-         * @param percent   bossbar percent
+         * @param progress  bossbar percent
          * @param color     bossbar color
          * @param overlay   bossbar overlay
          * @param stay      bossbar stay time in ticks (if -1 won't be removed)
@@ -204,8 +212,8 @@ public class SendableMessage implements Sendable {
          * @return this builder
          */
         @Contract("_, _, _, _, _, _, _ -> this")
-        public Builder bossBar(@NotNull String name, int percent, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
-            return this.bossBar(MiniComponent.ofLegacy(name), percent, color, overlay, flags, stay, scheduler);
+        public Builder bossBar(@NotNull String name, int progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
+            return this.bossBar(MiniComponent.ofLegacy(name), progress, color, overlay, flags, stay, scheduler);
         }
 
         /**
@@ -219,8 +227,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _, _, _, _ -> this")
         public Builder sound(@NotNull Key key, @NotNull Sound.Source source, float volume, float pitch, boolean stopOtherSounds) {
-            this.holders.add(new SoundHolder(key, source, volume, pitch, stopOtherSounds));
-            return this;
+            return this.addHolders(new SoundHolder(key, source, volume, pitch, stopOtherSounds));
         }
 
         /**
