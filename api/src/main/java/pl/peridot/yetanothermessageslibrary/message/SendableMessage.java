@@ -12,6 +12,8 @@ import net.kyori.adventure.sound.Sound;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
+import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 import pl.peridot.yetanothermessageslibrary.message.holder.SendableHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.ActionBarHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.BossBarHolder;
@@ -19,27 +21,21 @@ import pl.peridot.yetanothermessageslibrary.message.holder.impl.ChatHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.SoundHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.TitleHolder;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
-import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
-import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 import pl.peridot.yetanothermessageslibrary.util.SchedulerWrapper;
 
 public class SendableMessage implements Sendable {
 
     private final List<SendableHolder> holders = new ArrayList<>();
 
-    public SendableMessage(Collection<SendableHolder> holders) {
+    protected SendableMessage(@NotNull Collection<SendableHolder> holders) {
         this.holders.addAll(holders);
-    }
-
-    public SendableMessage(SendableHolder... holders) {
-        this(Arrays.asList(holders));
     }
 
     public @NotNull List<SendableHolder> getHolders() {
         return new ArrayList<>(this.holders);
     }
 
-    public @NotNull <T extends SendableHolder> List<T> getHolders(Class<T> type) {
+    public @NotNull <T extends SendableHolder> List<T> getHolders(@NotNull Class<T> type) {
         return this.holders.stream()
                 .filter(holder -> holder.getClass().isAssignableFrom(type))
                 .map(holder -> (T) holder)
@@ -50,8 +46,16 @@ public class SendableMessage implements Sendable {
         this.holders.forEach(holder -> holder.send(audience, replacements));
     }
 
-    public void send(@NotNull Audience audience, boolean console, Replaceable... replacements) {
+    public void send(@NotNull Audience audience, boolean console, @NotNull Replaceable... replacements) {
         this.holders.forEach(holder -> holder.send(audience, console, replacements));
+    }
+
+    public static @NotNull SendableMessage of(@NotNull Collection<SendableHolder> holders) {
+        return new SendableMessage(holders);
+    }
+
+    public static @NotNull SendableMessage of(@NotNull SendableHolder... holders) {
+        return new SendableMessage(Arrays.asList(holders));
     }
 
     public static Builder builder() {
@@ -62,7 +66,7 @@ public class SendableMessage implements Sendable {
 
         private final List<SendableHolder> holders = new ArrayList<>();
 
-        public Builder() {
+        private Builder() {
         }
 
         /**
@@ -90,7 +94,7 @@ public class SendableMessage implements Sendable {
         }
 
         /**
-         * Parse raw chat message using MiniMessage and add it's to the message
+         * Parse raw chat message using MiniMessage and add it's to the message.<br>
          * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
          * @param onlyConsole if true, message will be sent only to console
@@ -103,7 +107,7 @@ public class SendableMessage implements Sendable {
         }
 
         /**
-         * Parse raw chat message using MiniMessage and add it's to the message
+         * Parse raw chat message using MiniMessage and add it's to the message.<br>
          * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
          * @param messages messages to send
@@ -115,7 +119,7 @@ public class SendableMessage implements Sendable {
         }
 
         /**
-         * Adds actionbar message to the message
+         * Adds actionbar message to the message.
          *
          * @param message message to send
          * @return this builder
@@ -127,7 +131,7 @@ public class SendableMessage implements Sendable {
         }
 
         /**
-         * Parse raw actionbar message using MiniMessage and add it's to the message
+         * Parse raw actionbar message using MiniMessage and add it's to the message.<br>
          * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
          * @param message message to send
@@ -149,13 +153,13 @@ public class SendableMessage implements Sendable {
          * @return this builder
          */
         @Contract("_, _, _, _, _ -> this")
-        public Builder title(RawComponent title, RawComponent subtitle, int fadeIn, int stay, int fadeOut) {
+        public Builder title(@NotNull RawComponent title, @NotNull RawComponent subtitle, int fadeIn, int stay, int fadeOut) {
             this.holders.add(new TitleHolder(title, subtitle, fadeIn, stay, fadeOut));
             return this;
         }
 
         /**
-         * Parse raw title message using MiniMessage and add it's to the message
+         * Parse raw title message using MiniMessage and add it's to the message.<br>
          * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
          * @param title    title to send
@@ -166,12 +170,12 @@ public class SendableMessage implements Sendable {
          * @return this builder
          */
         @Contract("_, _, _, _, _ -> this")
-        public Builder title(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+        public Builder title(@NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
             return this.title(MiniComponent.ofLegacy(title), MiniComponent.ofLegacy(subtitle), fadeIn, stay, fadeOut);
         }
 
         /**
-         * Adds bossbar message to the message
+         * Adds bossbar message to the message.
          *
          * @param name      bossbar name
          * @param percent   bossbar percent
@@ -188,7 +192,7 @@ public class SendableMessage implements Sendable {
         }
 
         /**
-         * Parse raw bossbar message using MiniMessage and add it's to the message
+         * Parse raw bossbar message using MiniMessage and add it's to the message.<br>
          * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
          * @param name      bossbar name
@@ -205,7 +209,7 @@ public class SendableMessage implements Sendable {
         }
 
         /**
-         * Adds sound to the message
+         * Adds sound to the message.
          *
          * @param key             sound to play
          * @param volume          sound volume
@@ -220,7 +224,7 @@ public class SendableMessage implements Sendable {
         }
 
         /**
-         * Adds sound to the message
+         * Adds sound to the message.
          *
          * @param key             sound to play
          * @param volume          sound volume
@@ -234,7 +238,7 @@ public class SendableMessage implements Sendable {
         }
 
         /**
-         * Adds sound to the message
+         * Adds sound to the message.
          *
          * @param key    sound to play
          * @param volume sound volume
@@ -247,7 +251,7 @@ public class SendableMessage implements Sendable {
         }
 
         /**
-         * Adds sound to the message
+         * Adds sound to the message.
          *
          * @param key    sound to play
          * @param volume sound volume
@@ -259,6 +263,11 @@ public class SendableMessage implements Sendable {
             return this.sound(Key.key(key), source, volume, pitch, false);
         }
 
+        /**
+         * Build message with all added components.
+         *
+         * @return built message
+         */
         @NotNull
         public SendableMessage build() {
             return new SendableMessage(this.holders);

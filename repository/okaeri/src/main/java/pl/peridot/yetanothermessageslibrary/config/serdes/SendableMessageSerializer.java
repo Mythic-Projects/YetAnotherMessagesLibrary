@@ -58,13 +58,13 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
         if (data.isValue()) {
             Object raw = data.getValueRaw();
             if (raw instanceof String || raw instanceof List<?>) {
-                return new SendableMessage(data.getValue(ChatHolder.class));
+                return SendableMessage.of(data.getValue(ChatHolder.class));
             }
         }
 
         List<SendableHolder> messageHolders = new ArrayList<>();
         HOLDER_TYPES.forEach((key, clazz) -> messageHolders.addAll(this.deserializeHolders(key, data, clazz)));
-        return new SendableMessage(messageHolders);
+        return SendableMessage.of(messageHolders);
     }
 
     private <T extends SendableHolder> List<T> deserializeHolders(String key, DeserializationData data, Class<? extends T> type) {
