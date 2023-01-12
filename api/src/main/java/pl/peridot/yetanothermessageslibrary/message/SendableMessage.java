@@ -185,9 +185,9 @@ public class SendableMessage implements Sendable {
          * @param scheduler to remove bossbar after specific time (if null bossbar won't be removed)
          * @return this builder
          */
-        @Contract("_, _, _, _, _, _ -> this")
-        public Builder bossBar(@NotNull RawComponent name, int percent, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, int stay, @Nullable SchedulerWrapper scheduler) {
-            this.holders.add(new BossBarHolder(name, percent, color, overlay, stay, scheduler));
+        @Contract("_, _, _, _, _, _, _ -> this")
+        public Builder bossBar(@NotNull RawComponent name, int percent, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
+            this.holders.add(new BossBarHolder(name, percent, color, overlay, flags, stay, scheduler));
             return this;
         }
 
@@ -203,9 +203,9 @@ public class SendableMessage implements Sendable {
          * @param scheduler to remove bossbar after specific time (if null bossbar won't be removed)
          * @return this builder
          */
-        @Contract("_, _, _, _, _, _ -> this")
-        public Builder bossBar(@NotNull String name, int percent, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, int stay, @Nullable SchedulerWrapper scheduler) {
-            return this.bossBar(MiniComponent.ofLegacy(name), percent, color, overlay, stay, scheduler);
+        @Contract("_, _, _, _, _, _, _ -> this")
+        public Builder bossBar(@NotNull String name, int percent, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
+            return this.bossBar(MiniComponent.ofLegacy(name), percent, color, overlay, flags, stay, scheduler);
         }
 
         /**

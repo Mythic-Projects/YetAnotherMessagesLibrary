@@ -4,6 +4,9 @@ import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
 import eu.okaeri.configs.serdes.SerializationData;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import net.kyori.adventure.bossbar.BossBar;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.BossBarHolder;
 import pl.peridot.yetanothermessageslibrary.util.SchedulerWrapper;
@@ -28,6 +31,10 @@ public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> 
         data.add("color", holder.getColor());
         data.add("overlay", holder.getOverlay());
 
+        if (!holder.getFlags().isEmpty()) {
+            data.addCollection("flags", holder.getFlags(), BossBar.Flag.class);
+        }
+
         if (holder.getProgress() >= 0) {
             data.add("progress", holder.getProgress());
         }
@@ -43,9 +50,10 @@ public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> 
         float progress = data.containsKey("progress") ? data.get("progress", float.class) : 1;
         BossBar.Color color = data.get("color", BossBar.Color.class);
         BossBar.Overlay overlay = data.get("overlay", BossBar.Overlay.class);
+        Collection<BossBar.Flag> flags = data.containsKey("flags") ? data.getAsList("flags", BossBar.Flag.class) : new HashSet<>();
         int stay = data.containsKey("stay") ? data.get("stay", int.class) : -1;
 
-        return new BossBarHolder(name, progress, color, overlay, stay, this.schedulerWrapper);
+        return new BossBarHolder(name, progress, color, overlay, flags, stay, this.schedulerWrapper);
     }
 
 }
