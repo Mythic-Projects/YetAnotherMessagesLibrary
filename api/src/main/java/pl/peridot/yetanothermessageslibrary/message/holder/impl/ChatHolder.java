@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.List;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
+import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
+import pl.peridot.yetanothermessageslibrary.message.SendableMessage;
 import pl.peridot.yetanothermessageslibrary.message.holder.SendableHolder;
 import pl.peridot.yetanothermessageslibrary.replace.ComponentReplacer;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
@@ -37,6 +39,14 @@ public class ChatHolder extends SendableHolder {
     @Override
     public void send(@NotNull Audience audience, @NotNull Replaceable... replacements) {
         this.messages.forEach(message -> audience.sendMessage(ComponentReplacer.replace(message, replacements)));
+    }
+
+    public static @NotNull SendableMessage message(@NotNull RawComponent... messages) {
+        return SendableMessage.of(new ChatHolder(false, messages));
+    }
+
+    public static @NotNull SendableMessage message(@NotNull String messages) {
+        return SendableMessage.of(new ChatHolder(false, MiniComponent.of(messages)));
     }
 
 }

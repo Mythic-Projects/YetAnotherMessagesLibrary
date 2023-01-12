@@ -5,6 +5,8 @@ import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
 import net.kyori.adventure.util.Ticks;
 import org.jetbrains.annotations.NotNull;
+import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
+import pl.peridot.yetanothermessageslibrary.message.SendableMessage;
 import pl.peridot.yetanothermessageslibrary.message.holder.SendableHolder;
 import pl.peridot.yetanothermessageslibrary.replace.ComponentReplacer;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
@@ -49,6 +51,14 @@ public class TitleHolder extends SendableHolder {
     @Override
     public void send(@NotNull Audience audience, @NotNull Replaceable... replacements) {
         audience.showTitle(this.prepareTitle(replacements));
+    }
+
+    public static @NotNull SendableMessage message(@NotNull RawComponent title, @NotNull RawComponent subTitle, int fadeIn, int stay, int fadeOut) {
+        return SendableMessage.of(new TitleHolder(title, subTitle, fadeIn, stay, fadeOut));
+    }
+
+    public static @NotNull SendableMessage message(@NotNull String title, @NotNull String subTitle, int fadeIn, int stay, int fadeOut) {
+        return SendableMessage.of(new TitleHolder(MiniComponent.of(title), MiniComponent.of(subTitle), fadeIn, stay, fadeOut));
     }
 
 }

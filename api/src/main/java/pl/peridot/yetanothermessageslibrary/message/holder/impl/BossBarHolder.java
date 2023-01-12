@@ -4,6 +4,8 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
+import pl.peridot.yetanothermessageslibrary.message.SendableMessage;
 import pl.peridot.yetanothermessageslibrary.message.holder.SendableHolder;
 import pl.peridot.yetanothermessageslibrary.replace.ComponentReplacer;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
@@ -60,6 +62,14 @@ public class BossBarHolder extends SendableHolder {
         if (this.scheduler != null && this.getStay() > 0) {
             this.scheduler.runTaskLater(() -> audience.hideBossBar(bossBar), this.getStay(), false);
         }
+    }
+
+    public static @NotNull SendableMessage message(@NotNull RawComponent name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, int stay, @Nullable SchedulerWrapper scheduler) {
+        return SendableMessage.of(new BossBarHolder(name, progress, color, overlay, stay, scheduler));
+    }
+
+    public static @NotNull SendableMessage message(@NotNull String name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, int stay, @Nullable SchedulerWrapper scheduler) {
+        return SendableMessage.of(new BossBarHolder(MiniComponent.of(name), progress, color, overlay, stay, scheduler));
     }
 
 }
