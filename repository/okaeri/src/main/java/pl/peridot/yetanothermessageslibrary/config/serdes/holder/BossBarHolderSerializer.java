@@ -4,13 +4,11 @@ import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
 import eu.okaeri.configs.serdes.SerializationData;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 import net.kyori.adventure.bossbar.BossBar;
+import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.BossBarHolder;
 import pl.peridot.yetanothermessageslibrary.util.SchedulerWrapper;
-import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 
 public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> {
 
@@ -46,14 +44,13 @@ public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> 
 
     @Override
     public BossBarHolder deserialize(DeserializationData data, GenericsDeclaration generics) {
-        RawComponent name = data.get("name", RawComponent.class);
-        float progress = data.containsKey("progress") ? data.get("progress", float.class) : 1;
-        BossBar.Color color = data.get("color", BossBar.Color.class);
-        BossBar.Overlay overlay = data.get("overlay", BossBar.Overlay.class);
-        Collection<BossBar.Flag> flags = data.containsKey("flags") ? data.getAsList("flags", BossBar.Flag.class) : new HashSet<>();
-        int stay = data.containsKey("stay") ? data.get("stay", int.class) : -1;
-
-        return new BossBarHolder(name, progress, color, overlay, flags, stay, this.schedulerWrapper);
+        return BossBarHolder.builder(data.get("name", RawComponent.class))
+                .progress(data.containsKey("progress") ? data.get("progress", float.class) : 1)
+                .color(data.containsKey("color") ? data.get("color", BossBar.Color.class) : BossBar.Color.PINK)
+                .overlay(data.containsKey("overlay") ? data.get("overlay", BossBar.Overlay.class) : BossBar.Overlay.PROGRESS)
+                .addFlags(data.containsKey("flags") ? data.getAsList("flags", BossBar.Flag.class) : new HashSet<>())
+                .stay(this.schedulerWrapper, data.containsKey("stay") ? data.get("stay", int.class) : -1)
+                .build();
     }
 
 }

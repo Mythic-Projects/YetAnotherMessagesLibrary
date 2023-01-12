@@ -133,6 +133,12 @@ public class BossBarHolder extends SendableHolder {
             return this;
         }
 
+        @Contract("_ -> this")
+        public Builder addFlags(@NotNull Collection<BossBar.Flag> flags) {
+            this.flags.addAll(flags);
+            return this;
+        }
+
         @Contract("_, _ -> this")
         public Builder stay(@NotNull SchedulerWrapper scheduler, int stay) {
             this.scheduler = scheduler;

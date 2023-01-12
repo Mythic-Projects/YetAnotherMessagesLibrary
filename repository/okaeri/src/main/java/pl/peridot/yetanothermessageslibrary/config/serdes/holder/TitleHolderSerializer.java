@@ -7,8 +7,8 @@ import eu.okaeri.configs.serdes.SerializationData;
 import java.time.Duration;
 import net.kyori.adventure.title.Title.Times;
 import net.kyori.adventure.util.Ticks;
-import pl.peridot.yetanothermessageslibrary.message.holder.impl.TitleHolder;
 import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
+import pl.peridot.yetanothermessageslibrary.message.holder.impl.TitleHolder;
 
 public class TitleHolderSerializer implements ObjectSerializer<TitleHolder> {
 
@@ -46,34 +46,34 @@ public class TitleHolderSerializer implements ObjectSerializer<TitleHolder> {
 
     @Override
     public TitleHolder deserialize(DeserializationData data, GenericsDeclaration generics) {
-        RawComponent title = RawComponent.EMPTY;
-        RawComponent subtitle = RawComponent.EMPTY;
+        TitleHolder.Builder builder = TitleHolder.builder();
 
         if (data.containsKey("title")) {
-            title = data.get("title", RawComponent.class);
+            builder.title(data.get("title", RawComponent.class));
         }
 
         if (data.containsKey("subtitle")) {
-            subtitle = data.get("subtitle", RawComponent.class);
+            builder.subTitle(data.get("subtitle", RawComponent.class));
         }
 
         int fadeIn = 0;
-        int stay = 0;
-        int fadeOut = 0;
-
         if (data.containsKey("fade-in")) {
-            fadeIn = data.get("fade-in", Integer.class);
+            fadeIn = data.get("fade-in", int.class);
         }
 
+        int stay = 0;
         if (data.containsKey("stay")) {
-            stay = data.get("stay", Integer.class);
+            stay = data.get("stay", int.class);
         }
 
+        int fadeOut = 0;
         if (data.containsKey("fade-out")) {
-            fadeOut = data.get("fade-out", Integer.class);
+            fadeOut = data.get("fade-out", int.class);
         }
 
-        return new TitleHolder(title, subtitle, fadeIn, stay, fadeOut);
+        builder.times(fadeIn, stay, fadeOut);
+
+        return builder.build();
     }
 
     public static int ticksFromDuration(Duration duration) {
