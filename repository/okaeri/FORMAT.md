@@ -45,23 +45,24 @@ example:
 - Example Chat 1
 - Example Chat 2
   
-# or if we want to send it to console only
+# or if we want to send message only to console
 example:
   console: true
   message: Example Console Only
 
-# or if we want send some messages to console only and some to everyone
+# or if we want to send some message to console only and other to everyone
 example:
 - Example Chat
 - console: true
   message: Example Console Only
 ```
-This mean the whole serializer will probably be compatible with old formats that actually only uses Strings and Lists of Strings.
+
+This mean old formats that uses Strings and List of Strings will be compatible and serialized properly.
 
 ---
 
 ### One and Multiple holders 
-When we only have 1 holder of specific type everything would be serialized as object:
+When we only have 1 holder of specific type everything will be serialized as object:
 ```yaml
 example:
   bossbar:
@@ -72,7 +73,7 @@ example:
     stay: 20
 ```
 
-But when we have multiple holders of specific type everything would be serialized as list of objects:
+When we have multiple holders of specific type everything will be serialized as list of objects:
 ```yaml
 example:
   bossbar:
@@ -88,7 +89,7 @@ example:
     stay: 20
 ```
 
-Every holder could be represented both as object and list of objects (Yeah even Action Bar & Title)
+<u>Every</u> holder type can be represented both as object and list of objects (Yeah even Action Bar & Title).
 
 ---
-This whole section is W.I.P. but I think its good representation of what this serializer can do.
+This whole file is W.I.P. but I think its good representation of what this serializer can do... 
