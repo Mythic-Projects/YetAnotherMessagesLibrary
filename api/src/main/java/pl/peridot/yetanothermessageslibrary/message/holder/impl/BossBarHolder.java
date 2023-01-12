@@ -140,7 +140,7 @@ public class BossBarHolder extends SendableHolder {
         }
 
         @Contract("_, _ -> this")
-        public Builder stay(@NotNull SchedulerWrapper scheduler, int stay) {
+        public Builder stay(@Nullable SchedulerWrapper scheduler, int stay) {
             this.scheduler = scheduler;
             this.stay = stay;
             return this;

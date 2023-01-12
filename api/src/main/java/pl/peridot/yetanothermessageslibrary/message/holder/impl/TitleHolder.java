@@ -25,10 +25,6 @@ public class TitleHolder extends SendableHolder {
         this.times = times;
     }
 
-    public TitleHolder(@NotNull RawComponent title, @NotNull RawComponent subTitle, int fadeIn, int stay, int fadeOut) {
-        this(title, subTitle, Times.times(Ticks.duration(fadeIn), Ticks.duration(stay), Ticks.duration(fadeOut)));
-    }
-
     public @NotNull RawComponent getTitle() {
         return this.title;
     }
@@ -55,11 +51,11 @@ public class TitleHolder extends SendableHolder {
     }
 
     public static @NotNull SendableMessage message(@NotNull RawComponent title, @NotNull RawComponent subTitle, int fadeIn, int stay, int fadeOut) {
-        return SendableMessage.of(new TitleHolder(title, subTitle, fadeIn, stay, fadeOut));
+        return SendableMessage.of(new TitleHolder(title, subTitle, TitleHolder.times(fadeIn, stay, fadeOut)));
     }
 
     public static @NotNull SendableMessage message(@NotNull String title, @NotNull String subTitle, int fadeIn, int stay, int fadeOut) {
-        return SendableMessage.of(new TitleHolder(MiniComponent.of(title), MiniComponent.of(subTitle), fadeIn, stay, fadeOut));
+        return TitleHolder.message(MiniComponent.ofLegacy(title), MiniComponent.ofLegacy(subTitle), fadeIn, stay, fadeOut);
     }
 
     public static @NotNull Builder builder() {
@@ -70,7 +66,7 @@ public class TitleHolder extends SendableHolder {
 
         private RawComponent title = RawComponent.EMPTY;
         private RawComponent subTitle = RawComponent.EMPTY;
-        private Times times = Times.times(Ticks.duration(10), Ticks.duration(70), Ticks.duration(20));
+        private Times times = TitleHolder.times(10, 70, 20);
 
         private Builder() {
         }
@@ -112,6 +108,10 @@ public class TitleHolder extends SendableHolder {
             return new TitleHolder(this.title, this.subTitle, this.times);
         }
 
+    }
+
+    public static Times times(int fadeIn, int stay, int fadeOut) {
+        return Times.times(Ticks.duration(fadeIn), Ticks.duration(stay), Ticks.duration(fadeOut));
     }
 
 }

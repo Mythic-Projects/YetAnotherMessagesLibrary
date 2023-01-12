@@ -1,7 +1,6 @@
 package pl.peridot.yetanothermessageslibrary.message.holder.impl;
 
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.sound.SoundStop;
 import org.jetbrains.annotations.NotNull;
@@ -16,10 +15,6 @@ public class SoundHolder extends SendableHolder {
     public SoundHolder(@NotNull Sound sound, boolean stopOtherSounds) {
         this.sound = sound;
         this.stopOtherSounds = stopOtherSounds;
-    }
-
-    public SoundHolder(@NotNull Key key, @NotNull Sound.Source source, float volume, float pitch, boolean stopOtherSounds) {
-        this(Sound.sound(key, source, volume, pitch), stopOtherSounds);
     }
 
     public @NotNull Sound getSound() {

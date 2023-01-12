@@ -164,7 +164,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _, _, _, _ -> this")
         public Builder title(@NotNull RawComponent title, @NotNull RawComponent subtitle, int fadeIn, int stay, int fadeOut) {
-            return this.addHolders(new TitleHolder(title, subtitle, fadeIn, stay, fadeOut));
+            return this.addHolders(new TitleHolder(title, subtitle, TitleHolder.times(fadeIn, stay, fadeOut)));
         }
 
         /**
@@ -196,7 +196,13 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _, _, _, _, _, _ -> this")
         public Builder bossBar(@NotNull RawComponent name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
-            return this.addHolders(new BossBarHolder(name, progress, color, overlay, flags, stay, scheduler));
+            return this.addHolders(BossBarHolder.builder(name)
+                    .progress(progress)
+                    .color(color)
+                    .overlay(overlay)
+                    .addFlags(flags)
+                    .stay(scheduler, stay)
+                    .build());
         }
 
         /**
@@ -227,7 +233,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _, _, _, _ -> this")
         public Builder sound(@NotNull Key key, @NotNull Sound.Source source, float volume, float pitch, boolean stopOtherSounds) {
-            return this.addHolders(new SoundHolder(key, source, volume, pitch, stopOtherSounds));
+            return this.addHolders(new SoundHolder(Sound.sound(key, source, volume, pitch), stopOtherSounds));
         }
 
         /**
