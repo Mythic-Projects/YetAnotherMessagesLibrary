@@ -3,11 +3,11 @@ package pl.peridot.yetanothermessageslibrary.config.serdes;
 import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
-import eu.okaeri.configs.serdes.SerdesContext;
 import eu.okaeri.configs.serdes.SerializationData;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
+import java.util.Map;
 import pl.peridot.yetanothermessageslibrary.message.SendableMessage;
 import pl.peridot.yetanothermessageslibrary.message.holder.SendableHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.ActionBarHolder;
@@ -17,6 +17,14 @@ import pl.peridot.yetanothermessageslibrary.message.holder.impl.SoundHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.TitleHolder;
 
 public class SendableMessageSerializer implements ObjectSerializer<SendableMessage> {
+
+    private static final Map<String, Class<? extends SendableHolder>> HOLDER_TYPES = new HashMap<String, Class<? extends SendableHolder>>() {{
+        this.put("chat", ChatHolder.class);
+        this.put("actionbar", ActionBarHolder.class);
+        this.put("title", TitleHolder.class);
+        this.put("bossbar", BossBarHolder.class);
+        this.put("sound", SoundHolder.class);
+    }};
 
     @Override
     public boolean supports(Class<? super SendableMessage> type) {
@@ -34,14 +42,10 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
             }
         }
 
-        this.serializeHolders("chat", message.getHolders(ChatHolder.class), data, ChatHolder.class);
-        this.serializeHolders("actionbar", message.getHolders(ActionBarHolder.class), data, ActionBarHolder.class);
-        this.serializeHolders("title", message.getHolders(TitleHolder.class), data, TitleHolder.class);
-        this.serializeHolders("bossbar", message.getHolders(BossBarHolder.class), data, BossBarHolder.class);
-        this.serializeHolders("sound", message.getHolders(SoundHolder.class), data, SoundHolder.class);
+        HOLDER_TYPES.forEach((key, clazz) -> this.serializeHolders(key, message.getHolders(clazz), data, clazz));
     }
 
-    private <T extends SendableHolder> void serializeHolders(String key, List<T> holders, SerializationData data, Class<? extends T> type) {
+    private <T extends SendableHolder> void serializeHolders(String key, List<? extends T> holders, SerializationData data, Class<? extends T> type) {
         if (holders.size() == 1) {
             data.add(key, holders.get(0), type);
         } else if (holders.size() > 1) {
@@ -59,13 +63,7 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
         }
 
         List<SendableHolder> messageHolders = new ArrayList<>();
-
-        messageHolders.addAll(this.deserializeHolders("chat", data, ChatHolder.class));
-        messageHolders.addAll(this.deserializeHolders("actionbar", data, ActionBarHolder.class));
-        messageHolders.addAll(this.deserializeHolders("title", data, TitleHolder.class));
-        messageHolders.addAll(this.deserializeHolders("bossbar", data, BossBarHolder.class));
-        messageHolders.addAll(this.deserializeHolders("sound", data, SoundHolder.class));
-
+        HOLDER_TYPES.forEach((key, clazz) -> messageHolders.addAll(this.deserializeHolders(key, data, clazz)));
         return new SendableMessage(messageHolders);
     }
 
