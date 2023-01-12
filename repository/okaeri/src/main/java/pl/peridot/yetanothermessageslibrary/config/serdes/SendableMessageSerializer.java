@@ -5,9 +5,9 @@ import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
 import eu.okaeri.configs.serdes.SerializationData;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import pl.peridot.yetanothermessageslibrary.message.SendableMessage;
 import pl.peridot.yetanothermessageslibrary.message.holder.SendableHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.ActionBarHolder;
@@ -18,7 +18,7 @@ import pl.peridot.yetanothermessageslibrary.message.holder.impl.TitleHolder;
 
 public class SendableMessageSerializer implements ObjectSerializer<SendableMessage> {
 
-    private static final Map<String, Class<? extends SendableHolder>> HOLDER_TYPES = new TreeMap<String, Class<? extends SendableHolder>>() {{
+    private static final Map<String, Class<? extends SendableHolder>> HOLDER_TYPES = new LinkedHashMap<String, Class<? extends SendableHolder>>() {{
         this.put("chat", ChatHolder.class);
         this.put("actionbar", ActionBarHolder.class);
         this.put("title", TitleHolder.class);
