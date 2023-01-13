@@ -1,11 +1,13 @@
 package pl.peridot.yetanothermessageslibrary.message.holder.impl;
 
+import java.util.Locale;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
 import net.kyori.adventure.util.Ticks;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
 import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 import pl.peridot.yetanothermessageslibrary.message.SendableMessage;
@@ -37,7 +39,7 @@ public class TitleHolder extends SendableHolder {
         return this.times;
     }
 
-    public @NotNull Title prepareTitle(@NotNull Replaceable... replacements) {
+    public @NotNull Title prepareTitle(@Nullable Locale locale, @NotNull Replaceable... replacements) {
         return Title.title(
                 ComponentReplacer.replace(this.title, replacements),
                 ComponentReplacer.replace(this.subTitle, replacements),
@@ -46,8 +48,8 @@ public class TitleHolder extends SendableHolder {
     }
 
     @Override
-    public void send(@NotNull Audience audience, @NotNull Replaceable... replacements) {
-        audience.showTitle(this.prepareTitle(replacements));
+    public void send(@Nullable Locale locale, @NotNull Audience audience, @NotNull Replaceable... replacements) {
+        audience.showTitle(this.prepareTitle(locale, replacements));
     }
 
     public static @NotNull SendableMessage message(@NotNull RawComponent title, @NotNull RawComponent subTitle, int fadeIn, int stay, int fadeOut) {

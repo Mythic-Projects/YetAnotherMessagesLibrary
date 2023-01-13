@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
 import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 import pl.peridot.yetanothermessageslibrary.message.SendableMessage;
@@ -37,8 +39,8 @@ public class ChatHolder extends SendableHolder {
     }
 
     @Override
-    public void send(@NotNull Audience audience, @NotNull Replaceable... replacements) {
-        this.messages.forEach(message -> audience.sendMessage(ComponentReplacer.replace(message, replacements)));
+    public void send(@Nullable Locale locale, @NotNull Audience audience, @NotNull Replaceable... replacements) {
+        this.messages.forEach(message -> audience.sendMessage(ComponentReplacer.replace(locale, message, replacements)));
     }
 
     public static @NotNull SendableMessage message(@NotNull RawComponent... messages) {

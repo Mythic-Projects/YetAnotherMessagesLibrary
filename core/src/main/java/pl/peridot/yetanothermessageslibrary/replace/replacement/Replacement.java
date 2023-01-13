@@ -1,5 +1,6 @@
 package pl.peridot.yetanothermessageslibrary.replace.replacement;
 
+import java.util.Locale;
 import java.util.function.Supplier;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -25,13 +26,13 @@ public abstract class Replacement implements Replaceable {
     public abstract @NotNull String getTo();
 
     @Contract(pure = true)
-    public @NotNull String replace(@NotNull String text) {
+    public @NotNull String replace(@Nullable Locale locale, @NotNull String text) {
         return text.replace(this.getFrom(), this.getTo());
     }
 
     @Contract(pure = true)
     @Override
-    public @NotNull Component replace(@NotNull Component text) {
+    public @NotNull Component replace(@Nullable Locale locale, @NotNull Component text) {
         return text.replaceText(TextReplacementConfig.builder()
                 .matchLiteral(this.getFrom())
                 .replacement(AdventureHelper.legacyToComponent(this.getTo()))

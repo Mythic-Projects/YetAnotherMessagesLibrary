@@ -2,6 +2,7 @@ package pl.peridot.yetanothermessageslibrary.message.holder.impl;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
@@ -61,13 +62,13 @@ public class BossBarHolder extends SendableHolder {
         return this.stay;
     }
 
-    public @NotNull BossBar prepareBossBar(@NotNull Replaceable... replacements) {
+    public @NotNull BossBar prepareBossBar(@Nullable Locale locale, @NotNull Replaceable... replacements) {
         return BossBar.bossBar(ComponentReplacer.replace(this.name, replacements), this.progress, this.color, this.overlay);
     }
 
     @Override
-    public void send(@NotNull Audience audience, @NotNull Replaceable... replacements) {
-        BossBar bossBar = this.prepareBossBar(replacements);
+    public void send(@Nullable Locale locale, @NotNull Audience audience, @NotNull Replaceable... replacements) {
+        BossBar bossBar = this.prepareBossBar(locale, replacements);
         audience.showBossBar(bossBar);
         if (this.scheduler != null && this.getStay() > 0) {
             this.scheduler.runTaskLater(() -> audience.hideBossBar(bossBar), this.getStay(), false);

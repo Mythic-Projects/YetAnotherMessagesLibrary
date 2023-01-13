@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
@@ -42,12 +43,12 @@ public class SendableMessage implements Sendable {
                 .collect(Collectors.toList());
     }
 
-    public void send(@NotNull Audience audience, @NotNull Replaceable... replacements) {
-        this.holders.forEach(holder -> holder.send(audience, replacements));
+    public void send(@Nullable Locale locale, @NotNull Audience audience, @NotNull Replaceable... replacements) {
+        this.holders.forEach(holder -> holder.send(locale, audience, replacements));
     }
 
-    public void send(@NotNull Audience audience, boolean console, @NotNull Replaceable... replacements) {
-        this.holders.forEach(holder -> holder.send(audience, console, replacements));
+    public void send(@Nullable Locale locale, @NotNull Audience audience, boolean console, @NotNull Replaceable... replacements) {
+        this.holders.forEach(holder -> holder.send(locale, audience, console, replacements));
     }
 
     public static @NotNull SendableMessage of(@NotNull Collection<SendableHolder> holders) {

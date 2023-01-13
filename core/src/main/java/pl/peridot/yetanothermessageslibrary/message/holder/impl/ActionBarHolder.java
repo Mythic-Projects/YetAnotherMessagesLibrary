@@ -1,7 +1,9 @@
 package pl.peridot.yetanothermessageslibrary.message.holder.impl;
 
+import java.util.Locale;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
 import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 import pl.peridot.yetanothermessageslibrary.message.SendableMessage;
@@ -22,7 +24,7 @@ public class ActionBarHolder extends SendableHolder {
     }
 
     @Override
-    public void send(@NotNull Audience audience, @NotNull Replaceable... replacements) {
+    public void send(@Nullable Locale locale, @NotNull Audience audience, @NotNull Replaceable... replacements) {
         audience.sendActionBar(ComponentReplacer.replace(this.message, replacements));
     }
 

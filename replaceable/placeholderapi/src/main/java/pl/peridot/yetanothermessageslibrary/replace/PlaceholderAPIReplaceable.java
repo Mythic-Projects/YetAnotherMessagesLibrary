@@ -1,8 +1,8 @@
 package pl.peridot.yetanothermessageslibrary.replace;
 
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 import java.util.regex.Pattern;
-import javax.swing.JComponent;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -22,12 +22,12 @@ public class PlaceholderAPIReplaceable implements Replaceable {
     }
 
     @Override
-    public @NotNull String replace(@NotNull String text) {
+    public @NotNull String replace(@Nullable Locale locale, @NotNull String text) {
         return this.replacePlaceholder(text);
     }
 
     @Override
-    public @NotNull Component replace(@NotNull Component text) {
+    public @NotNull Component replace(@Nullable Locale locale, @NotNull Component text) {
         TextReplacementConfig replacement = TextReplacementConfig.builder()
                 .match(PLACEHOLDER_PATTERN)
                 .replacement((result, input) -> AdventureHelper.legacyToComponent(this.replacePlaceholder(result.group())))
