@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.adventure.AudienceSupplier;
-import pl.peridot.yetanothermessageslibrary.lang.LocaleProvider;
+import pl.peridot.yetanothermessageslibrary.locale.LocaleProvider;
 import pl.peridot.yetanothermessageslibrary.message.Sendable;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
 import pl.peridot.yetanothermessageslibrary.replace.StringReplacer;
