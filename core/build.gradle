@@ -1,3 +1,5 @@
 dependencies {
-    api project(':api')
+    compileOnlyApi adventure.api
+    compileOnlyApi adventure.minimessage
+    compileOnlyApi adventure.serializer.legacy
 }

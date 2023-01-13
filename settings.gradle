@@ -1,6 +1,5 @@
 rootProject.name = 'YetAnotherMessagesLibrary'
 
-include 'api'
 include 'core'
 
 // Platforms

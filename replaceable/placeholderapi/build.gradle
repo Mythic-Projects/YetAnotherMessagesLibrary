@@ -1,6 +1,6 @@
 dependencies {
-    compileOnlyApi project(':api')
-    compileOnlyApi ("me.clip:placeholderapi:2.10.9")
+    compileOnlyApi project(':core')
+    compileOnlyApi "me.clip:placeholderapi:2.10.9"
 
     shadow libs.spigot
 }

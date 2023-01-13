@@ -1,8 +1,8 @@
 YetAnotherMessagesLibrary (YAML)
 ===========
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Version](https://repo.titanvale.net/api/badge/latest/releases/pl/peridot/yetanothermessageslibrary/api?color=42c611&name=Releases&prefix=v)
-![Version](https://repo.titanvale.net/api/badge/latest/snapshots/pl/peridot/yetanothermessageslibrary/api?color=d45f48&name=Snapshots&prefix=v)
+![Version](https://repo.titanvale.net/api/badge/latest/releases/pl/peridot/yetanothermessageslibrary/core?color=42c611&name=Releases&prefix=v)
+![Version](https://repo.titanvale.net/api/badge/latest/snapshots/pl/peridot/yetanothermessageslibrary/core?color=d45f48&name=Snapshots&prefix=v)
 ![GitHub repo size](https://img.shields.io/github/repo-size/P3ridot/YetAnotherMessagesLibrary)
 
 Lightweight and modular *Minecraft Messages Library* based on [adventure](https://github.com/KyoriPowered/adventure).

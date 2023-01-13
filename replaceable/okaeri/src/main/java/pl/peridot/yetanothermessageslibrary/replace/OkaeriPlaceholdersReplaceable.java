@@ -20,6 +20,7 @@ public class OkaeriPlaceholdersReplaceable implements Replaceable {
     public OkaeriPlaceholdersReplaceable(@NotNull Placeholders placeholders, @NotNull Consumer<PlaceholderContext> applyContexts) {
         this.placeholders = placeholders;
         this.applyContexts = applyContexts;
+
     }
 
     @Override

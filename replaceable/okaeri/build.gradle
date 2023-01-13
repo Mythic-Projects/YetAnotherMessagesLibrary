@@ -1,4 +1,4 @@
 dependencies {
-    compileOnlyApi project(':api')
+    compileOnlyApi project(':core')
     compileOnlyApi okaeri.placeholders
 }
