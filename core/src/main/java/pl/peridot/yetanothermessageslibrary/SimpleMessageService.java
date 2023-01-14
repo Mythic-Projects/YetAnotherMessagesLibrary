@@ -1,6 +1,7 @@
 package pl.peridot.yetanothermessageslibrary;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -25,6 +26,10 @@ public class SimpleMessageService<R, C extends MessageRepository> implements Mes
         this.defaultLocale = defaultLocale;
         this.messageRepositories = messageRepositories;
         this.localeProvider = localeProvider;
+    }
+
+    protected SimpleMessageService(@NotNull AudienceSupplier<R> audienceSupplier, @NotNull Locale defaultLocale, @NotNull C messageRepository) {
+        this(audienceSupplier, defaultLocale, StaticLocaleProvider.of(defaultLocale), Collections.singletonMap(defaultLocale, messageRepository));
     }
 
     @Override
