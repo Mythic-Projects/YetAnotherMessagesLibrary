@@ -37,25 +37,22 @@ public class SimpleMessageService<R, C extends MessageRepository> implements Mes
         return this.localeProvider;
     }
 
-    private @NotNull Locale getLocale(@Nullable R receiver) {
-        Locale locale = this.localeProvider.getLocale(receiver);
-        if (locale == null) {
-            return this.defaultLocale;
-        }
-        return locale;
-    }
-
     @Override
     public @NotNull C getMessageRepository(@Nullable R receiver) {
-        Locale locale = this.getLocale(receiver);
+        Locale locale = this.localeProvider.getLocale(receiver);
 
         C messageRepository = this.messageRepositories.get(locale);
+        if (messageRepository == null && locale != null) {
+            // If we can't find message repository for language wariant (for e.g. en_GB) we will try to find message repository for language (for e.g. en)
+            messageRepository = this.messageRepositories.get(Locale.forLanguageTag(locale.getLanguage()));
+        }
+
         if (messageRepository == null) {
             messageRepository = this.messageRepositories.get(this.defaultLocale);
         }
 
         if (messageRepository == null) {
-            throw new RuntimeException("No message repository for locale " + locale);
+            throw new RuntimeException("No message repository found for locale " + locale);
         }
 
         return messageRepository;
