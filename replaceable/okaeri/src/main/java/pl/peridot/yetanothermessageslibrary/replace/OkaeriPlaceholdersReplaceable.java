@@ -4,7 +4,7 @@ import eu.okaeri.placeholders.Placeholders;
 import eu.okaeri.placeholders.context.PlaceholderContext;
 import eu.okaeri.placeholders.message.CompiledMessage;
 import java.util.Locale;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -17,9 +17,9 @@ public class OkaeriPlaceholdersReplaceable implements Replaceable {
     private static final Pattern FIELD_PATTERN = Pattern.compile("\\{(?<content>[^}]+)\\}");
 
     private final Placeholders placeholders;
-    private final Consumer<PlaceholderContext> applyContexts;
+    private final Function<PlaceholderContext, PlaceholderContext> applyContexts;
 
-    public OkaeriPlaceholdersReplaceable(@NotNull Placeholders placeholders, @NotNull Consumer<PlaceholderContext> applyContexts) {
+    public OkaeriPlaceholdersReplaceable(@NotNull Placeholders placeholders, @NotNull Function<PlaceholderContext, PlaceholderContext> applyContexts) {
         this.placeholders = placeholders;
         this.applyContexts = applyContexts;
     }
@@ -42,11 +42,8 @@ public class OkaeriPlaceholdersReplaceable implements Replaceable {
         CompiledMessage compiled = locale != null
                 ? CompiledMessage.of(locale, text)
                 : CompiledMessage.of(text);
-
-        PlaceholderContext context = this.placeholders.contextOf(compiled);
-        this.applyContexts.accept(context);
-
-        return context.apply();
+        return this.applyContexts.apply(this.placeholders.contextOf(compiled))
+                .apply();
     }
 
 }
