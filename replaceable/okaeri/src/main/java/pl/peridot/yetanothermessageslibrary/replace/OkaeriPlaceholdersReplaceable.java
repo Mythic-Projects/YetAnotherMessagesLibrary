@@ -46,4 +46,8 @@ public class OkaeriPlaceholdersReplaceable implements Replaceable {
                 .apply();
     }
 
+    public static @NotNull OkaeriPlaceholdersReplaceable of(@NotNull Placeholders placeholders, @NotNull Function<PlaceholderContext, PlaceholderContext> applyContexts) {
+        return new OkaeriPlaceholdersReplaceable(placeholders, applyContexts);
+    }
+
 }

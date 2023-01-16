@@ -2,6 +2,7 @@ package pl.peridot.yetanothermessageslibrary.replace;
 
 import java.lang.ref.WeakReference;
 import java.util.Locale;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -41,6 +42,14 @@ public class PlaceholderAPIReplaceable implements Replaceable {
             return text;
         }
         return PlaceholderAPI.setPlaceholders(player, text);
+    }
+
+    public static @NotNull PlaceholderAPIReplaceable of(@Nullable Player player) {
+        return new PlaceholderAPIReplaceable(player);
+    }
+
+    public static @NotNull Function<Player, PlaceholderAPIReplaceable> factory() {
+        return PlaceholderAPIReplaceable::new;
     }
 
 }
