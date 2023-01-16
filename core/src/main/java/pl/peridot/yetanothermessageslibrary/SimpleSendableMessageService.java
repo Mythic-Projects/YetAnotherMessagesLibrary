@@ -68,12 +68,15 @@ public class SimpleSendableMessageService<R, C extends MessageRepository> implem
         return new Builder<>();
     }
 
-    private static class Builder<R, C extends MessageRepository> {
+    public static class Builder<R, C extends MessageRepository> {
 
         private AudienceSupplier<R> audienceSupplier;
         private Locale defaultLocale;
         private LocaleProvider<R> localeProvider = StaticLocaleProvider.of(null);
         private final Map<Locale, C> messageRepositories = new HashMap<>();
+
+        private Builder() {
+        }
 
         @Contract("_ -> this")
         public Builder<R, C> audienceSupplier(@NotNull AudienceSupplier<R> audienceSupplier) {
