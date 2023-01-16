@@ -48,7 +48,7 @@ public class PlaceholderAPIReplaceable implements Replaceable {
         return new PlaceholderAPIReplaceable(player);
     }
 
-    public static @NotNull Function<? extends Player, PlaceholderAPIReplaceable> factory() {
+    public static @NotNull Function<Player, PlaceholderAPIReplaceable> factory() {
         return PlaceholderAPIReplaceable::new;
     }
 
