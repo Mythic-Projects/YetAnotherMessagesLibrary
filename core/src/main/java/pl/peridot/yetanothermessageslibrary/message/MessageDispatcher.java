@@ -71,7 +71,7 @@ public class MessageDispatcher<R> {
         return this;
     }
 
-    public MessageDispatcher<R> receivers(@NotNull Collection<R> receivers) {
+    public MessageDispatcher<R> receivers(@NotNull Collection<? extends R> receivers) {
         this.receivers.addAll(receivers);
         return this;
     }
@@ -112,7 +112,7 @@ public class MessageDispatcher<R> {
         message.send(locale, audience, console, replaceables.toArray(new Replaceable[0]));
     }
 
-    public void sendTo(@NotNull Collection<R> receivers) {
+    public void sendTo(@NotNull Collection<? extends R> receivers) {
         receivers.forEach(this::sendTo);
     }
 
