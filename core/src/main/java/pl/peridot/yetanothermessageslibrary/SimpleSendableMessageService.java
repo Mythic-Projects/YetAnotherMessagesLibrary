@@ -9,6 +9,7 @@ import java.util.function.Function;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import pl.peridot.yetanothermessageslibrary.adventure.AudienceSupplier;
+import pl.peridot.yetanothermessageslibrary.locale.DefaultLocaleProvider;
 import pl.peridot.yetanothermessageslibrary.locale.LocaleProvider;
 import pl.peridot.yetanothermessageslibrary.locale.StaticLocaleProvider;
 import pl.peridot.yetanothermessageslibrary.util.Validate;
@@ -16,15 +17,13 @@ import pl.peridot.yetanothermessageslibrary.util.Validate;
 public class SimpleSendableMessageService<R, C extends MessageRepository> implements SendableMessageService<R, C> {
 
     private final AudienceSupplier<R> audienceSupplier;
-    private final Locale defaultLocale;
-    private final LocaleProvider<R> localeProvider;
+    private final DefaultLocaleProvider localeProvider;
     private final Map<Locale, C> messageRepositories;
 
-    protected SimpleSendableMessageService(@NotNull AudienceSupplier<R> audienceSupplier, Locale defaultLocale, @NotNull LocaleProvider<R> localeProvider, @NotNull Map<Locale, C> messageRepositories) {
+    protected SimpleSendableMessageService(@NotNull AudienceSupplier<R> audienceSupplier, @NotNull Locale defaultLocale, @NotNull LocaleProvider<R> localeProvider, @NotNull Map<Locale, C> messageRepositories) {
         this.audienceSupplier = audienceSupplier;
-        this.defaultLocale = defaultLocale;
+        this.localeProvider = new DefaultLocaleProvider(defaultLocale, localeProvider);
         this.messageRepositories = messageRepositories;
-        this.localeProvider = localeProvider;
     }
 
     protected SimpleSendableMessageService(@NotNull AudienceSupplier<R> audienceSupplier, @NotNull Locale defaultLocale, @NotNull C messageRepository) {
@@ -37,13 +36,13 @@ public class SimpleSendableMessageService<R, C extends MessageRepository> implem
     }
 
     @Override
-    public @NotNull Locale getDefaultLocale() {
-        return this.defaultLocale;
+    public @NotNull DefaultLocaleProvider getLocaleProvider() {
+        return this.localeProvider;
     }
 
     @Override
-    public @NotNull LocaleProvider<R> getLocaleProvider() {
-        return this.localeProvider;
+    public @NotNull Locale getDefaultLocale() {
+        return this.localeProvider.getDefaultLocale();
     }
 
     @Override
@@ -55,7 +54,7 @@ public class SimpleSendableMessageService<R, C extends MessageRepository> implem
         }
 
         if (messageRepository == null) {
-            messageRepository = this.messageRepositories.get(this.defaultLocale);
+            messageRepository = this.messageRepositories.get(this.getDefaultLocale());
         }
 
         if (messageRepository == null) {
