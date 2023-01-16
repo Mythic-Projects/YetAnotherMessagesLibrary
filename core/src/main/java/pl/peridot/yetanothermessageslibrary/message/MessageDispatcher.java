@@ -63,19 +63,30 @@ public class MessageDispatcher<R> {
             return;
         }
 
-        if (this.sendable == null) {
-            return;
-        }
-
         Locale locale = this.localeProvider.getLocale(receiver);
         Audience audience = this.audienceSupplier.getAudience(receiver);
         boolean console = this.audienceSupplier.isConsole(receiver);
 
+        this.sendTo(locale, audience, console);
+    }
+
+    public void sendTo(@Nullable Locale locale, @NotNull Audience audience, boolean console) {
+        if (this.sendable == null) {
+            return;
+        }
+
         List<Replaceable> replacables = new ArrayList<>(this.replaceables);
-        this.replaceablesSuppliers.stream().map(supplier -> supplier.apply(receiver)).forEach(replacables::add);
+        this.replaceablesSuppliers.stream().map(supplier -> supplier.apply(null)).forEach(replacables::add);
 
         this.sendable.send(locale, audience, console, replacables.toArray(new Replaceable[0]));
     }
 
+    public void sendTo(@NotNull Audience audience, boolean console) {
+        this.sendTo(null, audience, console);
+    }
+
+    public void sendTo(@NotNull Audience audience) {
+        this.sendTo(audience, false);
+    }
 
 }
