@@ -42,12 +42,7 @@ public class OkaeriPlaceholdersReplaceable implements Replaceable {
         CompiledMessage compiled = locale != null
                 ? CompiledMessage.of(locale, text)
                 : CompiledMessage.of(text);
-        return this.applyContexts.apply(this.placeholders.contextOf(compiled))
-                .apply();
-    }
-
-    public static @NotNull OkaeriPlaceholdersReplaceable of(@NotNull Placeholders placeholders, @NotNull Function<PlaceholderContext, PlaceholderContext> applyContexts) {
-        return new OkaeriPlaceholdersReplaceable(placeholders, applyContexts);
+        return this.applyContexts.apply(this.placeholders.contextOf(compiled)).apply();
     }
 
 }
