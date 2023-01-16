@@ -27,6 +27,7 @@ public class DefaultLocaleProvider implements LocaleProvider<Object> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public @NotNull Locale getLocale(@Nullable Object entity) {
         if (entity == null) {
             return this.defaultLocale;

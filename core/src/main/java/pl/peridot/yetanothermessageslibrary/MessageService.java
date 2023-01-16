@@ -44,6 +44,7 @@ public interface MessageService<C extends MessageRepository> {
 
     @NotNull LocaleProvider getLocaleProvider();
 
+    @SuppressWarnings("unchecked")
     default @NotNull Locale getLocale(@Nullable Object entity) {
         if (entity == null) {
             return this.getDefaultLocale();

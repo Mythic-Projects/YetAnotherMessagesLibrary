@@ -58,6 +58,7 @@ public class MessageDispatcher<R> {
         return this.with(Replacement.of(from, to));
     }
 
+    @SuppressWarnings("unchecked")
     public void sendTo(@Nullable R receiver) {
         if (receiver == null) {
             return;
