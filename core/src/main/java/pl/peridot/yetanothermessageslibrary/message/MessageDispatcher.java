@@ -23,7 +23,7 @@ public class MessageDispatcher<R> {
     private final Function<Object, Sendable> messageSupplier;
 
     private final List<Replaceable> replaceables = new ArrayList<>();
-    private final List<Function<R, Replaceable>> replaceablesSuppliers = new ArrayList<>();
+    private final List<Function<? extends R, Replaceable>> replaceablesSuppliers = new ArrayList<>();
 
     public MessageDispatcher(@NotNull AudienceSupplier<R> audienceSupplier, @SuppressWarnings("rawtypes") @NotNull LocaleProvider localeProvider, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
         this.audienceSupplier = audienceSupplier;
@@ -41,12 +41,12 @@ public class MessageDispatcher<R> {
         return this;
     }
 
-    public MessageDispatcher<R> with(@NotNull Function<@NotNull R, Replaceable> replaceableSupplier) {
+    public MessageDispatcher<R> with(@NotNull Function<? extends @NotNull R, Replaceable> replaceableSupplier) {
         this.replaceablesSuppliers.add(replaceableSupplier);
         return this;
     }
 
-    public MessageDispatcher<R> with(@NotNull Function<@NotNull R, Replaceable>... replaceableSuppliers) {
+    public MessageDispatcher<R> with(@NotNull Function<? extends @NotNull R, Replaceable>... replaceableSuppliers) {
         Collections.addAll(this.replaceablesSuppliers, replaceableSuppliers);
         return this;
     }
