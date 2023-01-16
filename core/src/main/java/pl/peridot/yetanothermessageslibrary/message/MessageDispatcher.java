@@ -23,7 +23,7 @@ public class MessageDispatcher<R> {
     private final Function<Object, Sendable> messageSupplier;
 
     private final List<Replaceable> replaceables = new ArrayList<>();
-    private final List<Function<? extends R, Replaceable>> replaceablesSuppliers = new ArrayList<>();
+    private final List<TypedReplaceableSupplier> replaceableSuppliers = new ArrayList<>();
 
     public MessageDispatcher(@NotNull AudienceSupplier<R> audienceSupplier, @SuppressWarnings("rawtypes") @NotNull LocaleProvider localeProvider, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
         this.audienceSupplier = audienceSupplier;
@@ -41,13 +41,8 @@ public class MessageDispatcher<R> {
         return this;
     }
 
-    public MessageDispatcher<R> with(@NotNull Function<? extends @NotNull R, Replaceable> replaceableSupplier) {
-        this.replaceablesSuppliers.add(replaceableSupplier);
-        return this;
-    }
-
-    public MessageDispatcher<R> with(@NotNull Function<? extends @NotNull R, Replaceable>... replaceableSuppliers) {
-        Collections.addAll(this.replaceablesSuppliers, replaceableSuppliers);
+    public <T extends R> MessageDispatcher<R> with(@NotNull Class<T> requiredType, @NotNull Function<T, Replaceable> replaceableSupplier) {
+        this.replaceableSuppliers.add(new TypedReplaceableSupplier<>(requiredType, replaceableSupplier));
         return this;
     }
 
@@ -69,7 +64,22 @@ public class MessageDispatcher<R> {
         Audience audience = this.audienceSupplier.getAudience(receiver);
         boolean console = this.audienceSupplier.isConsole(receiver);
 
-        this.sendTo(locale, audience, console);
+        Sendable message = this.messageSupplier.apply(locale);
+        if (message == null) {
+            return;
+        }
+
+        List<Replaceable> replaceables = new ArrayList<>(this.replaceables);
+        this.replaceableSuppliers
+                .stream()
+                .filter(supplier -> supplier.getType().isInstance(receiver))
+                .map(supplier -> {
+                    Function<Object, Replaceable> replaceableFunction = supplier.getSupplier();
+                    return replaceableFunction.apply(supplier.getType().cast(receiver));
+                })
+                .forEachOrdered(replaceables::add);
+
+        message.send(locale, audience, console, replaceables.toArray(new Replaceable[0]));
     }
 
     public void sendTo(@Nullable Locale locale, @NotNull Audience audience, boolean console) {
@@ -77,11 +87,7 @@ public class MessageDispatcher<R> {
         if (message == null) {
             return;
         }
-
-        List<Replaceable> replacables = new ArrayList<>(this.replaceables);
-        this.replaceablesSuppliers.stream().map(supplier -> supplier.apply(null)).forEach(replacables::add);
-
-        message.send(locale, audience, console, replacables.toArray(new Replaceable[0]));
+        message.send(locale, audience, console, this.replaceables.toArray(new Replaceable[0]));
     }
 
     public void sendTo(@NotNull Audience audience, boolean console) {
@@ -90,6 +96,26 @@ public class MessageDispatcher<R> {
 
     public void sendTo(@NotNull Audience audience) {
         this.sendTo(audience, false);
+    }
+
+    private class TypedReplaceableSupplier<T extends R> {
+
+        public final Class<T> type;
+        public final Function<T, Replaceable> supplier;
+
+        private TypedReplaceableSupplier(@NotNull Class<T> type, @NotNull Function<T, Replaceable> supplier) {
+            this.type = type;
+            this.supplier = supplier;
+        }
+
+        public Class<T> getType() {
+            return this.type;
+        }
+
+        public Function<T, Replaceable> getSupplier() {
+            return this.supplier;
+        }
+
     }
 
 }
