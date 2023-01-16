@@ -47,7 +47,7 @@ public class ChatHolder extends SendableHolder {
         return SendableMessage.of(new ChatHolder(false, messages));
     }
 
-    public static @NotNull SendableMessage message(@NotNull String messages) {
+    public static @NotNull SendableMessage message(@NotNull String... messages) {
         return SendableMessage.of(new ChatHolder(false, MiniComponent.of(messages)));
     }
 
