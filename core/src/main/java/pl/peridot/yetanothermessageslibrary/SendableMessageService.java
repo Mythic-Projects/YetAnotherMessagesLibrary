@@ -1,31 +1,23 @@
 package pl.peridot.yetanothermessageslibrary;
 
-import java.util.Locale;
 import java.util.function.Function;
-import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.adventure.AudienceSupplier;
+import pl.peridot.yetanothermessageslibrary.message.MessageDispatcher;
 import pl.peridot.yetanothermessageslibrary.message.Sendable;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
 
 public interface SendableMessageService<R, C extends MessageRepository> extends MessageService<C> {
 
+    default MessageDispatcher<R> supplyMessage(@Nullable Object entity, @NotNull Function<@NotNull C, @Nullable Sendable> messageSupplier) {
+        return new MessageDispatcher<>(this.getAudienceSupplier(), this.getLocaleProvider(), this.supplyValue(entity, messageSupplier));
+    }
+
     default void sendMessage(@Nullable R receiver, @NotNull Function<@NotNull C, @Nullable Sendable> messageSupplier, @NotNull Replaceable... replacements) {
-        if (receiver == null) {
-            return;
-        }
-
-        Sendable message = this.supplyValue(receiver, messageSupplier);
-        if (message == null) {
-            return;
-        }
-
-        Locale locale = this.getLocale(receiver);
-        Audience audience = this.getAudienceSupplier().getAudience(receiver);
-        boolean console = this.getAudienceSupplier().isConsole(receiver);
-
-        message.send(locale, audience, console, replacements);
+        this.supplyMessage(receiver, messageSupplier)
+                .with(replacements)
+                .sendTo(receiver);
     }
 
     @NotNull AudienceSupplier<R> getAudienceSupplier();
