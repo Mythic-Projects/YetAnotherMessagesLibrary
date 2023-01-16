@@ -21,7 +21,7 @@ public class LocaleProviderFacade implements LocaleProvider<Object> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public @Nullable Locale getLocale(@NotNull Object entity) {
         LocaleProvider localeProvider = this.findLocaleProvider(entity.getClass());
         if (localeProvider == null) {
