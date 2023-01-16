@@ -5,7 +5,7 @@ plugins {
 
 allprojects {
     group 'pl.peridot.yetanothermessageslibrary'
-    version '2.2.0-SNAPSHOT'
+    version '2.2.1-SNAPSHOT'
 
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
