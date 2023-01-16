@@ -8,27 +8,26 @@ import java.util.Map;
 import java.util.function.Function;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.adventure.AudienceSupplier;
 import pl.peridot.yetanothermessageslibrary.locale.LocaleProvider;
 import pl.peridot.yetanothermessageslibrary.locale.StaticLocaleProvider;
 import pl.peridot.yetanothermessageslibrary.util.Validate;
 
-public class SimpleMessageService<R, C extends MessageRepository> implements MessageService<R, C> {
+public class SimpleSendableMessageService<R, C extends MessageRepository> implements SendableMessageService<R, C> {
 
     private final AudienceSupplier<R> audienceSupplier;
     private final Locale defaultLocale;
     private final LocaleProvider<R> localeProvider;
     private final Map<Locale, C> messageRepositories;
 
-    protected SimpleMessageService(@NotNull AudienceSupplier<R> audienceSupplier, Locale defaultLocale, @NotNull LocaleProvider<R> localeProvider, @NotNull Map<Locale, C> messageRepositories) {
+    protected SimpleSendableMessageService(@NotNull AudienceSupplier<R> audienceSupplier, Locale defaultLocale, @NotNull LocaleProvider<R> localeProvider, @NotNull Map<Locale, C> messageRepositories) {
         this.audienceSupplier = audienceSupplier;
         this.defaultLocale = defaultLocale;
         this.messageRepositories = messageRepositories;
         this.localeProvider = localeProvider;
     }
 
-    protected SimpleMessageService(@NotNull AudienceSupplier<R> audienceSupplier, @NotNull Locale defaultLocale, @NotNull C messageRepository) {
+    protected SimpleSendableMessageService(@NotNull AudienceSupplier<R> audienceSupplier, @NotNull Locale defaultLocale, @NotNull C messageRepository) {
         this(audienceSupplier, defaultLocale, StaticLocaleProvider.of(defaultLocale), Collections.singletonMap(defaultLocale, messageRepository));
     }
 
@@ -38,16 +37,19 @@ public class SimpleMessageService<R, C extends MessageRepository> implements Mes
     }
 
     @Override
+    public @NotNull Locale getDefaultLocale() {
+        return this.defaultLocale;
+    }
+
+    @Override
     public @NotNull LocaleProvider<R> getLocaleProvider() {
         return this.localeProvider;
     }
 
     @Override
-    public @NotNull C getMessageRepository(@Nullable R receiver) {
-        Locale locale = this.localeProvider.getLocale(receiver);
-
+    public @NotNull C getMessageRepository(@NotNull Locale locale) {
         C messageRepository = this.messageRepositories.get(locale);
-        if (messageRepository == null && locale != null) {
+        if (messageRepository == null) {
             // If we can't find message repository for language wariant (for e.g. en_GB) we will try to find message repository for language (for e.g. en)
             messageRepository = this.messageRepositories.get(Locale.forLanguageTag(locale.getLanguage()));
         }
@@ -110,12 +112,12 @@ public class SimpleMessageService<R, C extends MessageRepository> implements Mes
         }
 
         @NotNull
-        public SimpleMessageService<R, C> build() {
+        public SimpleSendableMessageService<R, C> build() {
             Validate.notNull(this.audienceSupplier, "Audience supplier cannot be null");
             Validate.notNull(this.defaultLocale, "Default locale cannot be null");
             Validate.notNull(this.localeProvider, "Locale provider cannot be null");
             Validate.isFalse(this.messageRepositories.isEmpty(), "Message repositories cannot be empty");
-            return new SimpleMessageService<>(this.audienceSupplier, this.defaultLocale, this.localeProvider, this.messageRepositories);
+            return new SimpleSendableMessageService<>(this.audienceSupplier, this.defaultLocale, this.localeProvider, this.messageRepositories);
         }
 
     }

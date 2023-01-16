@@ -3,20 +3,18 @@ package pl.peridot.yetanothermessageslibrary;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
-import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import pl.peridot.yetanothermessageslibrary.adventure.AudienceSupplier;
 import pl.peridot.yetanothermessageslibrary.locale.LocaleProvider;
-import pl.peridot.yetanothermessageslibrary.message.Sendable;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
 import pl.peridot.yetanothermessageslibrary.replace.StringReplacer;
 
-public interface MessageService<R, C extends MessageRepository> {
+public interface MessageService<C extends MessageRepository> {
 
-    default @Nullable <T> T supplyValue(@Nullable R receiver, @NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
-        return valueSupplier.apply(this.getMessageRepository(receiver));
+    default @Nullable <T> T supplyValue(@Nullable Object entity, @NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
+        Locale locale = this.getLocale(entity);
+        return valueSupplier.apply(this.getMessageRepository(locale));
     }
 
     default @Nullable <T> T supplyValue(@NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
@@ -24,45 +22,40 @@ public interface MessageService<R, C extends MessageRepository> {
     }
 
     @Contract(pure = true)
-    default @Nullable String supplyString(@Nullable R receiver, @NotNull Function<@NotNull C, @Nullable String> stringSupplier, @NotNull Replaceable... replacements) {
-        String string = this.supplyValue(receiver, stringSupplier);
+    default @Nullable String supplyString(@Nullable Object object, @NotNull Function<@NotNull C, @Nullable String> stringSupplier, @NotNull Replaceable... replacements) {
+        String string = this.supplyValue(object, stringSupplier);
         if (string == null) {
             return null;
         }
-        Locale locale = this.getLocaleProvider().getLocale(receiver);
+        Locale locale = this.getLocale(object);
         return StringReplacer.replace(locale, string, replacements);
     }
 
-    default @Nullable List<String> supplyStringList(@Nullable R receiver, @NotNull Function<@NotNull C, @Nullable List<String>> stringSupplier, @NotNull Replaceable... replacements) {
-        List<String> stringList = this.supplyValue(receiver, stringSupplier);
+    default @Nullable List<String> supplyStringList(@Nullable Object object, @NotNull Function<@NotNull C, @Nullable List<String>> stringSupplier, @NotNull Replaceable... replacements) {
+        List<String> stringList = this.supplyValue(object, stringSupplier);
         if (stringList == null || stringList.isEmpty()) {
             return stringList;
         }
-        Locale locale = this.getLocaleProvider().getLocale(receiver);
+        Locale locale = this.getLocale(object);
         return StringReplacer.replace(locale, stringList, replacements);
     }
 
-    default void sendMessage(@Nullable R receiver, @NotNull Function<@NotNull C, @Nullable Sendable> messageSupplier, @NotNull Replaceable... replacements) {
-        if (receiver == null) {
-            return;
+    @NotNull Locale getDefaultLocale();
+
+    @NotNull LocaleProvider getLocaleProvider();
+
+    default @NotNull Locale getLocale(@Nullable Object entity) {
+        if (entity == null) {
+            return this.getDefaultLocale();
         }
 
-        Sendable message = this.supplyValue(receiver, messageSupplier);
-        if (message == null) {
-            return;
+        Locale locale = this.getLocaleProvider().getLocale(entity);
+        if (locale == null) {
+            return this.getDefaultLocale();
         }
-
-        Locale locale = this.getLocaleProvider().getLocale(receiver);
-        Audience audience = this.getAudienceSupplier().getAudience(receiver);
-        boolean console = this.getAudienceSupplier().isConsole(receiver);
-
-        message.send(locale, audience, console, replacements);
+        return locale;
     }
 
-    @NotNull AudienceSupplier<R> getAudienceSupplier();
-
-    @NotNull LocaleProvider<R> getLocaleProvider();
-
-    @NotNull C getMessageRepository(@Nullable R receiver);
+    @NotNull C getMessageRepository(@NotNull Locale locale);
 
 }

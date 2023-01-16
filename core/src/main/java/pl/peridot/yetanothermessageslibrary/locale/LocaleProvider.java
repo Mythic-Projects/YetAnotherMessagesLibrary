@@ -8,6 +8,6 @@ public interface LocaleProvider<T> {
 
     boolean supports(@NotNull Class<?> clazz);
 
-    @Nullable Locale getLocale(@Nullable T receiver);
+    @Nullable Locale getLocale(@NotNull T entity);
 
 }

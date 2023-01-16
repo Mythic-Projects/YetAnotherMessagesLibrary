@@ -7,7 +7,7 @@ import java.util.Locale;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SimpleLocaleProvider<R> implements LocaleProvider<R> {
+public class SimpleLocaleProvider implements LocaleProvider<Object> {
 
     private final Collection<LocaleProvider<?>> localeProviders;
 
@@ -22,17 +22,17 @@ public class SimpleLocaleProvider<R> implements LocaleProvider<R> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public @Nullable Locale getLocale(@Nullable R receiver) {
-        if (receiver == null) {
-            return null;
+    public @Nullable Locale getLocale(@NotNull Object entity) {
+        if (entity instanceof Locale) {
+            return (Locale) entity;
         }
 
-        LocaleProvider localeProvider = this.findLocaleProvider(receiver.getClass());
+        LocaleProvider localeProvider = this.findLocaleProvider(entity.getClass());
         if (localeProvider == null) {
             return null;
         }
 
-        return localeProvider.getLocale(receiver);
+        return localeProvider.getLocale(entity);
     }
 
     private @Nullable LocaleProvider<?> findLocaleProvider(@NotNull Class<?> receiverType) {
@@ -43,11 +43,11 @@ public class SimpleLocaleProvider<R> implements LocaleProvider<R> {
                 .orElse(null);
     }
 
-    public static <R> @NotNull SimpleLocaleProvider<R> of(@NotNull Collection<LocaleProvider<?>> localeProviders) {
-        return new SimpleLocaleProvider<>(localeProviders);
+    public static @NotNull SimpleLocaleProvider of(@NotNull Collection<LocaleProvider<?>> localeProviders) {
+        return new SimpleLocaleProvider(localeProviders);
     }
 
-    public static <R> @NotNull SimpleLocaleProvider<R> of(@NotNull LocaleProvider<?>... localeProviders) {
+    public static @NotNull SimpleLocaleProvider of(@NotNull LocaleProvider<?>... localeProviders) {
         return of(Arrays.asList(localeProviders));
     }
 

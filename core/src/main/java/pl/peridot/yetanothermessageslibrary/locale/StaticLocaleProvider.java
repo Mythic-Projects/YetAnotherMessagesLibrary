@@ -18,7 +18,7 @@ public class StaticLocaleProvider<R> implements LocaleProvider<R> {
     }
 
     @Override
-    public @Nullable Locale getLocale(@Nullable R receiver) {
+    public @Nullable Locale getLocale(@NotNull R entity) {
         return this.locale;
     }
 
