@@ -10,12 +10,12 @@ import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
 
 public interface SendableMessageService<R, C extends MessageRepository> extends MessageService<C> {
 
-    default MessageDispatcher<R> supplyMessage(@Nullable Object entity, @NotNull Function<@NotNull C, @Nullable Sendable> messageSupplier) {
-        return new MessageDispatcher<>(this.getAudienceSupplier(), this.getLocaleProvider(), this.supplyValue(entity, messageSupplier));
+    default MessageDispatcher<R> supplyMessage(@NotNull Function<@NotNull C, @Nullable Sendable> messageSupplier) {
+        return new MessageDispatcher<>(this.getAudienceSupplier(), this.getLocaleProvider(), (receiver) -> this.supplyValue(receiver, messageSupplier));
     }
 
     default void sendMessage(@Nullable R receiver, @NotNull Function<@NotNull C, @Nullable Sendable> messageSupplier, @NotNull Replaceable... replacements) {
-        this.supplyMessage(receiver, messageSupplier)
+        this.supplyMessage(messageSupplier)
                 .with(replacements)
                 .sendTo(receiver);
     }

@@ -20,15 +20,15 @@ public class MessageDispatcher<R> {
     @SuppressWarnings("rawtypes")
     private final LocaleProvider localeProvider;
 
-    private final Sendable sendable;
+    private final Function<Object, Sendable> messageSupplier;
 
     private final List<Replaceable> replaceables = new ArrayList<>();
     private final List<Function<R, Replaceable>> replaceablesSuppliers = new ArrayList<>();
 
-    public MessageDispatcher(@NotNull AudienceSupplier<R> audienceSupplier, @SuppressWarnings("rawtypes") @NotNull LocaleProvider localeProvider, @Nullable Sendable sendable) {
+    public MessageDispatcher(@NotNull AudienceSupplier<R> audienceSupplier, @SuppressWarnings("rawtypes") @NotNull LocaleProvider localeProvider, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
         this.audienceSupplier = audienceSupplier;
         this.localeProvider = localeProvider;
-        this.sendable = sendable;
+        this.messageSupplier = messageSupplier;
     }
 
     public MessageDispatcher<R> with(@NotNull Replaceable replaceable) {
@@ -73,14 +73,15 @@ public class MessageDispatcher<R> {
     }
 
     public void sendTo(@Nullable Locale locale, @NotNull Audience audience, boolean console) {
-        if (this.sendable == null) {
+        Sendable message = this.messageSupplier.apply(locale);
+        if (message == null) {
             return;
         }
 
         List<Replaceable> replacables = new ArrayList<>(this.replaceables);
         this.replaceablesSuppliers.stream().map(supplier -> supplier.apply(null)).forEach(replacables::add);
 
-        this.sendable.send(locale, audience, console, replacables.toArray(new Replaceable[0]));
+        message.send(locale, audience, console, replacables.toArray(new Replaceable[0]));
     }
 
     public void sendTo(@NotNull Audience audience, boolean console) {
