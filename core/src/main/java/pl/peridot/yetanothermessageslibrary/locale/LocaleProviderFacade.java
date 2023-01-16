@@ -7,11 +7,11 @@ import java.util.Locale;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SimpleLocaleProvider implements LocaleProvider<Object> {
+public class LocaleProviderFacade implements LocaleProvider<Object> {
 
     private final Collection<LocaleProvider<?>> localeProviders;
 
-    protected SimpleLocaleProvider(@NotNull Collection<LocaleProvider<?>> localeProviders) {
+    protected LocaleProviderFacade(@NotNull Collection<LocaleProvider<?>> localeProviders) {
         this.localeProviders = Collections.unmodifiableCollection(localeProviders);
     }
 
@@ -23,15 +23,10 @@ public class SimpleLocaleProvider implements LocaleProvider<Object> {
     @Override
     @SuppressWarnings("unchecked")
     public @Nullable Locale getLocale(@NotNull Object entity) {
-        if (entity instanceof Locale) {
-            return (Locale) entity;
-        }
-
         LocaleProvider localeProvider = this.findLocaleProvider(entity.getClass());
         if (localeProvider == null) {
             return null;
         }
-
         return localeProvider.getLocale(entity);
     }
 
@@ -43,11 +38,11 @@ public class SimpleLocaleProvider implements LocaleProvider<Object> {
                 .orElse(null);
     }
 
-    public static @NotNull SimpleLocaleProvider of(@NotNull Collection<LocaleProvider<?>> localeProviders) {
-        return new SimpleLocaleProvider(localeProviders);
+    public static @NotNull LocaleProviderFacade of(@NotNull Collection<LocaleProvider<?>> localeProviders) {
+        return new LocaleProviderFacade(localeProviders);
     }
 
-    public static @NotNull SimpleLocaleProvider of(@NotNull LocaleProvider<?>... localeProviders) {
+    public static @NotNull LocaleProviderFacade of(@NotNull LocaleProvider<?>... localeProviders) {
         return of(Arrays.asList(localeProviders));
     }
 

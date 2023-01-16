@@ -49,6 +49,10 @@ public interface MessageService<C extends MessageRepository> {
             return this.getDefaultLocale();
         }
 
+        if (entity instanceof Locale) {
+            return (Locale) entity;
+        }
+
         Locale locale = this.getLocaleProvider().getLocale(entity);
         if (locale == null) {
             return this.getDefaultLocale();
