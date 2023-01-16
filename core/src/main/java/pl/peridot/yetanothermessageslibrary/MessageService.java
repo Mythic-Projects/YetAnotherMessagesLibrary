@@ -42,6 +42,7 @@ public interface MessageService<C extends MessageRepository> {
 
     @NotNull Locale getDefaultLocale();
 
+    @SuppressWarnings("rawtypes")
     @NotNull LocaleProvider getLocaleProvider();
 
     @SuppressWarnings("unchecked")

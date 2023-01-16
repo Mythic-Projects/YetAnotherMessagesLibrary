@@ -17,6 +17,7 @@ import pl.peridot.yetanothermessageslibrary.replace.replacement.Replacement;
 public class MessageDispatcher<R> {
 
     private final AudienceSupplier<R> audienceSupplier;
+    @SuppressWarnings("rawtypes")
     private final LocaleProvider localeProvider;
 
     private final Sendable sendable;
@@ -24,7 +25,7 @@ public class MessageDispatcher<R> {
     private final List<Replaceable> replaceables = new ArrayList<>();
     private final List<Function<R, Replaceable>> replaceablesSuppliers = new ArrayList<>();
 
-    public MessageDispatcher(@NotNull AudienceSupplier<R> audienceSupplier, @NotNull LocaleProvider localeProvider, @Nullable Sendable sendable) {
+    public MessageDispatcher(@NotNull AudienceSupplier<R> audienceSupplier, @SuppressWarnings("rawtypes") @NotNull LocaleProvider localeProvider, @Nullable Sendable sendable) {
         this.audienceSupplier = audienceSupplier;
         this.localeProvider = localeProvider;
         this.sendable = sendable;
