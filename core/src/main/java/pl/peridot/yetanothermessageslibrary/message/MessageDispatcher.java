@@ -25,17 +25,26 @@ public class MessageDispatcher<R> {
     private final LocaleProvider localeProvider;
     private final Function<Object, Sendable> messageSupplier;
 
+    private final Set<R> receivers = new HashSet<>();
     private final Set<Predicate<R>> predicates = new HashSet<>();
 
     private final List<Replaceable> replaceables = new ArrayList<>();
     private final List<TypedReplaceableSupplier> replaceableSuppliers = new ArrayList<>();
 
-    private final Set<R> receivers = new HashSet<>();
-
     public MessageDispatcher(@NotNull AudienceSupplier<R> audienceSupplier, @SuppressWarnings("rawtypes") @NotNull LocaleProvider localeProvider, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
         this.audienceSupplier = audienceSupplier;
         this.localeProvider = localeProvider;
         this.messageSupplier = messageSupplier;
+    }
+
+    public MessageDispatcher<R> receiver(@NotNull R receiver) {
+        this.receivers.add(receiver);
+        return this;
+    }
+
+    public MessageDispatcher<R> receivers(@NotNull Collection<? extends R> receivers) {
+        this.receivers.addAll(receivers);
+        return this;
     }
 
     public MessageDispatcher<R> predicate(@NotNull Predicate<R> predicate) {
@@ -64,20 +73,6 @@ public class MessageDispatcher<R> {
 
     public MessageDispatcher<R> with(@NotNull String from, @NotNull Supplier<@NotNull Object> to) {
         return this.with(Replacement.of(from, to));
-    }
-
-    public MessageDispatcher<R> receiver(@NotNull R receiver) {
-        this.receivers.add(receiver);
-        return this;
-    }
-
-    public MessageDispatcher<R> receivers(@NotNull Collection<? extends R> receivers) {
-        this.receivers.addAll(receivers);
-        return this;
-    }
-
-    public void send() {
-        this.sendTo(this.receivers);
     }
 
     @SuppressWarnings("unchecked")
@@ -116,23 +111,11 @@ public class MessageDispatcher<R> {
         receivers.forEach(this::sendTo);
     }
 
-    public void sendTo(@Nullable Locale locale, @NotNull Audience audience, boolean console) {
-        Sendable message = this.messageSupplier.apply(locale);
-        if (message == null) {
-            return;
-        }
-        message.send(locale, audience, console, this.replaceables.toArray(new Replaceable[0]));
+    public void send() {
+        this.sendTo(this.receivers);
     }
 
-    public void sendTo(@NotNull Audience audience, boolean console) {
-        this.sendTo(null, audience, console);
-    }
-
-    public void sendTo(@NotNull Audience audience) {
-        this.sendTo(audience, false);
-    }
-
-    private class TypedReplaceableSupplier<T extends R> {
+    private final class TypedReplaceableSupplier<T extends R> {
 
         public final Class<T> type;
         public final Function<T, Replaceable> supplier;
