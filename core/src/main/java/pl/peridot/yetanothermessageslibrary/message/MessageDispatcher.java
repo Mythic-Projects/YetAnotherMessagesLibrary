@@ -1,10 +1,14 @@
 package pl.peridot.yetanothermessageslibrary.message;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
@@ -19,16 +23,24 @@ public class MessageDispatcher<R> {
     private final AudienceSupplier<R> audienceSupplier;
     @SuppressWarnings("rawtypes")
     private final LocaleProvider localeProvider;
-
     private final Function<Object, Sendable> messageSupplier;
+
+    private final Set<Predicate<R>> predicates = new HashSet<>();
 
     private final List<Replaceable> replaceables = new ArrayList<>();
     private final List<TypedReplaceableSupplier> replaceableSuppliers = new ArrayList<>();
+
+    private final Set<R> receivers = new HashSet<>();
 
     public MessageDispatcher(@NotNull AudienceSupplier<R> audienceSupplier, @SuppressWarnings("rawtypes") @NotNull LocaleProvider localeProvider, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
         this.audienceSupplier = audienceSupplier;
         this.localeProvider = localeProvider;
         this.messageSupplier = messageSupplier;
+    }
+
+    public MessageDispatcher<R> predicate(@NotNull Predicate<R> predicate) {
+        this.predicates.add(predicate);
+        return this;
     }
 
     public MessageDispatcher<R> with(@NotNull Replaceable replaceable) {
@@ -54,6 +66,20 @@ public class MessageDispatcher<R> {
         return this.with(Replacement.of(from, to));
     }
 
+    public MessageDispatcher<R> receiver(@NotNull R receiver) {
+        this.receivers.add(receiver);
+        return this;
+    }
+
+    public MessageDispatcher<R> receivers(@NotNull Collection<R> receivers) {
+        this.receivers.addAll(receivers);
+        return this;
+    }
+
+    public void send() {
+        this.sendTo(this.receivers);
+    }
+
     @SuppressWarnings("unchecked")
     public void sendTo(@Nullable R receiver) {
         if (receiver == null) {
@@ -69,6 +95,10 @@ public class MessageDispatcher<R> {
             return;
         }
 
+        if (this.predicates.stream().anyMatch(predicate -> !predicate.test(receiver))) {
+            return;
+        }
+
         List<Replaceable> replaceables = new ArrayList<>(this.replaceables);
         this.replaceableSuppliers
                 .stream()
@@ -80,6 +110,10 @@ public class MessageDispatcher<R> {
                 .forEachOrdered(replaceables::add);
 
         message.send(locale, audience, console, replaceables.toArray(new Replaceable[0]));
+    }
+
+    public void sendTo(@NotNull Collection<R> receivers) {
+        receivers.forEach(this::sendTo);
     }
 
     public void sendTo(@Nullable Locale locale, @NotNull Audience audience, boolean console) {
