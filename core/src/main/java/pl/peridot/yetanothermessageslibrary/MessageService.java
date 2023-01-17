@@ -11,16 +11,16 @@ import pl.peridot.yetanothermessageslibrary.replace.StringReplacer;
 
 public interface MessageService<C extends MessageRepository> {
 
-    default @Nullable <T> T get(@Nullable Object entity, @NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
+    default <T> T get(@Nullable Object entity, @NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
         Locale locale = this.getLocale(entity);
         return valueSupplier.apply(this.getRepository(locale));
     }
 
-    default @Nullable <T> T get(@NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
+    default <T> T get(@NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
         return this.get(null, valueSupplier);
     }
 
-    default @Nullable String get(@Nullable Object object, @NotNull Function<@NotNull C, @Nullable String> stringSupplier, @NotNull Replaceable... replacements) {
+    default String get(@Nullable Object object, @NotNull Function<@NotNull C, @Nullable String> stringSupplier, @NotNull Replaceable... replacements) {
         String string = this.get(object, stringSupplier);
         if (string == null) {
             return null;
@@ -29,7 +29,7 @@ public interface MessageService<C extends MessageRepository> {
         return StringReplacer.replace(locale, string, replacements);
     }
 
-    default @Nullable List<String> getList(@Nullable Object object, @NotNull Function<@NotNull C, @Nullable List<String>> listSupplier, @NotNull Replaceable... replacements) {
+    default List<String> getList(@Nullable Object object, @NotNull Function<@NotNull C, @Nullable List<String>> listSupplier, @NotNull Replaceable... replacements) {
         List<String> stringList = this.get(object, listSupplier);
         if (stringList == null || stringList.isEmpty()) {
             return stringList;
