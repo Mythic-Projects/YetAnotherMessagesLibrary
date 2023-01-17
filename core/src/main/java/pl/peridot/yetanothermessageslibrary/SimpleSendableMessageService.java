@@ -8,9 +8,9 @@ import pl.peridot.yetanothermessageslibrary.message.MessageDispatcherFactory;
 public abstract class SimpleSendableMessageService<R, C extends MessageRepository, D extends MessageDispatcher<R, D>> extends SimpleMessageService<C> implements SendableMessageService<R, C, D> {
 
     private final AudienceSupplier<R> audienceSupplier;
-    private final MessageDispatcherFactory<D> dispatcherFactory;
+    private final MessageDispatcherFactory<R, D> dispatcherFactory;
 
-    public SimpleSendableMessageService(@NotNull AudienceSupplier<R> audienceSupplier, MessageDispatcherFactory<D> dispatcherFactory) {
+    public SimpleSendableMessageService(@NotNull AudienceSupplier<R> audienceSupplier, MessageDispatcherFactory<R, D> dispatcherFactory) {
         this.audienceSupplier = audienceSupplier;
         this.dispatcherFactory = dispatcherFactory;
     }
@@ -21,8 +21,7 @@ public abstract class SimpleSendableMessageService<R, C extends MessageRepositor
     }
 
     @Override
-    public @NotNull MessageDispatcherFactory<D> getDispatcherFactory() {
+    public @NotNull MessageDispatcherFactory<R, D> getDispatcherFactory() {
         return this.dispatcherFactory;
     }
-
 }

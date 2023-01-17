@@ -23,6 +23,6 @@ public interface SendableMessageService<R, C extends MessageRepository, D extend
 
     @NotNull AudienceSupplier<R> getAudienceSupplier();
 
-    @NotNull MessageDispatcherFactory<D> getDispatcherFactory();
+    @NotNull MessageDispatcherFactory<R, D> getDispatcherFactory();
 
 }
