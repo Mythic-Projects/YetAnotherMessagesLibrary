@@ -61,6 +61,11 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, D>> {
         return (D) this;
     }
 
+    public D with(@NotNull Iterable<? extends Replaceable> replacements) {
+        replacements.forEach(this.replacement::add);
+        return (D) this;
+    }
+
     public <T extends R> D with(@NotNull Class<T> requiredType, @NotNull Function<T, Replaceable> replacementSupplier) {
         this.replacementsSuppliers.add(new TypedReplaceableSupplier<>(requiredType, replacementSupplier));
         return (D) this;
