@@ -58,6 +58,10 @@ public abstract class SimpleMessageService<C extends MessageRepository> implemen
         return messageRepository;
     }
 
+    public Map<Locale, C> getMessageRepositories() {
+        return new LinkedHashMap<>(this.messageRepositories);
+    }
+
     public void registerRepository(@NotNull Locale locale, @NotNull C messageRepository) {
         Validate.notNull(locale, "Locale cannot be null");
         Validate.notNull(messageRepository, "Message repository cannot be null");
