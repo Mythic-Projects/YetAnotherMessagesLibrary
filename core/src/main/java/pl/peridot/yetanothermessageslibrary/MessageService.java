@@ -3,7 +3,6 @@ package pl.peridot.yetanothermessageslibrary;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.locale.LocaleProvider;
@@ -12,18 +11,17 @@ import pl.peridot.yetanothermessageslibrary.replace.StringReplacer;
 
 public interface MessageService<C extends MessageRepository> {
 
-    default @Nullable <T> T supplyValue(@Nullable Object entity, @NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
+    default @Nullable <T> T get(@Nullable Object entity, @NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
         Locale locale = this.getLocale(entity);
-        return valueSupplier.apply(this.getMessageRepository(locale));
+        return valueSupplier.apply(this.getRepository(locale));
     }
 
-    default @Nullable <T> T supplyValue(@NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
-        return this.supplyValue(null, valueSupplier);
+    default @Nullable <T> T get(@NotNull Function<@NotNull C, @Nullable T> valueSupplier) {
+        return this.get(null, valueSupplier);
     }
 
-    @Contract(pure = true)
-    default @Nullable String supplyString(@Nullable Object object, @NotNull Function<@NotNull C, @Nullable String> stringSupplier, @NotNull Replaceable... replacements) {
-        String string = this.supplyValue(object, stringSupplier);
+    default @Nullable String get(@Nullable Object object, @NotNull Function<@NotNull C, @Nullable String> stringSupplier, @NotNull Replaceable... replacements) {
+        String string = this.get(object, stringSupplier);
         if (string == null) {
             return null;
         }
@@ -31,8 +29,8 @@ public interface MessageService<C extends MessageRepository> {
         return StringReplacer.replace(locale, string, replacements);
     }
 
-    default @Nullable List<String> supplyStringList(@Nullable Object object, @NotNull Function<@NotNull C, @Nullable List<String>> stringSupplier, @NotNull Replaceable... replacements) {
-        List<String> stringList = this.supplyValue(object, stringSupplier);
+    default @Nullable List<String> getList(@Nullable Object object, @NotNull Function<@NotNull C, @Nullable List<String>> listSupplier, @NotNull Replaceable... replacements) {
+        List<String> stringList = this.get(object, listSupplier);
         if (stringList == null || stringList.isEmpty()) {
             return stringList;
         }
@@ -43,7 +41,7 @@ public interface MessageService<C extends MessageRepository> {
     @NotNull Locale getDefaultLocale();
 
     @SuppressWarnings("rawtypes")
-    @NotNull LocaleProvider getLocaleProvider();
+    @Nullable LocaleProvider getLocaleProvider(@NotNull Class<?> entityType);
 
     @SuppressWarnings("unchecked")
     default @NotNull Locale getLocale(@Nullable Object entity) {
@@ -55,13 +53,18 @@ public interface MessageService<C extends MessageRepository> {
             return (Locale) entity;
         }
 
-        Locale locale = this.getLocaleProvider().getLocale(entity);
+        LocaleProvider localeProvider = this.getLocaleProvider(entity.getClass());
+        if (localeProvider == null) {
+            return this.getDefaultLocale();
+        }
+
+        Locale locale = localeProvider.getLocale(entity);
         if (locale == null) {
             return this.getDefaultLocale();
         }
         return locale;
     }
 
-    @NotNull C getMessageRepository(@NotNull Locale locale);
+    @NotNull C getRepository(@NotNull Locale locale);
 
 }
