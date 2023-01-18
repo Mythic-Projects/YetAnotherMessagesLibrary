@@ -63,7 +63,7 @@ public class BossBarHolder extends SendableHolder {
     }
 
     public @NotNull BossBar prepareBossBar(@Nullable Locale locale, @NotNull Replaceable... replacements) {
-        return BossBar.bossBar(ComponentReplacer.replace(this.name, replacements), this.progress, this.color, this.overlay);
+        return BossBar.bossBar(ComponentReplacer.replace(locale, this.name, replacements), this.progress, this.color, this.overlay);
     }
 
     @Override

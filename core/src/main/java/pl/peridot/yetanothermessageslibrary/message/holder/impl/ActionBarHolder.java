@@ -25,7 +25,7 @@ public class ActionBarHolder extends SendableHolder {
 
     @Override
     public void send(@Nullable Locale locale, @NotNull Audience audience, @NotNull Replaceable... replacements) {
-        audience.sendActionBar(ComponentReplacer.replace(this.message, replacements));
+        audience.sendActionBar(ComponentReplacer.replace(locale, this.message, replacements));
     }
 
     public static @NotNull SendableMessage message(@NotNull RawComponent message) {

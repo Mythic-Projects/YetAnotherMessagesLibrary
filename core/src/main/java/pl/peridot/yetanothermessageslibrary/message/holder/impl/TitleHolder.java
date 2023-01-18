@@ -41,8 +41,8 @@ public class TitleHolder extends SendableHolder {
 
     public @NotNull Title prepareTitle(@Nullable Locale locale, @NotNull Replaceable... replacements) {
         return Title.title(
-                ComponentReplacer.replace(this.title, replacements),
-                ComponentReplacer.replace(this.subTitle, replacements),
+                ComponentReplacer.replace(locale, this.title, replacements),
+                ComponentReplacer.replace(locale, this.subTitle, replacements),
                 this.times
         );
     }
