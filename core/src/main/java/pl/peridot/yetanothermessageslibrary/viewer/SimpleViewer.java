@@ -52,6 +52,7 @@ public class SimpleViewer implements Viewer {
     @Override
     public void sendBossBar(@NotNull BossBar bossBar, int stay) {
         this.audience.showBossBar(bossBar);
+        this.bossBars.add(bossBar);
 
         if (stay < 0) {
             return;
