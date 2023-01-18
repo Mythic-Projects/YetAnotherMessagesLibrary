@@ -1,13 +1,12 @@
 package pl.peridot.yetanothermessageslibrary.message.holder.impl;
 
 import java.util.Locale;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.sound.Sound;
-import net.kyori.adventure.sound.SoundStop;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.message.holder.SendableHolder;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
+import pl.peridot.yetanothermessageslibrary.viewer.Viewer;
 
 public class SoundHolder extends SendableHolder {
 
@@ -28,11 +27,11 @@ public class SoundHolder extends SendableHolder {
     }
 
     @Override
-    public void send(@Nullable Locale locale, @NotNull Audience audience, @NotNull Replaceable... replacements) {
+    public void send(@Nullable Locale locale, @NotNull Viewer viewer, @NotNull Replaceable... replacements) {
         if (this.stopOtherSounds) {
-            audience.stopSound(SoundStop.all());
+            viewer.stopSounds();
         }
-        audience.playSound(this.sound);
+        viewer.sendSound(this.sound);
     }
 
 }

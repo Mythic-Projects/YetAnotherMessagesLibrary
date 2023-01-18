@@ -1,16 +1,18 @@
-package pl.peridot.yetanothermessageslibrary.adventure;
+package pl.peridot.yetanothermessageslibrary.viewer;
 
+import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class BungeeAudienceSupplier implements AudienceSupplier<CommandSender> {
+public class BungeeViewerDataSupplier implements ViewerDataSupplier<CommandSender, UUID> {
 
     private final BungeeAudiences adventure;
 
-    public BungeeAudienceSupplier(BungeeAudiences adventure) {
+    public BungeeViewerDataSupplier(@NotNull BungeeAudiences adventure) {
         this.adventure = adventure;
     }
 
@@ -22,6 +24,13 @@ public class BungeeAudienceSupplier implements AudienceSupplier<CommandSender> {
     @Override
     public boolean isConsole(@NotNull CommandSender receiver) {
         return !(receiver instanceof ProxiedPlayer);
+    }
+
+    @Override
+    public @Nullable UUID getKey(@NotNull CommandSender receiver) {
+        return receiver instanceof ProxiedPlayer
+                ? ((ProxiedPlayer) receiver).getUniqueId()
+                : null;
     }
 
 }

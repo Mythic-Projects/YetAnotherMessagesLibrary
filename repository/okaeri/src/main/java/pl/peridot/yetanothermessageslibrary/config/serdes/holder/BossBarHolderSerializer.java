@@ -8,15 +8,8 @@ import java.util.HashSet;
 import net.kyori.adventure.bossbar.BossBar;
 import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.BossBarHolder;
-import pl.peridot.yetanothermessageslibrary.util.SchedulerWrapper;
 
 public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> {
-
-    private final SchedulerWrapper schedulerWrapper;
-
-    public BossBarHolderSerializer(SchedulerWrapper schedulerWrapper) {
-        this.schedulerWrapper = schedulerWrapper;
-    }
 
     @Override
     public boolean supports(Class<? super BossBarHolder> type) {
@@ -49,7 +42,7 @@ public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> 
                 .color(data.containsKey("color") ? data.get("color", BossBar.Color.class) : BossBar.Color.PINK)
                 .overlay(data.containsKey("overlay") ? data.get("overlay", BossBar.Overlay.class) : BossBar.Overlay.PROGRESS)
                 .addFlags(data.containsKey("flags") ? data.getAsList("flags", BossBar.Flag.class) : new HashSet<>())
-                .stay(this.schedulerWrapper, data.containsKey("stay") ? data.get("stay", int.class) : -1)
+                .stay(data.containsKey("stay") ? data.get("stay", int.class) : -1)
                 .build();
     }
 

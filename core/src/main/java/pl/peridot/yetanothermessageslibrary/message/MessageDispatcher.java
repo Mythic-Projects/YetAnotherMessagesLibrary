@@ -10,16 +10,17 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import pl.peridot.yetanothermessageslibrary.adventure.AudienceSupplier;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
 import pl.peridot.yetanothermessageslibrary.replace.replacement.Replacement;
+import pl.peridot.yetanothermessageslibrary.viewer.Viewer;
+import pl.peridot.yetanothermessageslibrary.viewer.ViewerService;
 
+@SuppressWarnings("unchecked")
 public class MessageDispatcher<R, D extends MessageDispatcher<R, D>> {
 
-    private final AudienceSupplier<R> audienceSupplier;
+    private final ViewerService<R, Viewer> viewerService;
     private final Function<Object, Locale> localeSupplier;
     private final Function<Object, Sendable> messageSupplier;
 
@@ -30,8 +31,12 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, D>> {
     @SuppressWarnings("rawtypes")
     private final List<TypedReplaceableSupplier> replacementsSuppliers = new ArrayList<>();
 
-    public MessageDispatcher(@NotNull AudienceSupplier<R> audienceSupplier, @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
-        this.audienceSupplier = audienceSupplier;
+    public MessageDispatcher(
+            @NotNull ViewerService<R, Viewer> viewerService,
+            @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier,
+            @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier
+    ) {
+        this.viewerService = viewerService;
         this.localeSupplier = localeSupplier;
         this.messageSupplier = messageSupplier;
     }
@@ -79,15 +84,12 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, D>> {
         return this.with(Replacement.of(from, to));
     }
 
-    @SuppressWarnings("unchecked")
     public D sendTo(@Nullable R receiver) {
         if (receiver == null) {
             return (D) this;
         }
 
         Locale locale = this.localeSupplier.apply(receiver);
-        Audience audience = this.audienceSupplier.getAudience(receiver);
-        boolean console = this.audienceSupplier.isConsole(receiver);
 
         Sendable message = this.messageSupplier.apply(locale);
         if (message == null) {
@@ -98,8 +100,9 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, D>> {
             return (D) this;
         }
 
+        Viewer viewer = this.viewerService.findOrCreateViewer(receiver);
         List<Replaceable> replaceables = this.prepareReplacements(receiver);
-        message.send(locale, audience, console, replaceables.toArray(new Replaceable[0]));
+        message.send(locale, viewer, replaceables.toArray(new Replaceable[0]));
 
         return (D) this;
     }
@@ -113,7 +116,6 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, D>> {
         return this.sendTo(this.receivers);
     }
 
-    @SuppressWarnings("unchecked")
     protected @NotNull List<Replaceable> prepareReplacements(@NotNull R receiver) {
         List<Replaceable> replacement = new ArrayList<>(this.replacement);
         this.replacementsSuppliers

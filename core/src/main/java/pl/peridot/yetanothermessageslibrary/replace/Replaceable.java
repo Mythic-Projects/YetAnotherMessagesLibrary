@@ -13,7 +13,7 @@ public interface Replaceable {
         return this.replace(null, text);
     }
 
-    @NotNull Component replace(@Nullable Locale locale,@NotNull Component text);
+    @NotNull Component replace(@Nullable Locale locale, @NotNull Component text);
 
     default @NotNull Component replace(@NotNull Component text) {
         return this.replace(null, text);

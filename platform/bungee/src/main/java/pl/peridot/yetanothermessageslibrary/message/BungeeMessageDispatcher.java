@@ -6,12 +6,13 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import pl.peridot.yetanothermessageslibrary.adventure.AudienceSupplier;
+import pl.peridot.yetanothermessageslibrary.viewer.Viewer;
+import pl.peridot.yetanothermessageslibrary.viewer.ViewerService;
 
 public class BungeeMessageDispatcher<D extends BungeeMessageDispatcher<D>> extends MessageDispatcher<CommandSender, D> {
 
-    public BungeeMessageDispatcher(@NotNull AudienceSupplier<CommandSender> audienceSupplier, @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
-        super(audienceSupplier, localeSupplier, messageSupplier);
+    public BungeeMessageDispatcher(@NotNull ViewerService<CommandSender, Viewer> viewerService, @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
+        super(viewerService, localeSupplier, messageSupplier);
     }
 
     public D broadcast() {

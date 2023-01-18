@@ -15,6 +15,7 @@ public final class MiniComponent {
 
     /**
      * Parse a string to {@link RawComponent} using {@link MiniMessage}.
+     *
      * @param raw the string to parse.
      * @return the parsed component.
      */
@@ -24,6 +25,7 @@ public final class MiniComponent {
 
     /**
      * Parse multiple strings to {@link RawComponent} using {@link MiniMessage}.
+     *
      * @param raw array of strings to parse.
      * @return array of parsed components.
      */

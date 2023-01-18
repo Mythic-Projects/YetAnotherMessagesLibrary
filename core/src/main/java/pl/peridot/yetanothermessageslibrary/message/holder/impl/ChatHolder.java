@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import net.kyori.adventure.audience.Audience;
+import java.util.stream.Collectors;
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
@@ -14,6 +15,7 @@ import pl.peridot.yetanothermessageslibrary.message.SendableMessage;
 import pl.peridot.yetanothermessageslibrary.message.holder.SendableHolder;
 import pl.peridot.yetanothermessageslibrary.replace.ComponentReplacer;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
+import pl.peridot.yetanothermessageslibrary.viewer.Viewer;
 
 public class ChatHolder extends SendableHolder {
 
@@ -29,7 +31,6 @@ public class ChatHolder extends SendableHolder {
         this(onlyConsole, Arrays.asList(messages));
     }
 
-    @Override
     public boolean sendOnlyToConsole() {
         return this.onlyConsole;
     }
@@ -39,8 +40,15 @@ public class ChatHolder extends SendableHolder {
     }
 
     @Override
-    public void send(@Nullable Locale locale, @NotNull Audience audience, @NotNull Replaceable... replacements) {
-        this.messages.forEach(message -> audience.sendMessage(ComponentReplacer.replace(locale, message, replacements)));
+    public void send(@Nullable Locale locale, @NotNull Viewer viewer, @NotNull Replaceable... replacements) {
+        if (this.onlyConsole && !viewer.isConsole()) {
+            return;
+        }
+
+        List<Component> finalMessage = this.messages.stream()
+                .map(message -> ComponentReplacer.replace(locale, message, replacements))
+                .collect(Collectors.toList());
+        viewer.sendChatMessage(finalMessage);
     }
 
     public static @NotNull SendableMessage message(@NotNull RawComponent... messages) {

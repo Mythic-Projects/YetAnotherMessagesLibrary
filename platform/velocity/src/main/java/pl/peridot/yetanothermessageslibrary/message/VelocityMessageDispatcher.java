@@ -5,12 +5,13 @@ import java.util.Locale;
 import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import pl.peridot.yetanothermessageslibrary.adventure.AudienceSupplier;
+import pl.peridot.yetanothermessageslibrary.viewer.Viewer;
+import pl.peridot.yetanothermessageslibrary.viewer.ViewerService;
 
 public class VelocityMessageDispatcher<D extends VelocityMessageDispatcher<D>> extends MessageDispatcher<CommandSource, D> {
 
-    public VelocityMessageDispatcher(@NotNull AudienceSupplier<CommandSource> audienceSupplier, @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
-        super(audienceSupplier, localeSupplier, messageSupplier);
+    public VelocityMessageDispatcher(@NotNull ViewerService<CommandSource, Viewer> viewerService, @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
+        super(viewerService, localeSupplier, messageSupplier);
     }
 
     public D permission(@NotNull String permission) {

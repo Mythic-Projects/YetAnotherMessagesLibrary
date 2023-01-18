@@ -1,16 +1,18 @@
-package pl.peridot.yetanothermessageslibrary.adventure;
+package pl.peridot.yetanothermessageslibrary.viewer;
 
+import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class BukkitAudienceSupplier implements AudienceSupplier<CommandSender> {
+public class BukkitViewerDataSupplier implements ViewerDataSupplier<CommandSender, UUID> {
 
     private final BukkitAudiences adventure;
 
-    public BukkitAudienceSupplier(BukkitAudiences adventure) {
+    public BukkitViewerDataSupplier(@NotNull BukkitAudiences adventure) {
         this.adventure = adventure;
     }
 
@@ -22,6 +24,13 @@ public class BukkitAudienceSupplier implements AudienceSupplier<CommandSender> {
     @Override
     public boolean isConsole(@NotNull CommandSender receiver) {
         return !(receiver instanceof Player);
+    }
+
+    @Override
+    public @Nullable UUID getKey(@NotNull CommandSender receiver) {
+        return receiver instanceof Player
+                ? ((Player) receiver).getUniqueId()
+                : null;
     }
 
 }

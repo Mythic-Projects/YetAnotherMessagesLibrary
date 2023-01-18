@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -22,7 +21,7 @@ import pl.peridot.yetanothermessageslibrary.message.holder.impl.ChatHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.SoundHolder;
 import pl.peridot.yetanothermessageslibrary.message.holder.impl.TitleHolder;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
-import pl.peridot.yetanothermessageslibrary.util.SchedulerWrapper;
+import pl.peridot.yetanothermessageslibrary.viewer.Viewer;
 
 public class SendableMessage implements Sendable {
 
@@ -43,12 +42,8 @@ public class SendableMessage implements Sendable {
                 .collect(Collectors.toList());
     }
 
-    public void send(@Nullable Locale locale, @NotNull Audience audience, @NotNull Replaceable... replacements) {
-        this.holders.forEach(holder -> holder.send(locale, audience, replacements));
-    }
-
-    public void send(@Nullable Locale locale, @NotNull Audience audience, boolean console, @NotNull Replaceable... replacements) {
-        this.holders.forEach(holder -> holder.send(locale, audience, console, replacements));
+    public void send(@Nullable Locale locale, @NotNull Viewer viewer, @NotNull Replaceable... replacements) {
+        this.holders.forEach(holder -> holder.send(locale, viewer, replacements));
     }
 
     public static @NotNull SendableMessage of(@NotNull Collection<SendableHolder> holders) {
@@ -187,22 +182,21 @@ public class SendableMessage implements Sendable {
         /**
          * Adds bossbar message to the message.
          *
-         * @param name      bossbar name
-         * @param progress  bossbar progress (0-1)
-         * @param color     bossbar color
-         * @param overlay   bossbar overlay
-         * @param stay      bossbar stay time in ticks (if -1 won't be removed)
-         * @param scheduler to remove bossbar after specific time (if null bossbar won't be removed)
+         * @param name     bossbar name
+         * @param progress bossbar progress (0-1)
+         * @param color    bossbar color
+         * @param overlay  bossbar overlay
+         * @param stay     bossbar stay time in ticks (if -1 won't be removed)
          * @return this builder
          */
-        @Contract("_, _, _, _, _, _, _ -> this")
-        public Builder bossBar(@NotNull RawComponent name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
+        @Contract("_, _, _, _, _, _ -> this")
+        public Builder bossBar(@NotNull RawComponent name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay) {
             return this.addHolders(BossBarHolder.builder(name)
                     .progress(progress)
                     .color(color)
                     .overlay(overlay)
                     .addFlags(flags)
-                    .stay(scheduler, stay)
+                    .stay(stay)
                     .build());
         }
 
@@ -210,17 +204,16 @@ public class SendableMessage implements Sendable {
          * Parse raw bossbar message using MiniMessage and add it's to the message.<br>
          * Requires <a href="https://docs.adventure.kyori.net/minimessage/">MiniMessage</a> to be in runtime.
          *
-         * @param name      bossbar name
-         * @param progress  bossbar progress (0-1)
-         * @param color     bossbar color
-         * @param overlay   bossbar overlay
-         * @param stay      bossbar stay time in ticks (if -1 won't be removed)
-         * @param scheduler to remove bossbar after specific time (if null bossbar won't be removed)
+         * @param name     bossbar name
+         * @param progress bossbar progress (0-1)
+         * @param color    bossbar color
+         * @param overlay  bossbar overlay
+         * @param stay     bossbar stay time in ticks (if -1 won't be removed)
          * @return this builder
          */
-        @Contract("_, _, _, _, _, _, _ -> this")
-        public Builder bossBar(@NotNull String name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, @Nullable SchedulerWrapper scheduler) {
-            return this.bossBar(MiniComponent.ofLegacy(name), progress, color, overlay, flags, stay, scheduler);
+        @Contract("_, _, _, _, _, _, -> this")
+        public Builder bossBar(@NotNull String name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay) {
+            return this.bossBar(MiniComponent.ofLegacy(name), progress, color, overlay, flags, stay);
         }
 
         /**

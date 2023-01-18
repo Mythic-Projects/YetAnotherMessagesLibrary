@@ -6,12 +6,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import pl.peridot.yetanothermessageslibrary.adventure.AudienceSupplier;
+import pl.peridot.yetanothermessageslibrary.viewer.Viewer;
+import pl.peridot.yetanothermessageslibrary.viewer.ViewerService;
 
 public class BukkitMessageDispatcher<D extends BukkitMessageDispatcher<D>> extends MessageDispatcher<CommandSender, D> {
 
-    public BukkitMessageDispatcher(@NotNull AudienceSupplier<CommandSender> audienceSupplier, @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
-        super(audienceSupplier, localeSupplier, messageSupplier);
+    public BukkitMessageDispatcher(@NotNull ViewerService<CommandSender, Viewer> viewerService, @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
+        super(viewerService, localeSupplier, messageSupplier);
     }
 
     public D broadcast() {
