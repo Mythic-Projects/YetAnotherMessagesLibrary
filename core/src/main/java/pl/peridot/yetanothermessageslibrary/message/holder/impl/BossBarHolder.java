@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.adventure.MiniComponent;
 import pl.peridot.yetanothermessageslibrary.adventure.RawComponent;
-import pl.peridot.yetanothermessageslibrary.message.SendableMessage;
 import pl.peridot.yetanothermessageslibrary.message.holder.SendableHolder;
 import pl.peridot.yetanothermessageslibrary.replace.ComponentReplacer;
 import pl.peridot.yetanothermessageslibrary.replace.Replaceable;
@@ -19,17 +18,21 @@ import pl.peridot.yetanothermessageslibrary.viewer.Viewer;
 public class BossBarHolder extends SendableHolder {
 
     private final RawComponent name;
+
     private final float progress;
     private final BossBar.Color color;
     private final BossBar.Overlay overlay;
     private final Set<BossBar.Flag> flags = new HashSet<>();
     private final int stay;
 
-    public BossBarHolder(@NotNull RawComponent name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay) {
+    private final boolean clearOtherBars;
+
+    public BossBarHolder(@NotNull RawComponent name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay, boolean clearOtherBars) {
         this.name = name;
         this.progress = progress;
         this.color = color;
         this.overlay = overlay;
+        this.clearOtherBars = clearOtherBars;
         this.flags.addAll(flags);
         this.stay = stay;
     }
@@ -58,6 +61,10 @@ public class BossBarHolder extends SendableHolder {
         return this.stay;
     }
 
+    public boolean clearOtherBars() {
+        return this.clearOtherBars;
+    }
+
     public @NotNull BossBar prepareBossBar(@Nullable Locale locale, @NotNull Replaceable... replacements) {
         return BossBar.bossBar(ComponentReplacer.replace(locale, this.name, replacements), this.progress, this.color, this.overlay);
     }
@@ -65,15 +72,10 @@ public class BossBarHolder extends SendableHolder {
     @Override
     public void send(@Nullable Locale locale, @NotNull Viewer viewer, @NotNull Replaceable... replacements) {
         BossBar bossBar = this.prepareBossBar(locale, replacements);
+        if (this.clearOtherBars) {
+            viewer.clearBossBars();
+        }
         viewer.sendBossBar(bossBar, this.stay);
-    }
-
-    public static @NotNull SendableMessage message(@NotNull RawComponent name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay) {
-        return SendableMessage.of(new BossBarHolder(name, progress, color, overlay, flags, stay));
-    }
-
-    public static @NotNull SendableMessage message(@NotNull String name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay) {
-        return SendableMessage.of(new BossBarHolder(MiniComponent.of(name), progress, color, overlay, flags, stay));
     }
 
     public static @NotNull Builder builder(@NotNull RawComponent name) {
@@ -94,6 +96,8 @@ public class BossBarHolder extends SendableHolder {
         private final Set<BossBar.Flag> flags = new HashSet<>();
 
         private int stay = -1;
+
+        private boolean clearOtherBars = false;
 
         private Builder(@NotNull RawComponent name) {
             this.name = name;
@@ -138,8 +142,14 @@ public class BossBarHolder extends SendableHolder {
             return this;
         }
 
+        @Contract("_ -> this")
+        public Builder clearOtherBars(boolean clearOtherBars) {
+            this.clearOtherBars = clearOtherBars;
+            return this;
+        }
+
         public @NotNull BossBarHolder build() {
-            return new BossBarHolder(this.name, this.progress, this.color, this.overlay, this.flags, this.stay);
+            return new BossBarHolder(this.name, this.progress, this.color, this.overlay, this.flags, this.stay, this.clearOtherBars);
         }
 
     }

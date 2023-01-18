@@ -33,6 +33,10 @@ public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> 
         if (holder.getStay() >= 0) {
             data.add("stay", holder.getStay());
         }
+
+        if (holder.clearOtherBars()) {
+            data.add("clear-other-bars", true);
+        }
     }
 
     @Override
@@ -43,6 +47,7 @@ public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> 
                 .overlay(data.containsKey("overlay") ? data.get("overlay", BossBar.Overlay.class) : BossBar.Overlay.PROGRESS)
                 .addFlags(data.containsKey("flags") ? data.getAsList("flags", BossBar.Flag.class) : new HashSet<>())
                 .stay(data.containsKey("stay") ? data.get("stay", int.class) : -1)
+                .clearOtherBars(data.containsKey("clear-other-bars") && data.get("clear-other-bars", boolean.class))
                 .build();
     }
 
