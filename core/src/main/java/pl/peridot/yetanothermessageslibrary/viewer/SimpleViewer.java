@@ -59,15 +59,18 @@ public class SimpleViewer implements Viewer {
         }
 
         this.schedule.accept(() -> {
-            this.audience.hideBossBar(bossBar);
-            this.bossBars.remove(bossBar);
+            if (this.bossBars.remove(bossBar)) {
+                this.audience.hideBossBar(bossBar);
+            }
         }, stay);
     }
 
     @Override
     public void clearBossBars() {
-        this.bossBars.forEach(this.audience::hideBossBar);
-        this.bossBars.clear();
+        for (BossBar bossBar : this.bossBars) {
+            this.audience.hideBossBar(bossBar);
+            this.bossBars.remove(bossBar);
+        }
     }
 
     @Override
