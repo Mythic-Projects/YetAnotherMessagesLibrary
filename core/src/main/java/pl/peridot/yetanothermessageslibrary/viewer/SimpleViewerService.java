@@ -14,7 +14,7 @@ public class SimpleViewerService<R, K, V extends SimpleViewer> implements Viewer
 
     private final Map<K, V> viewers = new ConcurrentHashMap<>();
 
-    protected SimpleViewerService(
+    public SimpleViewerService(
             @NotNull ViewerDataSupplier<R, K> viewerDataSupplier,
             @NotNull ViewerFactory<R, V> viewerFactory,
             @NotNull SchedulerWrapper schedulerWrapper
