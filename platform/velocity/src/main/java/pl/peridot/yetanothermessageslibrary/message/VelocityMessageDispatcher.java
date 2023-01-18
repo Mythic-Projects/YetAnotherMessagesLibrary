@@ -10,7 +10,11 @@ import pl.peridot.yetanothermessageslibrary.viewer.ViewerService;
 
 public class VelocityMessageDispatcher<D extends VelocityMessageDispatcher<D>> extends MessageDispatcher<CommandSource, D> {
 
-    public VelocityMessageDispatcher(@NotNull ViewerService<CommandSource, Viewer> viewerService, @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
+    public VelocityMessageDispatcher(
+            @NotNull ViewerService<CommandSource, ? extends Viewer> viewerService,
+            @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier,
+            @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier
+    ) {
         super(viewerService, localeSupplier, messageSupplier);
     }
 

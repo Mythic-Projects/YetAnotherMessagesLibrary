@@ -22,7 +22,7 @@ public interface SendableMessageService<R, C extends MessageRepository, D extend
                 .sendTo(receiver);
     }
 
-    @NotNull ViewerService<R, Viewer> getViewerService();
+    @NotNull ViewerService<R, ? extends Viewer> getViewerService();
 
     @NotNull MessageDispatcherFactory<R, D> getDispatcherFactory();
 

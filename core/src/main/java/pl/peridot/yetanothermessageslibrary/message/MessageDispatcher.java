@@ -20,7 +20,7 @@ import pl.peridot.yetanothermessageslibrary.viewer.ViewerService;
 @SuppressWarnings("unchecked")
 public class MessageDispatcher<R, D extends MessageDispatcher<R, D>> {
 
-    private final ViewerService<R, Viewer> viewerService;
+    private final ViewerService<R, ? extends Viewer> viewerService;
     private final Function<Object, Locale> localeSupplier;
     private final Function<Object, Sendable> messageSupplier;
 
@@ -32,7 +32,7 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, D>> {
     private final List<TypedReplaceableSupplier> replacementsSuppliers = new ArrayList<>();
 
     public MessageDispatcher(
-            @NotNull ViewerService<R, Viewer> viewerService,
+            @NotNull ViewerService<R, ? extends Viewer> viewerService,
             @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier,
             @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier
     ) {

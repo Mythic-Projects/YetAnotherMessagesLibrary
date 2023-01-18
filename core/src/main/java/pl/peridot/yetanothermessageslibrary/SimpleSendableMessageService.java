@@ -8,11 +8,11 @@ import pl.peridot.yetanothermessageslibrary.viewer.ViewerService;
 
 public abstract class SimpleSendableMessageService<R, C extends MessageRepository, D extends MessageDispatcher<R, D>> extends SimpleMessageService<C> implements SendableMessageService<R, C, D> {
 
-    private final ViewerService<R, Viewer> viewerService;
+    private final ViewerService<R, ? extends Viewer> viewerService;
     private final MessageDispatcherFactory<R, D> dispatcherFactory;
 
     public SimpleSendableMessageService(
-            @NotNull ViewerService<R, Viewer> viewerService,
+            @NotNull ViewerService<R, ? extends Viewer> viewerService,
             @NotNull MessageDispatcherFactory<R, D> dispatcherFactory
     ) {
         this.viewerService = viewerService;
@@ -20,7 +20,7 @@ public abstract class SimpleSendableMessageService<R, C extends MessageRepositor
     }
 
     @Override
-    public @NotNull ViewerService<R, Viewer> getViewerService() {
+    public @NotNull ViewerService<R, ? extends Viewer> getViewerService() {
         return this.viewerService;
     }
 

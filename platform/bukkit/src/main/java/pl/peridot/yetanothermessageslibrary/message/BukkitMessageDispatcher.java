@@ -11,7 +11,11 @@ import pl.peridot.yetanothermessageslibrary.viewer.ViewerService;
 
 public class BukkitMessageDispatcher<D extends BukkitMessageDispatcher<D>> extends MessageDispatcher<CommandSender, D> {
 
-    public BukkitMessageDispatcher(@NotNull ViewerService<CommandSender, Viewer> viewerService, @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier, @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier) {
+    public BukkitMessageDispatcher(
+            @NotNull ViewerService<CommandSender, ? extends Viewer> viewerService,
+            @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier,
+            @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier
+    ) {
         super(viewerService, localeSupplier, messageSupplier);
     }
 
