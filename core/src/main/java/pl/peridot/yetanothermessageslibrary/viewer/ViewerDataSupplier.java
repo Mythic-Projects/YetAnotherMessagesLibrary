@@ -10,6 +10,12 @@ public interface ViewerDataSupplier<R, K> {
 
     boolean isConsole(@NotNull R receiver);
 
+    /**
+     * Get unique key for receiver used to cache viewers, if null is returned viewer won't be cached
+     *
+     * @param receiver receiver
+     * @return unique key
+     */
     @Nullable K getKey(@NotNull R receiver);
 
 }

@@ -10,4 +10,18 @@ public interface LocaleProvider<T> {
 
     @Nullable Locale getLocale(@NotNull T entity);
 
+    static <R> LocaleProvider<R> staticProvider(@NotNull Locale locale) {
+        return new LocaleProvider<R>() {
+            @Override
+            public boolean supports(@NotNull Class<?> clazz) {
+                return true;
+            }
+
+            @Override
+            public @NotNull Locale getLocale(@NotNull R entity) {
+                return locale;
+            }
+        };
+    }
+
 }
