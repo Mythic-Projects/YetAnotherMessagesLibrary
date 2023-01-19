@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.peridot.yetanothermessageslibrary.util.SchedulerWrapper;
 
 public class SimpleViewerService<R, K, V extends SimpleViewer> implements ViewerService<R, V> {
@@ -40,10 +41,10 @@ public class SimpleViewerService<R, K, V extends SimpleViewer> implements Viewer
     }
 
     @Override
-    public void removeViewer(@NotNull R receiver) {
+    public @Nullable V removeViewer(@NotNull R receiver) {
         K key = this.viewerDataSupplier.getKey(receiver);
         if (key == null) {
-            return;
+            return null;
         }
 
         V remove = this.viewers.remove(key);
@@ -51,10 +52,12 @@ public class SimpleViewerService<R, K, V extends SimpleViewer> implements Viewer
             remove.clearBossBars();
             remove.stopSounds();
         }
+        return remove;
     }
 
     private void schedule(Runnable runnable, int delay) {
         this.schedulerWrapper.runTaskLater(runnable, delay);
     }
+
 
 }

@@ -19,12 +19,13 @@ public class SimpleViewer implements Viewer {
     private final Set<BossBar> bossBars = ConcurrentHashMap.newKeySet();
     private final BiConsumer<Runnable, Integer> schedule;
 
-    public SimpleViewer(Audience audience, boolean console, BiConsumer<Runnable, Integer> schedule) {
+    public SimpleViewer(@NotNull Audience audience, boolean console, @NotNull BiConsumer<Runnable, Integer> schedule) {
         this.audience = audience;
         this.console = console;
         this.schedule = schedule;
     }
 
+    @NotNull
     public Audience getAudience() {
         return this.audience;
     }
