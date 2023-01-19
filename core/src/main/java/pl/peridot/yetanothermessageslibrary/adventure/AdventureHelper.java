@@ -37,12 +37,6 @@ public class AdventureHelper {
         this.put("&n", "<underlined>");
         this.put("&o", "<i>");
         this.put("&r", "<r>");
-        this.put("/&k", "</obf>");
-        this.put("/&l", "</b>");
-        this.put("/&m", "</st>");
-        this.put("/&n", "</underlined>");
-        this.put("/&o", "</i>");
-        this.put("/&r", "</r>");
     }};
     private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("&(#[a-fA-F0-9]{6})");
 
