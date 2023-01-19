@@ -63,16 +63,14 @@ subprojects {
             }
         }
 
-        String repo = project.version.endsWith('SNAPSHOT') ? 'snapshots' : 'releases'
-
         repositories {
             maven {
-                name repo
-                url "https://repo.titanvale.net/${repo}"
+                name "titanvale-repo"
+                url "https://repo.titanvale.net/${version.toString().endsWith('SNAPSHOT') ? 'snapshots' : 'releases'}"
 
-                credentials(PasswordCredentials)
-                authentication {
-                    basic(BasicAuthentication)
+                credentials {
+                    username = System.getenv("MAVEN_NAME")
+                    password = System.getenv("MAVEN_TOKEN")
                 }
             }
         }
