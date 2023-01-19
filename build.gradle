@@ -63,22 +63,12 @@ subprojects {
             }
         }
 
-        repositories {
-            maven {
-                name "releases"
-                url "https://repo.titanvale.net/releases"
-
-                credentials(PasswordCredentials)
-                authentication {
-                    basic(BasicAuthentication)
-                }
-            }
-        }
+        String repo = project.version.endsWith('SNAPSHOT') ? 'snapshots' : 'releases'
 
         repositories {
             maven {
-                name "snapshots"
-                url "https://repo.titanvale.net/snapshots"
+                name repo
+                url "https://repo.titanvale.net/${repo}"
 
                 credentials(PasswordCredentials)
                 authentication {
