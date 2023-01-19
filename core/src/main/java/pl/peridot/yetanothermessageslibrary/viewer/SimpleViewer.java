@@ -17,9 +17,9 @@ public class SimpleViewer implements Viewer {
     private final Audience audience;
     private final boolean console;
     private final Set<BossBar> bossBars = ConcurrentHashMap.newKeySet();
-    private final BiConsumer<Runnable, Integer> schedule;
+    private final BiConsumer<Runnable, Long> schedule;
 
-    public SimpleViewer(@NotNull Audience audience, boolean console, @NotNull BiConsumer<Runnable, Integer> schedule) {
+    public SimpleViewer(@NotNull Audience audience, boolean console, @NotNull BiConsumer<Runnable, Long> schedule) {
         this.audience = audience;
         this.console = console;
         this.schedule = schedule;
@@ -51,7 +51,7 @@ public class SimpleViewer implements Viewer {
     }
 
     @Override
-    public void sendBossBar(@NotNull BossBar bossBar, int stay) {
+    public void sendBossBar(@NotNull BossBar bossBar, long stay) {
         this.audience.showBossBar(bossBar);
         this.bossBars.add(bossBar);
 
@@ -63,7 +63,7 @@ public class SimpleViewer implements Viewer {
             if (this.bossBars.remove(bossBar)) {
                 this.audience.hideBossBar(bossBar);
             }
-        }, stay);
+        }, (long) stay);
     }
 
     @Override

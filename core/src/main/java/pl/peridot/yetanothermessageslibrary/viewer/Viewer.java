@@ -17,7 +17,7 @@ public interface Viewer {
 
     void sendTitle(@NotNull Title title);
 
-    void sendBossBar(@NotNull BossBar bossBar, int stay);
+    void sendBossBar(@NotNull BossBar bossBar, long stay);
 
     void clearBossBars();
 
