@@ -42,8 +42,9 @@ Implementations of `Replaceable` interface to easily replace for e.g. placeholde
 ```
 
 ```xml
+
 <dependency>
-    <groupId>pl.peridot.yetanothermessageslibrary</groupId>
+    <groupId>dev.peri.yetanothermessageslibrary</groupId>
     <artifactId>[module]</artifactId>
     <version>[version]</version>
 </dependency>
@@ -67,6 +68,6 @@ repositories {
 
 ```groovy
 dependencies {
-    implementation 'pl.peridot.yetanothermessageslibrary:[module]:[version]'
+    implementation 'dev.peri.yetanothermessageslibrary:[module]:[version]'
 }
 ```
