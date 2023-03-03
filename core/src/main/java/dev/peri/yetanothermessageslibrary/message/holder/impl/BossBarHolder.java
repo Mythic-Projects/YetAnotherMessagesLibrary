@@ -78,6 +78,19 @@ public class BossBarHolder extends SendableHolder {
         viewer.sendBossBar(bossBar, this.stay);
     }
 
+    @Override
+    public @NotNull SendableHolder copy(@NotNull Replaceable... replacements) {
+        return new BossBarHolder(
+                ComponentReplacer.replaceRaw(this.name, replacements),
+                this.progress,
+                this.color,
+                this.overlay,
+                this.flags,
+                this.stay,
+                this.clearOtherBars
+        );
+    }
+
     public static @NotNull Builder builder(@NotNull RawComponent name) {
         return new Builder(name);
     }

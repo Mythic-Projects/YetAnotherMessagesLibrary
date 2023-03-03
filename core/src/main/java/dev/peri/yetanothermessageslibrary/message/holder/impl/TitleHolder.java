@@ -52,6 +52,15 @@ public class TitleHolder extends SendableHolder {
         viewer.sendTitle(this.prepareTitle(locale, replacements));
     }
 
+    @Override
+    public @NotNull SendableHolder copy(@NotNull Replaceable... replacements) {
+        return new TitleHolder(
+                ComponentReplacer.replaceRaw(this.title, replacements),
+                ComponentReplacer.replaceRaw(this.subTitle, replacements),
+                this.times
+        );
+    }
+
     public static @NotNull SendableMessage message(@NotNull RawComponent title, @NotNull RawComponent subTitle, int fadeIn, int stay, int fadeOut) {
         return SendableMessage.of(new TitleHolder(title, subTitle, TitleHolder.times(fadeIn, stay, fadeOut)));
     }

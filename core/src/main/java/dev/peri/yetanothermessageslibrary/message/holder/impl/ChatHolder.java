@@ -51,6 +51,14 @@ public class ChatHolder extends SendableHolder {
         viewer.sendChatMessage(finalMessage);
     }
 
+    @Override
+    public @NotNull SendableHolder copy(@NotNull Replaceable... replacements) {
+        List<RawComponent> finalMessages = this.messages.stream()
+                .map(message -> ComponentReplacer.replaceRaw(message, replacements))
+                .collect(Collectors.toList());
+        return new ChatHolder(this.onlyConsole, finalMessages);
+    }
+
     public static @NotNull SendableMessage message(@NotNull RawComponent... messages) {
         return SendableMessage.of(new ChatHolder(false, messages));
     }

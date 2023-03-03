@@ -34,4 +34,9 @@ public class SoundHolder extends SendableHolder {
         viewer.sendSound(this.sound);
     }
 
+    @Override
+    public @NotNull SendableHolder copy(@NotNull Replaceable... replacements) {
+        return new SoundHolder(this.sound, this.stopOtherSounds);
+    }
+
 }

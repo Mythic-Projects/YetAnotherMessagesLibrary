@@ -39,4 +39,15 @@ public final class ComponentReplacer {
         return replace(null, text, replacements);
     }
 
+    @Contract(pure = true)
+    public static @NotNull RawComponent replaceRaw(@NotNull RawComponent text, @NotNull Replaceable... replacements) {
+        String rawText = text.getRaw();
+        Component rawComponent = text.getComponent();
+
+        return new RawComponent(
+                StringReplacer.replace(rawText, replacements),
+                ComponentReplacer.replace(rawComponent, replacements)
+        );
+    }
+
 }

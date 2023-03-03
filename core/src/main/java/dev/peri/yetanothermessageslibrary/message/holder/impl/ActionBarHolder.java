@@ -28,6 +28,11 @@ public class ActionBarHolder extends SendableHolder {
         viewer.sendActionBar(ComponentReplacer.replace(locale, this.message, replacements));
     }
 
+    @Override
+    public @NotNull SendableHolder copy(@NotNull Replaceable... replacements) {
+        return new ActionBarHolder(ComponentReplacer.replaceRaw(this.message, replacements));
+    }
+
     public static @NotNull SendableMessage message(@NotNull RawComponent message) {
         return SendableMessage.of(new ActionBarHolder(message));
     }
