@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BukkitLocaleHelper {
+public final class BukkitLocaleHelper {
 
     private static Method GET_LOCALE_SPIGOT;
 
@@ -16,6 +16,9 @@ public class BukkitLocaleHelper {
         } catch (NoSuchMethodException e) {
             GET_LOCALE_SPIGOT = null;
         }
+    }
+
+    private BukkitLocaleHelper() {
     }
 
     public @Nullable static String getLocaleString(@NotNull Player player) {
