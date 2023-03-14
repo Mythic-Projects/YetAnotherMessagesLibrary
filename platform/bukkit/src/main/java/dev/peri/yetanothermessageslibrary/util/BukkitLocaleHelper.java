@@ -1,6 +1,7 @@
 package dev.peri.yetanothermessageslibrary.util;
 
 import java.lang.reflect.Method;
+import java.util.Locale;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +29,16 @@ public class BukkitLocaleHelper {
         }
 
         return player.getLocale();
+    }
+
+    public @Nullable static Locale getLocale(@NotNull Player player) {
+        String localeString = getLocaleString(player);
+        if (localeString == null) {
+            return null;
+        }
+
+        localeString = localeString.replace('_', '-');
+        return Locale.forLanguageTag(localeString);
     }
 
 }

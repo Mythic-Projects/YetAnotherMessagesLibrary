@@ -15,13 +15,7 @@ public class BukkitPlayerLocaleProvider implements LocaleProvider<Player> {
 
     @Override
     public @Nullable Locale getLocale(@NotNull Player entity) {
-        String localeString = BukkitLocaleHelper.getLocaleString(entity);
-        if (localeString == null) {
-            return null;
-        }
-
-        localeString = localeString.replace('_', '-');
-        return Locale.forLanguageTag(localeString);
+       return BukkitLocaleHelper.getLocale(entity);
     }
 
 }
