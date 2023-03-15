@@ -18,19 +18,19 @@ public class VelocityMessageDispatcher<D extends VelocityMessageDispatcher<?>> e
         super(viewerService, localeSupplier, messageSupplier);
     }
 
-    public D broadcast(@NotNull ProxyServer proxyServer) {
-        this.broadcastPlayers(proxyServer);
-        this.console(proxyServer);
+    public D broadcast(@NotNull ProxyServer proxy) {
+        this.broadcastPlayers(proxy);
+        this.console(proxy);
         return (D) this;
     }
 
-    public D broadcastPlayers(@NotNull ProxyServer proxyServer) {
-        proxyServer.getAllPlayers().forEach(this::receiver);
+    public D broadcastPlayers(@NotNull ProxyServer proxy) {
+        proxy.getAllPlayers().forEach(this::receiver);
         return (D) this;
     }
 
-    public D console(@NotNull ProxyServer proxyServer) {
-        this.receiver(proxyServer.getConsoleCommandSource());
+    public D console(@NotNull ProxyServer proxy) {
+        this.receiver(proxy.getConsoleCommandSource());
         return (D) this;
     }
 
