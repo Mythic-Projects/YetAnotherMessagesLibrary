@@ -39,6 +39,10 @@ public abstract class SimpleMessageService<C extends MessageRepository> implemen
         this.localeProviders.add(localeProvider);
     }
 
+    public Map<Locale, C> getMessageRepositories() {
+        return new LinkedHashMap<>(this.messageRepositories);
+    }
+
     @Override
     public @NotNull C getRepository(@NotNull Locale locale) {
         C messageRepository = this.messageRepositories.get(locale);
@@ -56,10 +60,6 @@ public abstract class SimpleMessageService<C extends MessageRepository> implemen
         }
 
         return messageRepository;
-    }
-
-    public Map<Locale, C> getMessageRepositories() {
-        return new LinkedHashMap<>(this.messageRepositories);
     }
 
     public void registerRepository(@NotNull Locale locale, @NotNull C messageRepository) {

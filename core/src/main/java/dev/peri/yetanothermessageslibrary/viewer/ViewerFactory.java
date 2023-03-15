@@ -1,10 +1,15 @@
 package dev.peri.yetanothermessageslibrary.viewer;
 
+import java.util.function.BiConsumer;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 
-public interface ViewerFactory<R, V extends Viewer> {
+public interface ViewerFactory<R> {
 
-    @NotNull V createViewer(@NotNull R receiver, @NotNull Audience audience, boolean console);
+    @NotNull Viewer createViewer(@NotNull R receiver, @NotNull Audience audience, boolean console);
+
+    static <R> ViewerFactory<R> create(@NotNull BiConsumer<Runnable, Long> schedule) {
+        return (receiver, audience, console) -> new Viewer(audience, console, schedule);
+    }
 
 }

@@ -1,10 +1,11 @@
 package dev.peri.yetanothermessageslibrary.viewer;
 
+import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface ViewerDataSupplier<R, K> {
+public interface ViewerDataSupplier<R> {
 
     @NotNull Audience getAudience(@NotNull R receiver);
 
@@ -16,6 +17,6 @@ public interface ViewerDataSupplier<R, K> {
      * @param receiver receiver
      * @return unique key
      */
-    @Nullable K getKey(@NotNull R receiver);
+    @Nullable UUID getKey(@NotNull R receiver);
 
 }

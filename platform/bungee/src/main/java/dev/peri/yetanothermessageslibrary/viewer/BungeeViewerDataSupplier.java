@@ -8,7 +8,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BungeeViewerDataSupplier implements ViewerDataSupplier<CommandSender, UUID> {
+public class BungeeViewerDataSupplier implements ViewerDataSupplier<CommandSender> {
 
     private final BungeeAudiences adventure;
 

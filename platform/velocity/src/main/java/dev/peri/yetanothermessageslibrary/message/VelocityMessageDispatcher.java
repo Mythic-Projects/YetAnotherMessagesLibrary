@@ -1,21 +1,37 @@
 package dev.peri.yetanothermessageslibrary.message;
 
 import com.velocitypowered.api.command.CommandSource;
-import dev.peri.yetanothermessageslibrary.viewer.Viewer;
+import com.velocitypowered.api.proxy.ProxyServer;
 import dev.peri.yetanothermessageslibrary.viewer.ViewerService;
 import java.util.Locale;
 import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class VelocityMessageDispatcher<D extends VelocityMessageDispatcher<D>> extends MessageDispatcher<CommandSource, D> {
+public class VelocityMessageDispatcher<D extends VelocityMessageDispatcher<?>> extends MessageDispatcher<CommandSource, D> {
 
     public VelocityMessageDispatcher(
-            @NotNull ViewerService<CommandSource, ? extends Viewer> viewerService,
+            @NotNull ViewerService<CommandSource> viewerService,
             @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier,
             @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier
     ) {
         super(viewerService, localeSupplier, messageSupplier);
+    }
+
+    public D broadcast(@NotNull ProxyServer proxy) {
+        this.broadcastPlayers(proxy);
+        this.console(proxy);
+        return (D) this;
+    }
+
+    public D broadcastPlayers(@NotNull ProxyServer proxy) {
+        proxy.getAllPlayers().forEach(this::receiver);
+        return (D) this;
+    }
+
+    public D console(@NotNull ProxyServer proxy) {
+        this.receiver(proxy.getConsoleCommandSource());
+        return (D) this;
     }
 
     public D permission(@NotNull String permission) {

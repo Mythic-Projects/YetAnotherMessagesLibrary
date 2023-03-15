@@ -1,6 +1,5 @@
 package dev.peri.yetanothermessageslibrary.message;
 
-import dev.peri.yetanothermessageslibrary.viewer.Viewer;
 import dev.peri.yetanothermessageslibrary.viewer.ViewerService;
 import java.util.Locale;
 import java.util.function.Function;
@@ -9,10 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BukkitMessageDispatcher<D extends BukkitMessageDispatcher<D>> extends MessageDispatcher<CommandSender, D> {
+public class BukkitMessageDispatcher<D extends BukkitMessageDispatcher<?>> extends MessageDispatcher<CommandSender, D> {
 
     public BukkitMessageDispatcher(
-            @NotNull ViewerService<CommandSender, ? extends Viewer> viewerService,
+            @NotNull ViewerService<CommandSender> viewerService,
             @NotNull Function<@Nullable Object, @NotNull Locale> localeSupplier,
             @NotNull Function<@Nullable Object, @Nullable Sendable> messageSupplier
     ) {

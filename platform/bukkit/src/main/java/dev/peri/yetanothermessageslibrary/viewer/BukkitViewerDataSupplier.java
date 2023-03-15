@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BukkitViewerDataSupplier implements ViewerDataSupplier<CommandSender, UUID> {
+public class BukkitViewerDataSupplier implements ViewerDataSupplier<CommandSender> {
 
     private final BukkitAudiences adventure;
 
