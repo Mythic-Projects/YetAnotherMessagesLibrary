@@ -3,12 +3,14 @@ package dev.peri.yetanothermessageslibrary;
 import dev.peri.yetanothermessageslibrary.locale.LocaleProvider;
 import dev.peri.yetanothermessageslibrary.util.Validate;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 public abstract class SimpleMessageService<C extends MessageRepository> implements MessageService<C> {
 
@@ -21,11 +23,13 @@ public abstract class SimpleMessageService<C extends MessageRepository> implemen
         return this.defaultLocale;
     }
 
+    @Override
     public void setDefaultLocale(@NotNull Locale defaultLocale) {
         Validate.notNull(defaultLocale, "Default locale cannot be null");
         this.defaultLocale = defaultLocale;
     }
 
+    @Override
     public @Nullable LocaleProvider getLocaleProvider(@NotNull Class<?> entityType) {
         return this.localeProviders
                 .stream()
@@ -34,13 +38,15 @@ public abstract class SimpleMessageService<C extends MessageRepository> implemen
                 .orElse(null);
     }
 
+    @Override
     public void registerLocaleProvider(@NotNull LocaleProvider<?> localeProvider) {
         Validate.notNull(localeProvider, "Locale provider cannot be null");
         this.localeProviders.add(localeProvider);
     }
 
-    public Map<Locale, C> getMessageRepositories() {
-        return new LinkedHashMap<>(this.messageRepositories);
+    @Override
+    public @NotNull @Unmodifiable Map<Locale, C> getMessageRepositories() {
+        return Collections.unmodifiableMap(this.messageRepositories);
     }
 
     @Override
@@ -62,6 +68,7 @@ public abstract class SimpleMessageService<C extends MessageRepository> implemen
         return messageRepository;
     }
 
+    @Override
     public void registerRepository(@NotNull Locale locale, @NotNull C messageRepository) {
         Validate.notNull(locale, "Locale cannot be null");
         Validate.notNull(messageRepository, "Message repository cannot be null");

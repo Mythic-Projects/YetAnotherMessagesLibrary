@@ -5,9 +5,11 @@ import dev.peri.yetanothermessageslibrary.replace.Replaceable;
 import dev.peri.yetanothermessageslibrary.replace.StringReplacer;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 public interface MessageService<C extends MessageRepository> {
 
@@ -76,11 +78,49 @@ public interface MessageService<C extends MessageRepository> {
         return StringReplacer.replace(locale, stringList, replacements);
     }
 
+    /**
+     * Set default locale that will be used if:
+     * <ul>
+     *     <li>entity is null</li>
+     *     <li>no {@link LocaleProvider} is registered for entity type</li>
+     *     <li>no {@link MessageRepository} is found for entity locale</li>
+     * </ul>
+     *
+     * @return default locale
+     */
     @NotNull Locale getDefaultLocale();
 
+    /**
+     * Set default locale as fallback - {@link #getDefaultLocale()}
+     *
+     * @param defaultLocale default locale
+     */
+    void setDefaultLocale(@NotNull Locale defaultLocale);
+
+    /**
+     * Get {@link LocaleProvider} for entity type
+     *
+     * @param entityType entity type
+     * @return {@link LocaleProvider} or null if not found
+     */
     @SuppressWarnings("rawtypes")
     @Nullable LocaleProvider getLocaleProvider(@NotNull Class<?> entityType);
 
+    /**
+     * Register {@link LocaleProvider} for entity type
+     *
+     * @param localeProvider {@link LocaleProvider}
+     */
+    void registerLocaleProvider(@NotNull LocaleProvider<?> localeProvider);
+
+    /**
+     * Get locale for entity
+     *
+     * @param entity entity to find locale for using registered {@link LocaleProvider}
+     *               use default locale if entity is null or no {@link LocaleProvider} is registered
+     *               can be {@link Locale} if you want to use specific locale
+     * @return locale
+     */
     @SuppressWarnings("unchecked")
     default @NotNull Locale getLocale(@Nullable Object entity) {
         if (entity == null) {
@@ -103,6 +143,38 @@ public interface MessageService<C extends MessageRepository> {
         return locale;
     }
 
+    /**
+     * Get all registered message repositories in unmodifiable map
+     *
+     * @return message repositories
+     */
+    @NotNull @Unmodifiable Map<Locale, C> getMessageRepositories();
+
+    /**
+     * Get message repository for locale
+     *
+     * @param locale locale
+     * @return message repository
+     */
     @NotNull C getRepository(@NotNull Locale locale);
+
+    /**
+     * Register message repository for locale
+     *
+     * @param locale            locale
+     * @param messageRepository message repository
+     */
+    void registerRepository(@NotNull Locale locale, @NotNull C messageRepository);
+
+    /**
+     * Register message repository for locale and set it as default
+     *
+     * @param defaultLocale     default locale
+     * @param messageRepository message repository
+     */
+    default void registerDefaultRepository(@NotNull Locale defaultLocale, @NotNull C messageRepository) {
+        this.setDefaultLocale(defaultLocale);
+        this.registerRepository(defaultLocale, messageRepository);
+    }
 
 }

@@ -19,7 +19,7 @@ public class VelocityMessageService<C extends MessageRepository> extends SimpleS
         );
     }
 
-    public VelocityMessageService(@NotNull ProxyServer proxyServer,  @NotNull Object plugin) {
+    public VelocityMessageService(@NotNull ProxyServer proxyServer, @NotNull Object plugin) {
         this(new ViewerService<>(
                 new VelocityViewerDataSupplier(),
                 ViewerFactory.create(wrapScheduler(proxyServer, plugin))
