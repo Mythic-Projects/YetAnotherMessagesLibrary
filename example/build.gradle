@@ -2,11 +2,6 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
-project.afterEvaluate {
-    project.tasks.generatePomFileForLibrariesPublication.enabled = false
-    project.tasks.publish.enabled = false
-}
-
 repositories {
     mavenCentral()
     maven { url "https://repo.titanvale.net/releases" }
