@@ -5,7 +5,7 @@ plugins {
 
 allprojects {
     group 'dev.peri.yetanothermessageslibrary'
-    version '6.3.0'
+    version '6.3.1'
 
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
