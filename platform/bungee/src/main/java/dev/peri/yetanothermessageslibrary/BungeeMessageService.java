@@ -2,7 +2,7 @@ package dev.peri.yetanothermessageslibrary;
 
 import dev.peri.yetanothermessageslibrary.message.BungeeMessageDispatcher;
 import dev.peri.yetanothermessageslibrary.viewer.BungeeViewerDataSupplier;
-import dev.peri.yetanothermessageslibrary.viewer.Viewer;
+import dev.peri.yetanothermessageslibrary.viewer.ViewerFactory;
 import dev.peri.yetanothermessageslibrary.viewer.ViewerService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
@@ -23,7 +23,7 @@ public class BungeeMessageService<C extends MessageRepository> extends SimpleSen
     public BungeeMessageService(@NotNull Plugin plugin, @NotNull BungeeAudiences adventure) {
         this(new ViewerService<>(
                 new BungeeViewerDataSupplier(adventure),
-                (receiver, audience, console) -> new Viewer(audience, console, wrapScheduler(plugin))
+                ViewerFactory.create( wrapScheduler(plugin))
         ));
     }
 

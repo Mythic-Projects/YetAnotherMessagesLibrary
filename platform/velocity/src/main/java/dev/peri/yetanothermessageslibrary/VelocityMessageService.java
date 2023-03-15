@@ -4,7 +4,7 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.ProxyServer;
 import dev.peri.yetanothermessageslibrary.message.VelocityMessageDispatcher;
 import dev.peri.yetanothermessageslibrary.viewer.VelocityViewerDataSupplier;
-import dev.peri.yetanothermessageslibrary.viewer.Viewer;
+import dev.peri.yetanothermessageslibrary.viewer.ViewerFactory;
 import dev.peri.yetanothermessageslibrary.viewer.ViewerService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
@@ -22,7 +22,7 @@ public class VelocityMessageService<C extends MessageRepository> extends SimpleS
     public VelocityMessageService(@NotNull ProxyServer proxyServer,  @NotNull Object plugin) {
         this(new ViewerService<>(
                 new VelocityViewerDataSupplier(),
-                (receiver, audience, console) -> new Viewer(audience, console, wrapScheduler(proxyServer, plugin))
+                ViewerFactory.create(wrapScheduler(proxyServer, plugin))
         ));
     }
 
