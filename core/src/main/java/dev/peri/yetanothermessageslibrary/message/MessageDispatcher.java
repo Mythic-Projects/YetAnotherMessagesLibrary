@@ -61,6 +61,16 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
         return (D) this;
     }
 
+    public <T> D predicate(@NotNull Class<T> requiredType, @NotNull Predicate<@NotNull T> predicate) {
+        this.predicates.add(receiver -> {
+            if (!requiredType.isInstance(receiver)) {
+                return false;
+            }
+            return predicate.test(requiredType.cast(receiver));
+        });
+        return (D) this;
+    }
+
     public D with(@NotNull Replaceable replacement) {
         this.replacements.add(replacement);
         return (D) this;
