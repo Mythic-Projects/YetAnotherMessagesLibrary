@@ -26,7 +26,7 @@ public class VelocityMessageService<C extends MessageRepository> extends SimpleS
         ));
     }
 
-    private static BiConsumer<Runnable, Long> wrapScheduler(ProxyServer proxyServer, Object plugin) {
+    public static BiConsumer<Runnable, Long> wrapScheduler(ProxyServer proxyServer, Object plugin) {
         return (runnable, delay) -> proxyServer.getScheduler()
                 .buildTask(plugin, runnable)
                 .delay(delay * 50L, TimeUnit.MILLISECONDS)

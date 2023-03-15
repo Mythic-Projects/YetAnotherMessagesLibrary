@@ -26,7 +26,7 @@ public class BukkitMessageService<C extends MessageRepository> extends SimpleSen
         ));
     }
 
-    private static BiConsumer<Runnable, Long> wrapScheduler(JavaPlugin plugin) {
+    public static BiConsumer<Runnable, Long> wrapScheduler(JavaPlugin plugin) {
         return (runnable, delay) -> plugin.getServer().getScheduler().runTaskLater(plugin, runnable, delay);
     }
 

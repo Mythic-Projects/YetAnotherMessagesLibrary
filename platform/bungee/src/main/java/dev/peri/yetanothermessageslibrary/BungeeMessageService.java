@@ -27,7 +27,7 @@ public class BungeeMessageService<C extends MessageRepository> extends SimpleSen
         ));
     }
 
-    private static BiConsumer<Runnable, Long> wrapScheduler(Plugin plugin) {
+    public static BiConsumer<Runnable, Long> wrapScheduler(Plugin plugin) {
         return (runnable, delay) -> plugin.getProxy().getScheduler().schedule(plugin, runnable, delay * 50L, TimeUnit.MILLISECONDS);
     }
 
