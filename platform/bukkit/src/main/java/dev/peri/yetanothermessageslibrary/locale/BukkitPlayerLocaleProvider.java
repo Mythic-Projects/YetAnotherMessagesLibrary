@@ -15,7 +15,7 @@ public class BukkitPlayerLocaleProvider implements LocaleProvider<Player> {
 
     @Override
     public @Nullable Locale getLocale(@NotNull Player entity) {
-       return BukkitLocaleHelper.getLocale(entity);
+        return BukkitLocaleHelper.getLocale(entity);
     }
 
 }

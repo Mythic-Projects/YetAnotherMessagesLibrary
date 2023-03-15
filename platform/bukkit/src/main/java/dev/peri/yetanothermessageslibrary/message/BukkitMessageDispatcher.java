@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.function.Function;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,22 +19,26 @@ public class BukkitMessageDispatcher<D extends BukkitMessageDispatcher<?>> exten
         super(viewerService, localeSupplier, messageSupplier);
     }
 
+    @Contract(" -> this")
     public D broadcast() {
         this.broadcastPlayers();
         this.console();
         return (D) this;
     }
 
+    @Contract(" -> this")
     public D broadcastPlayers() {
         this.receivers(Bukkit.getOnlinePlayers());
         return (D) this;
     }
 
+    @Contract(" -> this")
     public D console() {
         this.receiver(Bukkit.getConsoleSender());
         return (D) this;
     }
 
+    @Contract("_ -> this")
     public D permission(@NotNull String permission) {
         this.predicate(sender -> sender.hasPermission(permission));
         return (D) this;

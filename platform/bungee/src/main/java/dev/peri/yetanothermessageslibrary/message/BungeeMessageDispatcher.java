@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.function.Function;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,22 +19,26 @@ public class BungeeMessageDispatcher<D extends BungeeMessageDispatcher<?>> exten
         super(viewerService, localeSupplier, messageSupplier);
     }
 
+    @Contract(" -> this")
     public D broadcast() {
         this.broadcastPlayers();
         this.console();
         return (D) this;
     }
 
+    @Contract(" -> this")
     public D broadcastPlayers() {
         this.receivers(ProxyServer.getInstance().getPlayers());
         return (D) this;
     }
 
+    @Contract(" -> this")
     public D console() {
         this.receiver(ProxyServer.getInstance().getConsole());
         return (D) this;
     }
 
+    @Contract("_ -> this")
     public D permission(@NotNull String permission) {
         this.predicate(sender -> sender.hasPermission(permission));
         return (D) this;
