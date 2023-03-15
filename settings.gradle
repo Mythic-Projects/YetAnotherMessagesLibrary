@@ -1,33 +1,33 @@
 rootProject.name = 'YetAnotherMessagesLibrary'
 
-include 'core'
+this.setupSubproject("core")
 
 // Platforms
-include 'platform'
-
-include 'platform:bukkit'
-findProject(':platform:bukkit')?.name = 'platform-bukkit'
-
-include 'platform:bungee'
-findProject(':platform:bungee')?.name = 'platform-bungee'
-
-include 'platform:velocity'
-findProject(':platform:velocity')?.name = 'platform-velocity'
+this.setupSubproject("platform")
+this.setupSubproject("platform:bukkit", "platform-bukkit")
+this.setupSubproject("platform:bungee", "platform-bungee")
+this.setupSubproject("platform:velocity", "platform-velocity")
 
 // Repositories (Data Supplier)
-include 'repository'
-
-include 'repository:okaeri'
-findProject(':repository:okaeri')?.name = 'repository-okaeri'
+this.setupSubproject("repository")
+this.setupSubproject("repository:okaeri", "repository-okaeri")
 
 // Replaceable (Placeholders)
-include 'replaceable'
+this.setupSubproject("replaceable")
+this.setupSubproject("replaceable:okaeri", "replaceable-okaeri")
+this.setupSubproject("replaceable:placeholderapi", "replaceable-placeholderapi")
 
-include 'replaceable:okaeri'
-findProject(':replaceable:okaeri')?.name = 'replaceable-okaeri'
+// Code examples
+this.setupSubproject("example")
 
-include 'replaceable:placeholderapi'
-findProject(':replaceable:placeholderapi')?.name = 'replaceable-placeholderapi'
+def setupSubproject(String project, String name) {
+    include "$project"
+    findProject(":$project")?.name = name
+}
+
+def setupSubproject(String project) {
+    this.setupSubproject(project, project)
+}
 
 dependencyResolutionManagement {
     versionCatalogs {
@@ -47,7 +47,7 @@ dependencyResolutionManagement {
             library("platform-bungee", "net.kyori:adventure-platform-bungeecord:${platformVersion}")
         }
         okaeri {
-            library("config", "eu.okaeri:okaeri-configs-core:5.0.0-beta.2")
+            library("config", "eu.okaeri:okaeri-configs-core:5.0.0-beta.5")
             library("placeholders", "eu.okaeri:okaeri-placeholders-core:4.0.3")
         }
     }
