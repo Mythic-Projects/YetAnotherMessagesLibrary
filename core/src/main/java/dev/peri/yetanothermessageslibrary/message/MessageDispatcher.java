@@ -15,6 +15,7 @@ import java.util.WeakHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,6 +43,7 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
         this.messageSupplier = messageSupplier;
     }
 
+    @Contract("_ -> this")
     public D receiver(@Nullable R receiver) {
         if (receiver == null) {
             return (D) this;
@@ -51,54 +53,63 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
         return (D) this;
     }
 
+    @Contract("_ -> this")
     public D receivers(@NotNull Collection<? extends @Nullable R> receivers) {
         receivers.forEach(this::receiver);
         return (D) this;
     }
 
+    @Contract("_ -> this")
     public D predicate(@NotNull Predicate<@NotNull R> predicate) {
         this.predicates.add(predicate);
         return (D) this;
     }
 
+    @Contract("_, _ -> this")
     public <T> D predicate(@NotNull Class<T> requiredType, @NotNull Predicate<@NotNull T> predicate) {
-        this.predicates.add(receiver -> {
+        return this.predicate(receiver -> {
             if (!requiredType.isInstance(receiver)) {
                 return false;
             }
             return predicate.test(requiredType.cast(receiver));
         });
-        return (D) this;
     }
 
+    @Contract("_ -> this")
     public D with(@NotNull Replaceable replacement) {
         this.replacements.add(replacement);
         return (D) this;
     }
 
-    public D with(@NotNull Replaceable... replacement) {
+    @Contract("_ -> this")
+    public D with(@NotNull Replaceable @NotNull... replacement) {
         Collections.addAll(this.replacements, replacement);
         return (D) this;
     }
 
-    public D with(@NotNull Iterable<? extends Replaceable> replacements) {
+    @Contract("_ -> this")
+    public D with(@NotNull Iterable<? extends @NotNull Replaceable> replacements) {
         replacements.forEach(this.replacements::add);
         return (D) this;
     }
 
-    public <T extends R> D with(@NotNull Class<T> requiredType, @NotNull Function<T, ? extends Replaceable> replacementSupplier) {
+    @Contract("_, _ -> this")
+    public <T extends R> D with(@NotNull Class<T> requiredType, @NotNull Function<@NotNull T, ? extends @NotNull Replaceable> replacementSupplier) {
         this.replacementsSuppliers.add(new TypedReplaceableSupplier<>(requiredType, replacementSupplier));
         return (D) this;
     }
 
+    @Contract("_, _ -> this")
     public D with(@NotNull String from, @NotNull Object to) {
         return this.with(Replacement.of(from, to));
     }
 
+    @Contract("_, _ -> this")
     public D with(@NotNull String from, @NotNull Supplier<@NotNull Object> to) {
         return this.with(Replacement.of(from, to));
     }
 
+    @Contract(" -> this")
     public D send() {
         this.receivers.forEach(this::sendTo);
         return (D) this;
