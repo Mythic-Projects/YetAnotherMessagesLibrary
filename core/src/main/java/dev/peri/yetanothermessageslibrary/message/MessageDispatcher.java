@@ -28,7 +28,7 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
     private final Set<R> receivers = Collections.newSetFromMap(new WeakHashMap<>());
     private final Set<Predicate<R>> predicates = new HashSet<>();
 
-    private final List<Replaceable> replacement = new ArrayList<>();
+    private final List<Replaceable> replacements = new ArrayList<>();
     @SuppressWarnings("rawtypes")
     private final List<TypedReplaceableSupplier> replacementsSuppliers = new ArrayList<>();
 
@@ -62,21 +62,21 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
     }
 
     public D with(@NotNull Replaceable replacement) {
-        this.replacement.add(replacement);
+        this.replacements.add(replacement);
         return (D) this;
     }
 
     public D with(@NotNull Replaceable... replacement) {
-        Collections.addAll(this.replacement, replacement);
+        Collections.addAll(this.replacements, replacement);
         return (D) this;
     }
 
     public D with(@NotNull Iterable<? extends Replaceable> replacements) {
-        replacements.forEach(this.replacement::add);
+        replacements.forEach(this.replacements::add);
         return (D) this;
     }
 
-    public <T extends R> D with(@NotNull Class<T> requiredType, @NotNull Function<T, Replaceable> replacementSupplier) {
+    public <T extends R> D with(@NotNull Class<T> requiredType, @NotNull Function<T, ? extends Replaceable> replacementSupplier) {
         this.replacementsSuppliers.add(new TypedReplaceableSupplier<>(requiredType, replacementSupplier));
         return (D) this;
     }
@@ -112,7 +112,7 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
     }
 
     protected @NotNull List<Replaceable> prepareReplacements(@NotNull R receiver) {
-        List<Replaceable> replacement = new ArrayList<>(this.replacement);
+        List<Replaceable> replacement = new ArrayList<>(this.replacements);
         this.replacementsSuppliers
                 .stream()
                 .filter(supplier -> supplier.getType().isInstance(receiver))
@@ -127,9 +127,9 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
     private final class TypedReplaceableSupplier<T extends R> {
 
         public final Class<T> type;
-        public final Function<T, Replaceable> supplier;
+        public final Function<T, ? extends Replaceable> supplier;
 
-        private TypedReplaceableSupplier(@NotNull Class<T> type, @NotNull Function<T, Replaceable> supplier) {
+        private TypedReplaceableSupplier(@NotNull Class<T> type, @NotNull Function<T, ? extends Replaceable> supplier) {
             this.type = type;
             this.supplier = supplier;
         }
@@ -138,7 +138,7 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
             return this.type;
         }
 
-        public Function<T, Replaceable> getSupplier() {
+        public Function<T, ? extends Replaceable> getSupplier() {
             return this.supplier;
         }
 
