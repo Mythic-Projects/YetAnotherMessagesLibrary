@@ -7,7 +7,7 @@ import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class VelocityViewerDataSupplier implements ViewerDataSupplier<CommandSource, UUID> {
+public class VelocityViewerDataSupplier implements ViewerDataSupplier<CommandSource> {
 
     @Override
     public @NotNull Audience getAudience(@NotNull CommandSource receiver) {
