@@ -52,7 +52,7 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
     }
 
     public D receivers(@NotNull Collection<? extends @Nullable R> receivers) {
-        this.receivers.forEach(this::receiver);
+        receivers.forEach(this::receiver);
         return (D) this;
     }
 
