@@ -110,7 +110,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _ -> this")
         public Builder chat(boolean onlyConsole, @NotNull String... messages) {
-            return this.chat(onlyConsole, MiniComponent.ofLegacy(messages));
+            return this.chat(onlyConsole, MiniComponent.of(messages));
         }
 
         /**
@@ -145,7 +145,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, -> this")
         public Builder actionBar(@NotNull String message) {
-            return this.actionBar(MiniComponent.ofLegacy(message));
+            return this.actionBar(MiniComponent.of(message));
         }
 
         /**
@@ -176,7 +176,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _, _, _, _ -> this")
         public Builder title(@NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
-            return this.title(MiniComponent.ofLegacy(title), MiniComponent.ofLegacy(subtitle), fadeIn, stay, fadeOut);
+            return this.title(MiniComponent.of(title), MiniComponent.of(subtitle), fadeIn, stay, fadeOut);
         }
 
         /**
@@ -213,7 +213,7 @@ public class SendableMessage implements Sendable {
          */
         @Contract("_, _, _, _, _, _, -> this")
         public Builder bossBar(@NotNull String name, float progress, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, @NotNull Collection<BossBar.Flag> flags, int stay) {
-            return this.bossBar(MiniComponent.ofLegacy(name), progress, color, overlay, flags, stay);
+            return this.bossBar(MiniComponent.of(name), progress, color, overlay, flags, stay);
         }
 
         /**
