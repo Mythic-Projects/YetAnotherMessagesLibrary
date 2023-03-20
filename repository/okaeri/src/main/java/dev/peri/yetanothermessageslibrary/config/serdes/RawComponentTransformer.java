@@ -15,7 +15,7 @@ public class RawComponentTransformer extends BidirectionalTransformer<String, Ra
 
     @Override
     public RawComponent leftToRight(String data, SerdesContext serdesContext) {
-        return MiniComponent.ofLegacy(data);
+        return MiniComponent.of(data);
     }
 
     @Override

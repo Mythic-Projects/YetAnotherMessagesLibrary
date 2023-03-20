@@ -66,7 +66,7 @@ public class TitleHolder extends SendableHolder {
     }
 
     public static @NotNull SendableMessage message(@NotNull String title, @NotNull String subTitle, int fadeIn, int stay, int fadeOut) {
-        return TitleHolder.message(MiniComponent.ofLegacy(title), MiniComponent.ofLegacy(subTitle), fadeIn, stay, fadeOut);
+        return TitleHolder.message(MiniComponent.of(title), MiniComponent.of(subTitle), fadeIn, stay, fadeOut);
     }
 
     public static @NotNull Builder builder() {
@@ -90,7 +90,7 @@ public class TitleHolder extends SendableHolder {
 
         @Contract("_ -> this")
         public Builder title(@NotNull String title) {
-            return this.title(MiniComponent.ofLegacy(title));
+            return this.title(MiniComponent.of(title));
         }
 
         @Contract("_ -> this")
@@ -101,7 +101,7 @@ public class TitleHolder extends SendableHolder {
 
         @Contract("_ -> this")
         public Builder subTitle(@NotNull String subTitle) {
-            return this.subTitle(MiniComponent.ofLegacy(subTitle));
+            return this.subTitle(MiniComponent.of(subTitle));
         }
 
         @Contract("_ -> this")

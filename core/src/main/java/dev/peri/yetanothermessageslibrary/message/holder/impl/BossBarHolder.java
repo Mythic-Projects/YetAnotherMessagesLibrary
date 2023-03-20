@@ -96,7 +96,7 @@ public class BossBarHolder extends SendableHolder {
     }
 
     public static @NotNull Builder builder(@NotNull String name) {
-        return new Builder(MiniComponent.ofLegacy(name));
+        return new Builder(MiniComponent.of(name));
     }
 
     public static class Builder {

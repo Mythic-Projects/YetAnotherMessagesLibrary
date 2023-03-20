@@ -58,30 +58,4 @@ public final class MiniComponent {
         return miniComponents;
     }
 
-    /**
-     * Replace legacy color codes (&amp;[0-9A-Fa-fK-Ok-oRr]) and hex colors codes (&amp;#[a-fA-F0-9]{6}) in text with mini message codes.
-     * Then parse the text to {@link RawComponent} using {@link MiniMessage}.
-     *
-     * @param legacy the string to parse.
-     * @return the parsed component.
-     */
-    public static @NotNull RawComponent ofLegacy(@NotNull String legacy) {
-        return new RawComponent(legacy, MINI_MESSAGE.deserialize(legacy));
-    }
-
-    /**
-     * Replace legacy color codes (&amp;[0-9A-Fa-fK-Ok-oRr]) and hex colors codes (&amp;#[a-fA-F0-9]{6}) in text with mini message codes.
-     * Then parse multiple strings to {@link RawComponent} using {@link MiniMessage}.
-     *
-     * @param legacy array of strings to parse.
-     * @return array of parsed components.
-     */
-    public static @NotNull RawComponent[] ofLegacy(@NotNull String... legacy) {
-        RawComponent[] miniComponents = new RawComponent[legacy.length];
-        for (int i = 0; i < legacy.length; i++) {
-            miniComponents[i] = MiniComponent.ofLegacy(legacy[i]);
-        }
-        return miniComponents;
-    }
-
 }
