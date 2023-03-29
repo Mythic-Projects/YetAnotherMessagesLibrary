@@ -139,7 +139,7 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
                 .filter(supplier -> supplier.getType().isInstance(receiver))
                 .map(supplier -> {
                     Function<Object, Replaceable> replaceableFunction = supplier.getSupplier();
-                    return replaceableFunction.apply(supplier.getType());
+                    return replaceableFunction.apply(supplier.getType().cast(receiver));
                 })
                 .forEachOrdered(replacement::add);
         return replacement;
