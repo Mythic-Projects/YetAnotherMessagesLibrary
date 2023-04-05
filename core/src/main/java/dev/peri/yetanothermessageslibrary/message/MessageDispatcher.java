@@ -2,6 +2,7 @@ package dev.peri.yetanothermessageslibrary.message;
 
 import dev.peri.yetanothermessageslibrary.replace.Replaceable;
 import dev.peri.yetanothermessageslibrary.replace.replacement.Replacement;
+import dev.peri.yetanothermessageslibrary.util.TriFunction;
 import dev.peri.yetanothermessageslibrary.viewer.Viewer;
 import dev.peri.yetanothermessageslibrary.viewer.ViewerService;
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.function.Function;
@@ -29,9 +32,10 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
     private final Set<R> receivers = Collections.newSetFromMap(new WeakHashMap<>());
     private final Set<Predicate<R>> predicates = new HashSet<>();
 
+    private final Map<String, Object> fields = new WeakHashMap<>();
     private final List<Replaceable> replacements = new ArrayList<>();
     @SuppressWarnings("rawtypes")
-    private final List<TypedReplaceableSupplier> replacementsSuppliers = new ArrayList<>();
+    private final List<ReplaceableSupplier> replacementSuppliers = new ArrayList<>();
 
     public MessageDispatcher(
             @NotNull ViewerService<R> viewerService,
@@ -75,6 +79,18 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
         });
     }
 
+    @Contract("_, _ -> this")
+    public D field(@NotNull String key, @Nullable Object value) {
+        this.fields.put(key, value);
+        return (D) this;
+    }
+
+    @Contract("_, -> this")
+    public D fields(@NotNull Map<@NotNull String, @Nullable Object> fields) {
+        this.fields.putAll(fields);
+        return (D) this;
+    }
+
     @Contract("_ -> this")
     public D with(@NotNull Replaceable replacement) {
         this.replacements.add(replacement);
@@ -82,7 +98,7 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
     }
 
     @Contract("_ -> this")
-    public D with(@NotNull Replaceable @NotNull... replacement) {
+    public D with(@NotNull Replaceable @NotNull ... replacement) {
         Collections.addAll(this.replacements, replacement);
         return (D) this;
     }
@@ -94,12 +110,6 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
     }
 
     @Contract("_, _ -> this")
-    public <T extends R> D with(@NotNull Class<T> requiredType, @NotNull Function<@NotNull T, ? extends @NotNull Replaceable> replacementSupplier) {
-        this.replacementsSuppliers.add(new TypedReplaceableSupplier<>(requiredType, replacementSupplier));
-        return (D) this;
-    }
-
-    @Contract("_, _ -> this")
     public D with(@NotNull String from, @NotNull Object to) {
         return this.with(Replacement.of(from, to));
     }
@@ -107,6 +117,47 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
     @Contract("_, _ -> this")
     public D with(@NotNull String from, @NotNull Supplier<@NotNull Object> to) {
         return this.with(Replacement.of(from, to));
+    }
+
+    @Contract("_, _, _ -> this")
+    public <T extends R> D with(
+            @NotNull Class<T> requiredType,
+            @NotNull TriFunction<@NotNull T, @NotNull Locale, @NotNull Map<@NotNull String, @Nullable Object>, ? extends @NotNull Replaceable> replacementSupplier,
+            @Nullable TriFunction<@NotNull R, @NotNull Locale, @NotNull Map<@NotNull String, @Nullable Object>, ? extends @NotNull Replaceable> fallbackSupplier
+    ) {
+        this.replacementSuppliers.add(new ReplaceableSupplier<>(requiredType, replacementSupplier, fallbackSupplier));
+        return (D) this;
+    }
+
+    @Contract("_, _ -> this")
+    public <T extends R> D with(
+            @NotNull Class<T> requiredType,
+            @NotNull TriFunction<@NotNull T, @NotNull Locale, @NotNull Map<@NotNull String, @Nullable Object>, ? extends @NotNull Replaceable> replacementSupplier
+    ) {
+        return this.with(requiredType, replacementSupplier, null);
+    }
+
+    @Contract("_, _, _ -> this")
+    public <T extends R> D with(
+            @NotNull Class<T> requiredType,
+            @NotNull Function<@NotNull T, ? extends @NotNull Replaceable> replacementSupplier,
+            @Nullable Function<@NotNull R, ? extends @NotNull Replaceable> fallbackSupplier
+    ) {
+        return this.with(
+                requiredType,
+                (receiver, locale, fields) -> replacementSupplier.apply(receiver),
+                fallbackSupplier != null
+                        ? (receiver, locale, fields) -> fallbackSupplier.apply(receiver)
+                        : null
+        );
+    }
+
+    @Contract("_, _ -> this")
+    public <T extends R> D with(
+            @NotNull Class<T> requiredType,
+            @NotNull Function<@NotNull T, ? extends @NotNull Replaceable> replacementSupplier
+    ) {
+        return this.with(requiredType, replacementSupplier, null);
     }
 
     @Contract(" -> this")
@@ -128,39 +179,55 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
         }
 
         Viewer viewer = this.viewerService.findOrCreateViewer(receiver);
-        List<Replaceable> replaceables = this.prepareReplacements(receiver);
+        List<Replaceable> replaceables = this.prepareReplacements(receiver, locale);
         message.send(locale, viewer, replaceables.toArray(new Replaceable[0]));
     }
 
-    protected @NotNull List<Replaceable> prepareReplacements(@NotNull R receiver) {
+    protected @NotNull List<Replaceable> prepareReplacements(@NotNull R receiver, @NotNull Locale locale) {
         List<Replaceable> replacement = new ArrayList<>(this.replacements);
-        this.replacementsSuppliers
+        this.replacementSuppliers
                 .stream()
-                .filter(supplier -> supplier.getType().isInstance(receiver))
                 .map(supplier -> {
-                    Function<Object, Replaceable> replaceableFunction = supplier.getSupplier();
-                    return replaceableFunction.apply(supplier.getType().cast(receiver));
+                    return supplier.supplyReplacement(
+                            supplier.getEntityType().cast(receiver),
+                            locale,
+                            this.fields
+                    );
                 })
+                .filter(Objects::nonNull)
                 .forEachOrdered(replacement::add);
         return replacement;
     }
 
-    private final class TypedReplaceableSupplier<T extends R> {
+    private class ReplaceableSupplier<T extends R> {
 
-        public final Class<T> type;
-        public final Function<T, ? extends Replaceable> supplier;
+        private final Class<T> entityType;
+        private final TriFunction<@NotNull T, @NotNull Locale, @NotNull Map<@NotNull String, @Nullable Object>, ? extends @NotNull Replaceable> supplier;
+        private final TriFunction<@NotNull R, @NotNull Locale, @NotNull Map<@NotNull String, @Nullable Object>, ? extends @NotNull Replaceable> fallbackSupplier;
 
-        private TypedReplaceableSupplier(@NotNull Class<T> type, @NotNull Function<T, ? extends Replaceable> supplier) {
-            this.type = type;
+        private ReplaceableSupplier(
+                @NotNull Class<T> entityType,
+                @NotNull TriFunction<@NotNull T, @NotNull Locale, @NotNull Map<@NotNull String, @Nullable Object>, ? extends @NotNull Replaceable> supplier,
+                @Nullable TriFunction<@NotNull R, @NotNull Locale, @NotNull Map<@NotNull String, @Nullable Object>, ? extends @NotNull Replaceable> fallbackSupplier
+        ) {
+            this.entityType = entityType;
             this.supplier = supplier;
+            this.fallbackSupplier = fallbackSupplier;
         }
 
-        public Class<T> getType() {
-            return this.type;
+        public @NotNull Class<T> getEntityType() {
+            return this.entityType;
         }
 
-        public Function<T, ? extends Replaceable> getSupplier() {
-            return this.supplier;
+        public @Nullable Replaceable supplyReplacement(@NotNull R receiver, @NotNull Locale locale, @NotNull Map<@NotNull String, @Nullable Object> fields) {
+            if (this.entityType.isInstance(receiver)) {
+                return this.supplier.apply(this.entityType.cast(receiver), locale, fields);
+            }
+
+            if (this.fallbackSupplier == null) {
+                return null;
+            }
+            return this.fallbackSupplier.apply(receiver, locale, fields);
         }
 
     }
