@@ -20,7 +20,7 @@ Implementations of values/messages suppliers or utilities class to easily add su
 - [okaeri-configs](https://github.com/OkaeriPoland/okaeri-configs) - Transformers & Serializers for every `YAML` message type and utility classes. See how it looks like [here](https://github.com/P3ridot/YetAnotherMessagesLibrary/blob/master/repository/okaeri/FORMAT.md).
 
 ### Replaceable
-Implementations of `Replaceable` interface to easily replace for e.g. placeholders in messages
+Implementations of `Replaceable` interface to easily replace placeholders in messages
 - [okaeri-placeholders](https://github.com/OkaeriPoland/okaeri-placeholders)
 - [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI)
 
