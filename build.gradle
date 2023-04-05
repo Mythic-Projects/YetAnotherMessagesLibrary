@@ -59,9 +59,9 @@ subprojects {
                     }
 
                     scm {
-                        connection = "scm:git:git://github.com/P3ridot/YetAnotherMessagesLibrary.git"
-                        developerConnection = "scm:git:git://github.com/P3ridot/YetAnotherMessagesLibrary.git"
                         url = "https://github.com/P3ridot/YetAnotherMessagesLibrary.git"
+                        connection = "git@github.com:P3ridot/YetAnotherMessagesLibrary.git"
+                        developerConnection = "git@github.com:P3ridot/YetAnotherMessagesLibrary.git"
                     }
 
                     licenses {
