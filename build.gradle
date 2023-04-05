@@ -46,6 +46,32 @@ subprojects {
 
                 from components.java
 
+                pom {
+                    url = "https://github.com/P3ridot/YetAnotherMessagesLibrary"
+                    name = project.name
+
+                    developers {
+                        developer {
+                            id = "peridot"
+                            name = "Peridot"
+                            email = "peridot491@pm.me"
+                        }
+                    }
+
+                    scm {
+                        connection = "scm:git:git://github.com/P3ridot/YetAnotherMessagesLibrary.git"
+                        developerConnection = "scm:git:git://github.com/P3ridot/YetAnotherMessagesLibrary.git"
+                        url = "https://github.com/P3ridot/YetAnotherMessagesLibrary.git"
+                    }
+
+                    licenses {
+                        license {
+                            name = "MIT License"
+                            url  = "https://github.com/P3ridot/YetAnotherMessagesLibrary/blob/master/LICENSE"
+                        }
+                    }
+                }
+
                 // Add external repositories to published artifacts
                 // ~ btw: pls don't touch this
                 // Original code: https://github.com/FunnyGuilds/FunnyGuilds/blob/master/build.gradle
