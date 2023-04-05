@@ -37,12 +37,12 @@ dependencyResolutionManagement {
             library("velocity", "com.velocitypowered:velocity-api:3.1.1")
         }
         adventure {
-            String apiVersion = "4.12.0"
+            String apiVersion = "4.13.0"
             library("api", "net.kyori:adventure-api:${apiVersion}")
             library("minimessage", "net.kyori:adventure-text-minimessage:${apiVersion}")
             library("serializer-legacy", "net.kyori:adventure-text-serializer-legacy:${apiVersion}")
 
-            String platformVersion = "4.2.0"
+            String platformVersion = "4.3.0"
             library("platform-bukkit", "net.kyori:adventure-platform-bukkit:${platformVersion}")
             library("platform-bungee", "net.kyori:adventure-platform-bungeecord:${platformVersion}")
         }
