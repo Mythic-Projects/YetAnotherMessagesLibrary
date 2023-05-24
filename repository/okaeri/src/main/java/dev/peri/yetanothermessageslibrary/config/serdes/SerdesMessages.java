@@ -22,6 +22,7 @@ public class SerdesMessages implements OkaeriSerdesPack {
 
         // Utilities
         registry.register(new RawComponentTransformer());
+        registry.register(new ComponentTransformer());
         registry.register(new KeyTransformer());
     }
 
