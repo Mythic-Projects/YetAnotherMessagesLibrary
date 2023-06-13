@@ -4,6 +4,7 @@
     "config:base"
   ],
   "schedule": [
+    "every weekday",
     "every weekend"
   ],
   "labels": ["Dependencies"]
