@@ -23,7 +23,7 @@ dependencies {
     implementation "dev.peri.yetanothermessageslibrary:repository-okaeri:${yamlVersion}"
 
     // Adventure
-    def adventureVersion = "4.12.0"
+    def adventureVersion = "4.14.0"
     implementation "net.kyori:adventure-api:${adventureVersion}"
     implementation "net.kyori:adventure-text-serializer-legacy:${adventureVersion}"
     implementation "net.kyori:adventure-text-minimessage:${adventureVersion}"
