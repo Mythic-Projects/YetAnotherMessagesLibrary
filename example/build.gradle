@@ -17,7 +17,7 @@ dependencies {
     compileOnly "org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT"
 
     // YetAnotherMessagesLibrary
-    def yamlVersion = "6.3.1"
+    def yamlVersion = "6.5.1"
     implementation "dev.peri.yetanothermessageslibrary:core:${yamlVersion}"
     implementation "dev.peri.yetanothermessageslibrary:platform-bukkit:${yamlVersion}"
     implementation "dev.peri.yetanothermessageslibrary:repository-okaeri:${yamlVersion}"
