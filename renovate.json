@@ -3,6 +3,9 @@
   "extends": [
     "config:base"
   ],
+  "ignoreDeps": [
+    "me.clip:placeholderapi"
+  ],
   "schedule": [
     "every weekday",
     "every weekend"
