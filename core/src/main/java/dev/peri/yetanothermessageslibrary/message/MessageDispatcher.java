@@ -5,22 +5,15 @@ import dev.peri.yetanothermessageslibrary.replace.replacement.Replacement;
 import dev.peri.yetanothermessageslibrary.util.TriFunction;
 import dev.peri.yetanothermessageslibrary.viewer.Viewer;
 import dev.peri.yetanothermessageslibrary.viewer.ViewerService;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.WeakHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 @SuppressWarnings("unchecked")
 public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
@@ -31,6 +24,7 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
 
     private final Set<R> receivers = Collections.newSetFromMap(new WeakHashMap<>());
     private final Set<Predicate<R>> predicates = new HashSet<>();
+    private final Set<Consumer<R>> actions = new HashSet<>();
 
     private final Map<String, Object> fields = new WeakHashMap<>();
     private final List<Replaceable> replacements = new ArrayList<>();
@@ -77,6 +71,12 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
             }
             return predicate.test(requiredType.cast(receiver));
         });
+    }
+
+    @Contract("_ -> this")
+    public D action(@NotNull Consumer<@NotNull R> action) {
+        this.actions.add(action);
+        return (D) this;
     }
 
     @Contract("_, _ -> this")
@@ -181,6 +181,7 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
         Viewer viewer = this.viewerService.findOrCreateViewer(receiver);
         List<Replaceable> replaceables = this.prepareReplacements(receiver, locale);
         message.send(locale, viewer, replaceables.toArray(new Replaceable[0]));
+        this.actions.forEach(action -> action.accept(receiver));
     }
 
     protected @NotNull List<Replaceable> prepareReplacements(@NotNull R receiver, @NotNull Locale locale) {
