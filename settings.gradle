@@ -33,7 +33,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         libs {
             library("spigot", "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT")
-            library("bungee", "net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT")
+            library("bungee", "net.md-5:bungeecord-api:1.20-R0.1")
             library("velocity", "com.velocitypowered:velocity-api:3.1.1")
         }
         adventure {
