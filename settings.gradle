@@ -47,7 +47,7 @@ dependencyResolutionManagement {
             library("platform-bungee", "net.kyori:adventure-platform-bungeecord:${platformVersion}")
         }
         okaeri {
-            library("config", "eu.okaeri:okaeri-configs-core:5.0.0-beta.5")
+            library("config", "eu.okaeri:okaeri-configs-core:5.0.0-beta.6")
             library("placeholders", "eu.okaeri:okaeri-placeholders-core:4.0.7")
         }
     }
