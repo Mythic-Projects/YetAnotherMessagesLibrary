@@ -42,7 +42,7 @@ dependencyResolutionManagement {
             library("minimessage", "net.kyori:adventure-text-minimessage:${apiVersion}")
             library("serializer-legacy", "net.kyori:adventure-text-serializer-legacy:${apiVersion}")
 
-            String platformVersion = "4.3.0"
+            String platformVersion = "4.3.1"
             library("platform-bukkit", "net.kyori:adventure-platform-bukkit:${platformVersion}")
             library("platform-bungee", "net.kyori:adventure-platform-bungeecord:${platformVersion}")
         }
