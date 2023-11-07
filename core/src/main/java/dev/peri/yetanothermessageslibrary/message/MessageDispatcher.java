@@ -5,15 +5,23 @@ import dev.peri.yetanothermessageslibrary.replace.replacement.Replacement;
 import dev.peri.yetanothermessageslibrary.util.TriFunction;
 import dev.peri.yetanothermessageslibrary.viewer.Viewer;
 import dev.peri.yetanothermessageslibrary.viewer.ViewerService;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unchecked")
 public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
@@ -158,6 +166,15 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
             @NotNull Function<@NotNull T, ? extends @NotNull Replaceable> replacementSupplier
     ) {
         return this.with(requiredType, replacementSupplier, null);
+    }
+
+    @Contract("_, _ -> this")
+    public <T extends R> D with(
+            @NotNull Class<T> requiredType,
+            @NotNull Collection<Function<@NotNull T, ? extends @NotNull Replaceable>> replacementSuppliers
+    ) {
+        replacementSuppliers.forEach(replacementSupplier -> this.with(requiredType, replacementSupplier));
+        return (D) this;
     }
 
     @Contract(" -> this")
