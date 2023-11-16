@@ -4,7 +4,7 @@ plugins {
 }
 
 allprojects {
-    group 'dev.peri.yetanothermessageslibrary'
+    group 'org.mythicprojects.yetanothermessageslibrary'
     version '7.0.0-SNAPSHOT'
 
     apply plugin: 'java-library'
