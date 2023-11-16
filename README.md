@@ -21,8 +21,8 @@ Implementations of values/messages suppliers or utilities class to easily add su
 
 ### Replaceable
 Implementations of `Replaceable` interface to easily replace placeholders in messages
-- [okaeri-placeholders](https://github.com/OkaeriPoland/okaeri-placeholders)
 - [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI)
+- [okaeri-placeholders **\[EXPERIMENTAL\]**](https://github.com/OkaeriPoland/okaeri-placeholders)
 
 
 ## Maven/Gradle

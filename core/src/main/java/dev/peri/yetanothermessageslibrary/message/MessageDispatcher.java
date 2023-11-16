@@ -19,6 +19,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
+import net.kyori.adventure.text.ComponentLike;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -117,14 +119,58 @@ public class MessageDispatcher<R, D extends MessageDispatcher<R, ?>> {
         return (D) this;
     }
 
-    @Contract("_, _ -> this")
-    public D with(@NotNull String from, @NotNull Object to) {
-        return this.with(Replacement.of(from, to));
+    public D with(@NotNull String placeholder, @NotNull ComponentLike replacement) {
+        return this.with(Replacement.component(placeholder, replacement));
+    }
+
+    public D with(@NotNull Pattern placeholder, @NotNull ComponentLike replacement) {
+        return this.with(Replacement.component(placeholder, replacement));
+    }
+
+    public D with(@NotNull String placeholder, @NotNull Function<@Nullable Locale, ? extends @NotNull ComponentLike> replacement) {
+        return this.with(Replacement.component(placeholder, replacement));
+    }
+
+    public D with(@NotNull Pattern placeholder, @NotNull Function<@Nullable Locale, ? extends @NotNull ComponentLike> replacement) {
+        return this.with(Replacement.component(placeholder, replacement));
+    }
+
+    public D with(@NotNull String placeholder, @NotNull Supplier<? extends @NotNull ComponentLike> replacement) {
+        return this.with(Replacement.component(placeholder, replacement));
+    }
+
+    public D with(@NotNull Pattern placeholder, @NotNull Supplier<? extends @NotNull ComponentLike> replacement) {
+        return this.with(Replacement.component(placeholder, replacement));
     }
 
     @Contract("_, _ -> this")
-    public D with(@NotNull String from, @NotNull Supplier<@NotNull Object> to) {
-        return this.with(Replacement.of(from, to));
+    public D with(@NotNull String placeholder, @NotNull Object replacement) {
+        return this.with(Replacement.string(placeholder, replacement));
+    }
+
+    @Contract("_, _ -> this")
+    public D with(@NotNull Pattern placeholder, @NotNull Object replacement) {
+        return this.with(Replacement.string(placeholder, replacement));
+    }
+
+    @Contract("_, _ -> this")
+    public D withString(@NotNull String placeholder, @NotNull Function<@Nullable Locale, ? extends @NotNull Object> replacement) {
+        return this.with(Replacement.string(placeholder, replacement));
+    }
+
+    @Contract("_, _ -> this")
+    public D withString(@NotNull Pattern placeholder, @NotNull Function<@Nullable Locale, ? extends @NotNull Object> replacement) {
+        return this.with(Replacement.string(placeholder, replacement));
+    }
+
+    @Contract("_, _ -> this")
+    public D withString(@NotNull String placeholder, @NotNull Supplier<? extends @NotNull Object> replacement) {
+        return this.with(Replacement.string(placeholder, replacement));
+    }
+
+    @Contract("_, _ -> this")
+    public D withString(@NotNull Pattern placeholder, @NotNull Supplier<? extends @NotNull Object> replacement) {
+        return this.with(Replacement.string(placeholder, replacement));
     }
 
     @Contract("_, _, _ -> this")

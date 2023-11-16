@@ -1,5 +1,6 @@
 package dev.peri.yetanothermessageslibrary.config.serdes;
 
+import dev.peri.yetanothermessageslibrary.adventure.GlobalAdventureSerializer;
 import dev.peri.yetanothermessageslibrary.config.serdes.holder.ActionBarHolderTransformer;
 import dev.peri.yetanothermessageslibrary.config.serdes.holder.BossBarHolderSerializer;
 import dev.peri.yetanothermessageslibrary.config.serdes.holder.ChatSerializer;
@@ -7,8 +8,21 @@ import dev.peri.yetanothermessageslibrary.config.serdes.holder.SoundHolderSerial
 import dev.peri.yetanothermessageslibrary.config.serdes.holder.TitleHolderSerializer;
 import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import eu.okaeri.configs.serdes.SerdesRegistry;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.ComponentSerializer;
+import org.jetbrains.annotations.NotNull;
 
-public class SerdesMessages implements OkaeriSerdesPack {
+public class YAMLSerdes implements OkaeriSerdesPack {
+
+    private final ComponentSerializer<Component, Component, String> componentSerializer;
+
+    public YAMLSerdes(@NotNull ComponentSerializer<Component, Component, String> componentSerializer) {
+        this.componentSerializer = componentSerializer;
+    }
+
+    public YAMLSerdes() {
+        this(GlobalAdventureSerializer.globalSerializer());
+    }
 
     @Override
     public void register(SerdesRegistry registry) {
@@ -21,8 +35,7 @@ public class SerdesMessages implements OkaeriSerdesPack {
         registry.register(new SendableMessageSerializer());
 
         // Utilities
-        registry.register(new RawComponentTransformer());
-        registry.register(new ComponentTransformer());
+        registry.register(new ComponentTransformer(componentSerializer));
         registry.register(new KeyTransformer());
     }
 

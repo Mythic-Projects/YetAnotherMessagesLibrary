@@ -1,5 +1,6 @@
 rootProject.name = 'YetAnotherMessagesLibrary'
 
+this.setupSubproject("tools")
 this.setupSubproject("core")
 
 // Platforms
@@ -39,8 +40,6 @@ dependencyResolutionManagement {
         adventure {
             String apiVersion = "4.14.0"
             library("api", "net.kyori:adventure-api:${apiVersion}")
-            library("minimessage", "net.kyori:adventure-text-minimessage:${apiVersion}")
-            library("serializer-legacy", "net.kyori:adventure-text-serializer-legacy:${apiVersion}")
 
             String platformVersion = "4.3.1"
             library("platform-bukkit", "net.kyori:adventure-platform-bukkit:${platformVersion}")

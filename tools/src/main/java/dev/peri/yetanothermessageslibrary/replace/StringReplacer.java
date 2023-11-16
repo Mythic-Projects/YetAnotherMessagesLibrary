@@ -2,7 +2,6 @@ package dev.peri.yetanothermessageslibrary.replace;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import org.jetbrains.annotations.Contract;
@@ -15,7 +14,7 @@ public final class StringReplacer {
     }
 
     @Contract(pure = true, value = "_, null, _, -> null")
-    public static String replace(@Nullable Locale locale, @Nullable String text, @NotNull Collection<? extends Replaceable> replacements) {
+    public static String replace(@Nullable Locale locale, @Nullable String text, @NotNull Iterable<? extends Replaceable> replacements) {
         if (text == null || text.isEmpty()) {
             return text;
         }
@@ -28,7 +27,7 @@ public final class StringReplacer {
     }
 
     @Contract(pure = true, value = "null, _, -> null")
-    public static String replace(@Nullable String text, @NotNull Collection<? extends Replaceable> replacements) {
+    public static String replace(@Nullable String text, @NotNull Iterable<? extends Replaceable> replacements) {
         return replace(null, text, replacements);
     }
 
@@ -43,7 +42,7 @@ public final class StringReplacer {
     }
 
     @Contract(pure = true)
-    public static @NotNull List<String> replace(@Nullable Locale locale, @NotNull List<String> text, @NotNull Replaceable... replacements) {
+    public static @NotNull List<String> replace(@Nullable Locale locale, @NotNull Iterable<String> text, @NotNull Iterable<? extends Replaceable> replacements) {
         List<String> result = new ArrayList<>();
         for (String line : text) {
             result.add(replace(locale, line, replacements));
@@ -52,8 +51,18 @@ public final class StringReplacer {
     }
 
     @Contract(pure = true)
-    public static @NotNull List<String> replace(@NotNull List<String> text, @NotNull Replaceable... replacements) {
+    public static @NotNull List<String> replace(@NotNull Iterable<String> text, @NotNull Iterable<? extends Replaceable> replacements) {
         return replace(null, text, replacements);
+    }
+
+    @Contract(pure = true)
+    public static @NotNull List<String> replace(@NotNull Iterable<String> text, @NotNull Replaceable... replacements) {
+        return replace(null, text, Arrays.asList(replacements));
+    }
+
+    @Contract(pure = true)
+    public static @NotNull List<String> replace(@Nullable Locale locale, @NotNull Iterable<String> text, @NotNull Replaceable... replacements) {
+        return replace(locale, text, Arrays.asList(replacements));
     }
 
 }

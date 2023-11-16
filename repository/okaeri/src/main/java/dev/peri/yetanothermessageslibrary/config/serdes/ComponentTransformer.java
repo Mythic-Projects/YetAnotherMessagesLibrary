@@ -1,27 +1,33 @@
 package dev.peri.yetanothermessageslibrary.config.serdes;
 
-import dev.peri.yetanothermessageslibrary.adventure.AdventureHelper;
-import dev.peri.yetanothermessageslibrary.adventure.RawComponent;
 import eu.okaeri.configs.schema.GenericsPair;
 import eu.okaeri.configs.serdes.BidirectionalTransformer;
 import eu.okaeri.configs.serdes.SerdesContext;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.ComponentSerializer;
+import org.jetbrains.annotations.NotNull;
 
-public class ComponentTransformer extends BidirectionalTransformer<RawComponent, Component> {
+public class ComponentTransformer extends BidirectionalTransformer<String, Component> {
 
-    @Override
-    public GenericsPair<RawComponent, Component> getPair() {
-        return this.genericsPair(RawComponent.class, Component.class);
+    private final ComponentSerializer<Component, Component, String> componentSerializer;
+
+    public ComponentTransformer(@NotNull ComponentSerializer<Component, Component, String> componentSerializer) {
+        this.componentSerializer = componentSerializer;
     }
 
     @Override
-    public Component leftToRight(RawComponent data, SerdesContext serdesContext) {
-        return data.getComponent();
+    public GenericsPair<String, Component> getPair() {
+        return this.genericsPair(String.class, Component.class);
     }
 
     @Override
-    public RawComponent rightToLeft(Component data, SerdesContext serdesContext) {
-        return new RawComponent(AdventureHelper.componentToAmpersandString(data), data);
+    public Component leftToRight(String data, SerdesContext serdesContext) {
+        return this.componentSerializer.deserialize(data);
+    }
+
+    @Override
+    public String rightToLeft(Component data, SerdesContext serdesContext) {
+        return this.componentSerializer.serialize(data);
     }
 
 }
