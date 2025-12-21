@@ -1,6 +1,0 @@
-dependencies {
-    api project(':core')
-
-    shadow libs.bungee
-    shadow adventure.platform.bungee
-}

@@ -11,19 +11,39 @@ import net.kyori.adventure.sound.Sound;
 public class SoundHolderSerializer implements ObjectSerializer<SoundHolder> {
 
     @Override
-    public boolean supports(Class<? super SoundHolder> type) {
+    public boolean supports(Class<?> type) {
         return SoundHolder.class.isAssignableFrom(type);
     }
 
     @Override
     public void serialize(SoundHolder holder, SerializationData data, GenericsDeclaration generics) {
         Sound sound = holder.getSound();
-        data.add("name", sound.name().asString());
-        data.add("source", sound.source());
-        data.add("volume", sound.volume());
-        data.add("pitch", sound.pitch());
+        data.set(
+                "name",
+                sound.name().asString(),
+                String.class
+        );
+        data.set(
+                "source",
+                sound.source(),
+                Sound.Source.class
+        );
+        data.set(
+                "volume",
+                sound.volume(),
+                float.class
+        );
+        data.set(
+                "pitch",
+                sound.pitch(),
+                float.class
+        );
         if (holder.stopOtherSounds()) {
-            data.add("stop-other-sounds", true);
+            data.set(
+                    "stop-other-sounds",
+                    true,
+                    boolean.class
+            );
         }
     }
 
