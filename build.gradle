@@ -1,6 +1,5 @@
 plugins {
     id 'idea'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 allprojects {
@@ -9,12 +8,14 @@ allprojects {
 
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
-    apply plugin: 'com.github.johnrengelman.shadow'
-
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
 
     compileJava.options.encoding = 'UTF-8'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
 }
 
 subprojects {
@@ -91,12 +92,12 @@ subprojects {
 
         repositories {
             maven {
-                name "mythic"
-                url "https://repo.mythicprojects.org/${version.toString().endsWith('SNAPSHOT') ? 'snapshots' : 'releases'}"
+                name = "mythicprojects"
+                url = "https://repo.mythicprojects.org/${version.toString().endsWith('SNAPSHOT') ? 'snapshots' : 'releases'}"
 
-                credentials {
-                    username = System.getenv("MAVEN_NAME")
-                    password = System.getenv("MAVEN_TOKEN")
+                credentials(PasswordCredentials)
+                authentication {
+                    basic(BasicAuthentication)
                 }
             }
         }

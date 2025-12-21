@@ -1,6 +1,6 @@
 dependencies {
     api project(':core')
 
-    shadow libs.spigot
-    shadow adventure.platform.bukkit
+    compileOnly libs.spigot
+    compileOnly adventure.platform.bukkit
 }

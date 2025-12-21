@@ -1,6 +1,6 @@
 dependencies {
     compileOnlyApi project(':core')
 
-    shadow libs.velocity
+    compileOnly libs.velocity
     annotationProcessor libs.velocity
 }
