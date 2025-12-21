@@ -12,7 +12,6 @@ Lightweight and modular *Minecraft Messages Library* based on [adventure](https:
 ### Platforms
 General implementations of API for specific platforms
 - Bukkit/Spigot/Paper - Using [adventure-platform-bukkit](https://docs.adventure.kyori.net/platform/bukkit.html)
-- BungeeCord/Waterfall - Using [adventure-platform-bungeecord](https://docs.adventure.kyori.net/platform/bungeecord.html)
 - Velocity 3.x - Using native adventure implementation
 
 ### Repositories
