@@ -21,12 +21,20 @@ public class TitleHolderSerializer implements ObjectSerializer<TitleHolder> {
     public void serialize(TitleHolder holder, SerializationData data, GenericsDeclaration generics) {
         Component title = holder.getTitle();
         if (!title.equals(Component.empty())) {
-            data.add("title", title, Component.class);
+            data.set(
+                    "title",
+                    title,
+                    Component.class
+            );
         }
 
         Component subtitle = holder.getSubTitle();
         if (!subtitle.equals(Component.empty())) {
-            data.add("subtitle", subtitle, Component.class);
+            data.set(
+                    "subtitle",
+                    subtitle,
+                    Component.class
+            );
         }
 
         Times times = holder.getTimes();
@@ -35,15 +43,27 @@ public class TitleHolderSerializer implements ObjectSerializer<TitleHolder> {
         int fadeOut = ticksFromDuration(times.fadeOut());
 
         if (fadeIn > 0) {
-            data.add("fade-in", fadeIn, int.class);
+            data.set(
+                    "fade-in",
+                    fadeIn,
+                    int.class
+            );
         }
 
         if (stay > 0) {
-            data.add("stay", stay, int.class);
+            data.set(
+                    "stay",
+                    stay,
+                    int.class
+            );
         }
 
         if (fadeOut > 0) {
-            data.add("fade-out", fadeOut, int.class);
+            data.set(
+                    "fade-out",
+                    fadeOut,
+                    int.class
+            );
         }
     }
 

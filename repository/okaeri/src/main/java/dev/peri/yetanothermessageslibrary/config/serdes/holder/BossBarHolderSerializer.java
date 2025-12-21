@@ -18,24 +18,52 @@ public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> 
 
     @Override
     public void serialize(BossBarHolder holder, SerializationData data, GenericsDeclaration generics) {
-        data.add("name", holder.getName(), Component.class);
-        data.add("color", holder.getColor(), BossBar.Color.class);
-        data.add("overlay", holder.getOverlay(), BossBar.Overlay.class);
+        data.set(
+                "name",
+                holder.getName(),
+                Component.class
+        );
+        data.set(
+                "color",
+                holder.getColor(),
+                BossBar.Color.class
+        );
+        data.set(
+                "overlay",
+                holder.getOverlay(),
+                BossBar.Overlay.class
+        );
 
         if (!holder.getFlags().isEmpty()) {
-            data.addCollection("flags", holder.getFlags(), BossBar.Flag.class);
+            data.setCollection(
+                    "flags",
+                    holder.getFlags(),
+                    BossBar.Flag.class
+            );
         }
 
         if (holder.getProgress() >= 0) {
-            data.add("progress", holder.getProgress(), float.class);
+            data.set(
+                    "progress",
+                    holder.getProgress(),
+                    float.class
+            );
         }
 
         if (holder.getStay() >= 0) {
-            data.add("stay", holder.getStay(), int.class);
+            data.set(
+                    "stay",
+                    holder.getStay(),
+                    int.class
+            );
         }
 
         if (holder.clearOtherBars()) {
-            data.add("clear-other-bars", true, boolean.class);
+            data.set(
+                    "clear-other-bars",
+                    true,
+                    boolean.class
+            );
         }
     }
 

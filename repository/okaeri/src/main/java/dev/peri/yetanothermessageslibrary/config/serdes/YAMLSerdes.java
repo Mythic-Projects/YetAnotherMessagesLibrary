@@ -6,12 +6,13 @@ import dev.peri.yetanothermessageslibrary.config.serdes.holder.BossBarHolderSeri
 import dev.peri.yetanothermessageslibrary.config.serdes.holder.ChatSerializer;
 import dev.peri.yetanothermessageslibrary.config.serdes.holder.SoundHolderSerializer;
 import dev.peri.yetanothermessageslibrary.config.serdes.holder.TitleHolderSerializer;
+import eu.okaeri.configs.serdes.OkaeriSerdes;
 import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import eu.okaeri.configs.serdes.SerdesRegistry;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 
-public class YAMLSerdes implements OkaeriSerdesPack {
+public class YAMLSerdes implements OkaeriSerdes {
 
     private final net.kyori.adventure.text.serializer.ComponentSerializer<Component, ? extends Component, String> componentSerializer;
 
