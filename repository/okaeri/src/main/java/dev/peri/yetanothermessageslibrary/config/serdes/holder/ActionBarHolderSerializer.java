@@ -10,7 +10,7 @@ import net.kyori.adventure.text.Component;
 public class ActionBarHolderSerializer implements ObjectSerializer<ActionBarHolder> {
 
     @Override
-    public boolean supports(Class<? super ActionBarHolder> type) {
+    public boolean supports(Class<?> type) {
         return ActionBarHolder.class.isAssignableFrom(type);
     }
 

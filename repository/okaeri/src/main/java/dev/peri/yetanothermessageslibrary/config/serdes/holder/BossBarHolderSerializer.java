@@ -12,7 +12,7 @@ import net.kyori.adventure.text.Component;
 public class BossBarHolderSerializer implements ObjectSerializer<BossBarHolder> {
 
     @Override
-    public boolean supports(Class<? super BossBarHolder> type) {
+    public boolean supports(Class<?> type) {
         return BossBarHolder.class.isAssignableFrom(type);
     }
 

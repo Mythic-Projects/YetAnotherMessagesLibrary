@@ -16,7 +16,7 @@ public class ComponentSerializer implements ObjectSerializer<Component> {
     }
 
     @Override
-    public boolean supports(Class<? super Component> type) {
+    public boolean supports(Class<?> type) {
         return Component.class.isAssignableFrom(type);
     }
 

@@ -27,7 +27,7 @@ public class SendableMessageSerializer implements ObjectSerializer<SendableMessa
     }};
 
     @Override
-    public boolean supports(Class<? super SendableMessage> type) {
+    public boolean supports(Class<?> type) {
         return SendableMessage.class.isAssignableFrom(type);
     }
 

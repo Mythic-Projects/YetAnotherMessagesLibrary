@@ -13,7 +13,7 @@ import net.kyori.adventure.util.Ticks;
 public class TitleHolderSerializer implements ObjectSerializer<TitleHolder> {
 
     @Override
-    public boolean supports(Class<? super TitleHolder> type) {
+    public boolean supports(Class<?> type) {
         return TitleHolder.class.isAssignableFrom(type);
     }
 

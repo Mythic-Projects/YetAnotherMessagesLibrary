@@ -12,7 +12,7 @@ import net.kyori.adventure.text.Component;
 public class ChatSerializer implements ObjectSerializer<ChatHolder> {
 
     @Override
-    public boolean supports(Class<? super ChatHolder> type) {
+    public boolean supports(Class<?> type) {
         return ChatHolder.class.isAssignableFrom(type);
     }
 

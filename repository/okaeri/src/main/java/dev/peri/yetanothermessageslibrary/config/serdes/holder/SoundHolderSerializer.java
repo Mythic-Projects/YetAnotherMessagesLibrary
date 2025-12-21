@@ -11,7 +11,7 @@ import net.kyori.adventure.sound.Sound;
 public class SoundHolderSerializer implements ObjectSerializer<SoundHolder> {
 
     @Override
-    public boolean supports(Class<? super SoundHolder> type) {
+    public boolean supports(Class<?> type) {
         return SoundHolder.class.isAssignableFrom(type);
     }
 
