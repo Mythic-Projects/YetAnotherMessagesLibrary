@@ -27,6 +27,18 @@ import org.jetbrains.annotations.Nullable;
 public interface MessageDispatcher<RECEIVER, DISPATCHER extends MessageDispatcher<RECEIVER, ? extends DISPATCHER>> {
 
     /**
+     * Apply a modifier to the dispatcher
+     * 
+     * @param modifier the modifier
+     * @return this dispatcher
+     */
+    @Contract("_ -> this")
+    default DISPATCHER modifier(@NotNull MessageDispatcherModifier<RECEIVER, DISPATCHER> modifier) {
+        modifier.modify((DISPATCHER) this);
+        return (DISPATCHER) this;
+    }
+    
+    /**
      * Add a receiver to the dispatcher
      *
      * @param receiver the receiver
